@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cop.mobi.mycar.service.dao.MyCarDao">
+
+	<resultMap id="myCarResult" type="com.cop.mobi.mycar.entity.MyCar">
+		<result property="id" column="id" />
+		<result property="uid" column="uid" />
+		<result property="obd" column="obd" />
+		<result property="nameCH" column="nameCH" />
+		<result property="price" column="price" />
+		<result property="buyDate" column="buyDate" />
+	</resultMap>
+
+	<resultMap id="routeResult" type="com.cop.mobi.mycar.entity.DriveRoutePo">
+		<result property="id" column="id" />
+		<result property="mcid" column="mcid" />
+		<result property="status" column="status" />
+		<result property="startTime" column="startTime" />
+		<result property="endTime" column="endTime" />
+		<result property="addTime" column="addTime" />
+	</resultMap>
+	<select id="getMyCarById" resultMap="myCarResult">
+		SELECT
+		id, uid, obd, nameCH,
+		price, buyDate
+		FROM
+		LC_MyCar
+		WHERE id=#{id}
+	</select>
+
+	<select id="getMyCarByOBD" resultMap="myCarResult">
+		SELECT
+		id, uid, obd, nameCH,
+		price, buyDate
+		FROM
+		LC_MyCar
+		WHERE obd=#{obd}
+	</select>
+
+	<select id="getMyCars" resultMap="myCarResult">
+		SELECT
+		id, uid, obd, nameCH,
+		price, buyDate
+		FROM
+		LC_MyCar
+		WHERE uid=#{uid}
+	</select>
+
+
+
+	<insert id="addMyCar" parameterType="com.cop.mobi.mycar.entity.MyCar">
+		INSERT INTO LC_MyCar (uid,
+		obd, nameCH, price, buyDate)
+		VALUES
+		(#{uid}, #{obd},
+		#{nameCH},
+		#{price},
+		#{buyDate})
+	</insert>
+
+	<select id="getDriveRoutes" resultMap="routeResult">
+		SELECT
+		id, mcid, status, startTime, endTime, addTime
+		FROM
+		LC_MyCarStatus
+		WHERE mcid=#{mcid}
+		AND
+		<![CDATA[
+		startTime>=#{beginTime} AND endTime<=#{endTime}
+		]]>
+	</select>
+
+</mapper>
