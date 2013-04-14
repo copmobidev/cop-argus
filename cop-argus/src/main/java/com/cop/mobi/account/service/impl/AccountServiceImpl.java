@@ -51,13 +51,13 @@ public class AccountServiceImpl extends AbstractService implements
 			UserPo userPo = null;
 			if (StringUtils.isNotBlank(user.getPwd())) {
 				if (user.getName() != null) {
-					userPo = accountDao.getUser("name", user.getName());
+					userPo = accountDao.getUserByName(user.getName());
 					if (userPo != null) {
 						data = new Message("注册失败", "该用户名已被使用");
 						return new Result(ResultStatus.RS_FAIL, data);
 					}
 				} else if (user.getEmail() != null) {
-					userPo = accountDao.getUser("email", user.getEmail());
+					userPo = accountDao.getUserByEmail(user.getEmail());
 					if (userPo != null) {
 						data = new Message("注册失败", "该邮箱已被使用");
 						return new Result(ResultStatus.RS_FAIL, data);
@@ -66,7 +66,7 @@ public class AccountServiceImpl extends AbstractService implements
 
 				if (userPo == null) {
 					accountDao.addUser(user);
-					userPo = accountDao.getUser("name", user.getName());
+					userPo = accountDao.getUserByName(user.getName());
 					if (userPo != null) {
 						data = new User(userPo);
 						myCar.setUid(userPo.getId());
@@ -95,9 +95,9 @@ public class AccountServiceImpl extends AbstractService implements
 			UserPo userPo = null;
 			if (user.getPwd() != null) {
 				if (user.getName() != null) {
-					userPo = accountDao.getUser("name", user.getName());
+					userPo = accountDao.getUserByName(user.getName());
 				} else if (user.getEmail() != null) {
-					userPo = accountDao.getUser("email", user.getEmail());
+					userPo = accountDao.getUserByEmail(user.getEmail());
 				}
 
 				if (userPo == null) {

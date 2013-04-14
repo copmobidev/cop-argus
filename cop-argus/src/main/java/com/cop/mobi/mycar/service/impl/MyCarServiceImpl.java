@@ -78,7 +78,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	@Override
 	public Result getMyCars(int uid) {
 		try {
-			List<MyCar> myCars = myCarDao.getMyCarByUid(uid);
+			List<MyCar> myCars = myCarDao.getMyCarsByUid(uid);
 			if (myCars != null && myCars.size() > 0) {
 				String str = StringUtils.join(myCars, ",");
 				return new Result(ResultStatus.RS_OK, str);

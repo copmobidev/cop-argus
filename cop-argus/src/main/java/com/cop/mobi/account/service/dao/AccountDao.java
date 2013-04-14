@@ -14,11 +14,13 @@ import com.cop.mobi.account.entity.UserPo;
  */
 public interface AccountDao {
 
-	UserPo getUser(@Param(value = "key") String key,
-			@Param(value = "val") String val);
+	UserPo getUserById(@Param(value = "uid") int uid);
 
-	List<UserPo> getUsers(@Param(value = "key") String key,
-			@Param(value = "val") String val);
+	UserPo getUserByName(@Param(value = "name") String name);
+
+	UserPo getUserByEmail(@Param(value = "email") String email);
+
+	List<UserPo> getUsers(@Param(value = "uids") String uids);
 
 	Object addUser(User user);
 

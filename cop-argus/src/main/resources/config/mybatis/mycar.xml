@@ -21,6 +21,7 @@
 		<result property="endTime" column="endTime" />
 		<result property="addTime" column="addTime" />
 	</resultMap>
+	
 	<select id="getMyCarById" resultMap="myCarResult">
 		SELECT
 		id, uid, obd, nameCH,
@@ -37,6 +38,15 @@
 		FROM
 		LC_MyCar
 		WHERE obd=#{obd}
+	</select>
+	
+	<select id="getMyCarsByUid" resultMap="myCarResult">
+		SELECT
+		id, uid, obd, nameCH,
+		price, buyDate
+		FROM
+		LC_MyCar
+		WHERE id=#{id}
 	</select>
 
 	<select id="getMyCars" resultMap="myCarResult">

@@ -35,7 +35,7 @@ public class MyCarDaoTest extends BaseTest {
 	@Test
 	public void getMyCarTest() {
 		try {
-			List<MyCar> myCars = myCarDao.getMyCarByUid(2);
+			List<MyCar> myCars = myCarDao.getMyCarsByUid(2);
 			if (myCars != null && myCars.size() > 0) {
 				String str = StringUtils.join(myCars, ",");
 				System.out.println(str);

@@ -23,7 +23,7 @@ public class AccountServiceTest extends BaseTest {
 	@Test
 	public void loginSuccessTest() {
 		User loginUser = new User();
-		loginUser.setName("chrisliu");
+		loginUser.setName("chris");
 		loginUser.setPwd("111");
 		Result result = accountService.login(loginUser);
 		if (result != null) {

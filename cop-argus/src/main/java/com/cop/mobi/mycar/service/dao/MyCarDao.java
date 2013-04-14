@@ -18,7 +18,7 @@ public interface MyCarDao {
 
 	MyCar getMyCarByOBD(@Param(value = "obd") String obd);
 
-	List<MyCar> getMyCarByUid(@Param(value = "uid") int uid);
+	List<MyCar> getMyCarsByUid(@Param(value = "uid") int uid);
 
 	int addMyCar(MyCar myCar);
 

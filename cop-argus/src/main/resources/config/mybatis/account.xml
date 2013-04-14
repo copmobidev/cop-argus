@@ -9,14 +9,32 @@
 		<result property="pwd" column="pwd" />
 		<result property="sex" column="sex" />
 	</resultMap>
-
-	<select id="getUser" resultMap="userResult">
+	
+	<select id="getUserById" resultMap="userResult">
 		SELECT
 		id, email, name, pwd, sex
 		FROM
 		LC_User
 		WHERE
-		${key}=#{val}
+		id=#{uid}
+	</select>
+
+	<select id="getUserByName" resultMap="userResult">
+		SELECT
+		id, email, name, pwd, sex
+		FROM
+		LC_User
+		WHERE
+		name=#{name}
+	</select>
+	
+	<select id="getUserByEmail" resultMap="userResult">
+		SELECT
+		id, email, name, pwd, sex
+		FROM
+		LC_User
+		WHERE
+		email=#{email}
 	</select>
 
 	<select id="getUsers" resultMap="userResult">
@@ -25,7 +43,7 @@
 		FROM
 		LC_User
 		WHERE
-		${key} IN (${val})
+		id IN (#{uids})
 	</select>
 
 	<insert id="addUser" parameterType="com.cop.mobi.account.entity.User">
