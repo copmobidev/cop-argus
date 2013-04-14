@@ -3,6 +3,7 @@ package com.cop.mobile.test.oilbill;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.service.OilBillService;
 import com.cop.mobile.test.BaseTest;
 
@@ -29,6 +30,7 @@ public class OilBillServiceTest extends BaseTest {
 	
 	@Test
 	public void deleteBillTest() {
-		
+		Result result = oilBillService.deleteBill(5);
+		System.out.println(result);
 	}
 }

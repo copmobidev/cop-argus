@@ -21,4 +21,6 @@ public interface OilBillDao {
 			@Param(value = "beginTime") long beginTime,
 			@Param(value = "endTime") long endTime);
 
+	Object deleteOilBill(@Param(value = "bid") int bid);
+
 }

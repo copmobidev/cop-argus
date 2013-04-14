@@ -30,7 +30,7 @@ public interface MyCarDao {
 	 * @param endDate
 	 * @return
 	 */
-	List<DriveRoutePo> getMyCarStatus(@Param(value = "mcid") int mcid,
+	List<DriveRoutePo> getDriveRoutes(@Param(value = "mcid") int mcid,
 			@Param(value = "beginTime") long beginTime,
 			@Param(value = "endTime") long endTime);
 }

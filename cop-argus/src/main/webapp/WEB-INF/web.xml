@@ -2,13 +2,22 @@
 	xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>Restful Web Application</display-name>
+	<display-name>Argus Web Application</display-name>
 
 	<context-param>
 		<param-name>resteasy.scan.resources</param-name>
 		<param-value>true</param-value>
 	</context-param>
-
+<!-- 
+	<context-param>
+		<param-name>resteasy.resources</param-name>
+		<param-value>
+			com.cop.mobi.rest.action.AccountAction, 
+			com.cop.mobi.rest.action.MyCarAction, 
+			com.cop.mobi.rest.action.OilBillAction
+		</param-value>
+	</context-param>
+ -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>

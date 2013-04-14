@@ -43,7 +43,7 @@
 		FROM
 		LC_User
 		WHERE
-		id IN (#{uids})
+		id IN (${uids})
 	</select>
 
 	<insert id="addUser" parameterType="com.cop.mobi.account.entity.User">

@@ -3,17 +3,19 @@ package com.cop.mobi.rest.core;
 import org.apache.log4j.Logger;
 
 import com.cop.mobi.common.AbstractService;
+import com.cop.mobi.common.Message;
 
 /**
  * 
  * @author chris.liu
- *
+ * 
  */
 public abstract class AbstractAction {
-	private static final Logger log = Logger
-			.getLogger(AbstractService.class);
-	
-	
+	protected static final Logger log = Logger.getLogger(AbstractService.class);
+
+	protected static final Message SERVER_INNER_ERROR_MSG = new Message("系统错误",
+			"服务器内部错误");
+
 	public static void error(Object tag, Object msg, Throwable e) {
 		log.error(String.format("%s->%s", tag, msg), e);
 	}

@@ -39,7 +39,6 @@ public class MyCarServiceTest extends BaseTest {
 			if (result != null) {
 				JSONObject jo = new JSONObject(result.toString());
 				System.out.println(jo.toString());
-				System.out.println(jo.toString().getBytes().length);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

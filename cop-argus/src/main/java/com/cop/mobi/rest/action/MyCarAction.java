@@ -3,10 +3,10 @@ package com.cop.mobi.rest.action;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.cop.mobi.common.Message;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.service.MyCarService;
@@ -18,7 +18,8 @@ import com.cop.mobi.rest.core.SpringApplicationContext;
  * @author chris.liu
  * 
  */
-@Path("/maycar")
+@Path("/mycar")
+@Produces("application/json;charset=UTF-8")
 public class MyCarAction extends AbstractAction {
 
 	private static final String Tag = "MyCarAction";
@@ -37,19 +38,14 @@ public class MyCarAction extends AbstractAction {
 	@POST
 	@Path("/info")
 	public Response carInfo(@FormParam("mcid") int mcid) {
-		if (myCarService == null) {
-			Result result = new Result(ResultStatus.RS_ERROR, new Message(
-					"系统错误", "服务器内部错误"));
-			return Response.status(Status.OK).entity(result.toString()).build();
-		}
+		Result result = null;
 		try {
-			Result result = myCarService.getMyCarById(mcid);
+			result = myCarService.getMyCarById(mcid);
 			return Response.status(Status.OK).entity(result.toString()).build();
 		} catch (Exception e) {
-			Result result = new Result(ResultStatus.RS_ERROR, new Message(
-					"系统错误", "服务器内部错误"));
-			return Response.status(Status.OK).entity(result.toString()).build();
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
 	@POST
@@ -57,22 +53,17 @@ public class MyCarAction extends AbstractAction {
 	public Response carStatus(@FormParam("mcid") int mcid,
 			@FormParam("beginTime") long beginTime,
 			@FormParam("endTime") long endTime) {
-		if (myCarService == null) {
-			return Response.status(Status.OK)
-					.entity(new Message("系统错误", "服务器内部错误")).build();
-		}
-
+		Result result = null;
 		try {
-			Result result = myCarService.getDriveRoutes(mcid, beginTime,
-					endTime);
+			result = myCarService.getDriveRoutes(mcid, beginTime, endTime);
 			return Response.status(Status.OK).entity(result.toString()).build();
 		} catch (Exception e) {
-			Result result = new Result(ResultStatus.RS_ERROR, new Message(
-					"系统错误", "服务器内部错误"));
-			return Response.status(Status.OK).entity(result).build();
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+
 		}
+		return Response.status(Status.OK).entity(result).build();
 	}
-	
+
 	@POST
 	@Path("/diagnose")
 	public Response diagnose(@FormParam("codes") String codes) {

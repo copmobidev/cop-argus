@@ -42,7 +42,7 @@ public class AccountDaoTest extends BaseTest {
 	public void getUserByEmailTest() {
 		UserPo userDo = accountDao.getUserByEmail("chrisliu@gmail.com");
 		if (userDo != null) {
-			System.out.println(userDo.getEmail());
+			System.out.println(userDo.getName());
 		}
 	}
 
@@ -54,9 +54,8 @@ public class AccountDaoTest extends BaseTest {
 			uids.add(2);
 			List<UserPo> userDos = accountDao.getUsers(StringUtils.join(uids, ","));
 			if (userDos != null) {
-				System.out.println(userDos.size());
 				for (UserPo userDo : userDos) {
-					System.out.println(userDo.getEmail());
+					System.out.println(userDo.getName());
 				}
 			}
 		} catch (Exception e) {

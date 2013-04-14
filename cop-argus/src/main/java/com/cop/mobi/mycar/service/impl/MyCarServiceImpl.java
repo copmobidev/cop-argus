@@ -14,7 +14,6 @@ import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.DriveRoute;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
-import com.cop.mobi.mycar.entity.OilBill;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
 import com.cop.mobi.rest.core.SpringApplicationContext;
@@ -114,7 +113,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	@Override
 	public Result getDriveRoutes(int mcid, long beginTime, long endTime) {
 		try {
-			List<DriveRoutePo> drps = myCarDao.getMyCarStatus(mcid, beginTime,
+			List<DriveRoutePo> drps = myCarDao.getDriveRoutes(mcid, beginTime,
 					endTime);
 			if (drps != null && drps.size() > 0) {
 				List<DriveRoute> drs = new ArrayList<DriveRoute>();
@@ -140,21 +139,6 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	public Result uploadDriveRoutes(int mcid, String data, long startTime,
 			long endTime) {
 		MyCarLog.info(String.format("%d-%s", mcid, data));
-		return null;
-	}
-
-	@Override
-	public Result addBill(OilBill bill) {
-		return null;
-	}
-
-	@Override
-	public Result getBills(int uid, long beginTime, long endTime) {
-		return null;
-	}
-
-	@Override
-	public Result deleteBill(int bid) {
 		return null;
 	}
 

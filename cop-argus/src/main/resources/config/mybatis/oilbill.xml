@@ -6,26 +6,26 @@
 		<result property="id" column="id" />
 		<result property="uid" column="uid" />
 		<result property="oil" column="oil" />
-		<result property="cost" column="cost" />
+		<result property="unitPrice" column="unitPrice" />
 		<result property="addtime" column="addtime" />
 	</resultMap>
 	
 	<insert id="addOilBill">
-		INSERT INTO LC_OilBill (uid, oil, cost, addtime)
-		VALUES(${uid}, ${oil}, ${cost}, ${addtime})
+		INSERT INTO LC_OilBill (uid, oil, unitPrice, addtime)
+		VALUES(${uid}, ${oil}, ${unitPrice}, ${addtime})
 	</insert>
 	
 	<select id="getOilBill" resultMap="oilBillResult">
 		SELECT
-		id, uid, oil, cost, addtime
+		id, uid, oil, unitPrice, addtime
 		FROM
 		LC_OilBill
-		WHRER addtime=${addtime}
+		WHERE addtime=${addtime}
 	</select>
 
 	<select id="getOilBills" resultMap="oilBillResult">
 		SELECT
-		id, uid, oil, cost, addtime
+		id, uid, oil, unitPrice, addtime
 		FROM
 		LC_OilBill
 		WHERE uid=${uid} AND 
@@ -34,6 +34,8 @@
 		]]>
 	</select>
 	
-	
+	<delete id="deleteOilBill">
+		DELETE FROM LC_OilBill WHERE id=#{bid}	
+	</delete>
 	
 </mapper>

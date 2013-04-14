@@ -9,7 +9,7 @@ public class OilBill {
 	private int id;
 	private int uid;
 	private double oil;
-	private double cost;
+	private double unitPrice;
 	private long addtime;
 
 	public int getId() {
@@ -36,12 +36,12 @@ public class OilBill {
 		this.oil = oil;
 	}
 
-	public double getCost() {
-		return cost;
+	public double getUnitPrice() {
+		return unitPrice;
 	}
 
-	public void setCost(double cost) {
-		this.cost = cost;
+	public void setUnitPrice(double unitPrice) {
+		this.unitPrice = unitPrice;
 	}
 
 	public long getAddtime() {
@@ -54,7 +54,7 @@ public class OilBill {
 
 	public String toString() {
 		return String.format(
-				"{\"uid\":%d,\"oil\":%f,\"cost\":%f,\"addtime\":%d}", uid, oil,
-				cost, addtime);
+				"{\"uid\":%d,\"oil\":%f,\"unitPrice\":%f,\"addtime\":%d}", uid, oil,
+				unitPrice, addtime);
 	}
 }
