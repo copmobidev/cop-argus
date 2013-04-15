@@ -32,61 +32,85 @@ public class OilBillServiceImpl extends AbstractService implements
 			oilBillDao = (OilBillDao) SpringApplicationContext
 					.getBean("oilBillDao");
 		} catch (Exception e) {
-			error(Tag, "init error", e);
+			log.error(String.format("%s:%s", Tag, "init error"), e);
 		}
 	}
 
 	@Override
 	public Result addBill(OilBill bill) {
+		Result result = null;
 		try {
 			oilBillDao.addOilBill(bill);
 			OilBill addedBill = oilBillDao.getOilBill(bill.getAddtime());
 			if (addedBill != null) {
-				return new Result(ResultStatus.RS_OK, addedBill);
+				result = new Result(ResultStatus.RS_OK, addedBill);
 			} else {
-				return new Result(ResultStatus.RS_FAIL, new Message("错误",
+				result = new Result(ResultStatus.RS_FAIL, new Message("错误",
 						"添加账单失败"));
 			}
 		} catch (Exception e) {
-			error(Tag, String.format("addBill(%s)", bill), e);
-			return new Result(ResultStatus.RS_FAIL, new Message("错误", "添加账单失败"));
+			log.error(String.format("%s:%s", Tag, String.format("addBill(%s)"),
+					bill), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
+		return result;
 	}
 
 	@Override
 	public Result getBills(int uid, long beginTime, long endTime) {
+		Result result = null;
 		try {
 			List<OilBill> bills = oilBillDao.getOilBills(uid, beginTime,
 					endTime);
 			if (bills == null || bills.size() == 0) {
-				return new Result(ResultStatus.RS_FAIL, new Message("警告",
+				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
 						"未发现相应账单"));
 			}
 
 			String tmp = String.format("[%s]", StringUtils.join(bills, ","));
-			return new Result(ResultStatus.RS_OK, tmp);
+			result = new Result(ResultStatus.RS_OK, tmp);
 		} catch (Exception e) {
-			error(Tag, String.format("getBills(%d,%d,%d)", uid, beginTime,
-					endTime), e);
+			log.error(String.format("%s:%s", Tag, String.format(
+					"getBills(%d,%d,%d)", uid, beginTime, endTime)), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return null;
+		return result;
+	}
+
+	@Override
+	public Result updateBill(OilBill bill) {
+		Result result = null;
+		try {
+
+		} catch (Exception e) {
+			log.error(
+					String.format("%s:%s", Tag,
+							String.format("deleteBill() with param:%s", bill)),
+					e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		}
+		return result;
 	}
 
 	@Override
 	public Result deleteBill(int bid) {
+		Result result = null;
 		try {
 			Object obj = oilBillDao.deleteOilBill(bid);
 			if ((Integer) obj == 1) {
-				return new Result(ResultStatus.RS_OK, new Message("帳單提示",
+				result = new Result(ResultStatus.RS_OK, new Message("帳單提示",
 						"成功删除该账单"));
 			} else {
-				return new Result(ResultStatus.RS_FAIL, new Message("帳單提示",
+				result = new Result(ResultStatus.RS_FAIL, new Message("帳單提示",
 						"未能删除该账单"));
 			}
 		} catch (Exception e) {
-			error(Tag, String.format("deleteBill(%d)", bid), e);
-			return new Result(ResultStatus.RS_ERROR, new Message("系统错误",
+			log.error(
+					String.format("%s:%s", Tag,
+							String.format("deleteBill(%d)", bid)), e);
+			result = new Result(ResultStatus.RS_ERROR, new Message("系统错误",
 					"服务器内部错误"));
 		}
+		return result;
 	}
 }

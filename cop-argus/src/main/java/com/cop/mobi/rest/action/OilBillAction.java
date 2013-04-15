@@ -30,7 +30,7 @@ public class OilBillAction extends AbstractAction {
 			oilBillService = (OilBillService) SpringApplicationContext
 					.getBean("oilBillService");
 		} catch (Exception e) {
-			error(Tag, "init error", e);
+			log.error(String.format("%s:%s", Tag, "init error"), e);
 		}
 	}
 
@@ -50,7 +50,7 @@ public class OilBillAction extends AbstractAction {
 			result = oilBillService.addBill(bill);
 			return Response.status(Status.OK).entity(result.toString()).build();
 		} catch (Exception e) {
-			error(Tag, "add bill error", e);
+			log.error(String.format("%s:%s", Tag, "add bill error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return Response.status(Status.OK).entity(result).build();
@@ -65,7 +65,28 @@ public class OilBillAction extends AbstractAction {
 		try {
 			result = oilBillService.getBills(uid, beginTime, endTime);
 		} catch (Exception e) {
-			error(Tag, "get bill error", e);
+			log.error(String.format("%s:%s", Tag, "get bill error"), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		}
+		return Response.status(Status.OK).entity(result).build();
+	}
+
+	@POST
+	@Path("update")
+	public Response update(@FormParam("bid") int bid,
+			@FormParam("oil") double oil,
+			@FormParam("unitPrice") double unitPrice,
+			@FormParam("addtime") long addtime) {
+		Result result = null;
+		try {
+			OilBill bill = new OilBill();
+			bill.setId(bid);
+			bill.setOil(oil);
+			bill.setUnitPrice(unitPrice);
+			bill.setAddtime(addtime);
+			result = oilBillService.updateBill(bill);
+		} catch (Exception e) {
+			log.error(String.format("%s:%s", Tag, "delete bill error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return Response.status(Status.OK).entity(result).build();
@@ -78,7 +99,7 @@ public class OilBillAction extends AbstractAction {
 		try {
 			result = oilBillService.deleteBill(bid);
 		} catch (Exception e) {
-			error(Tag, "get bill error", e);
+			log.error(String.format("%s:%s", Tag, "delete bill error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return Response.status(Status.OK).entity(result).build();

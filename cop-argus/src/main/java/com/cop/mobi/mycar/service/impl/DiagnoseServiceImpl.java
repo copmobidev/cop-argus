@@ -43,7 +43,7 @@ public class DiagnoseServiceImpl extends AbstractService implements
 				}
 			}
 		} catch (Exception e) {
-			error(Tag, "init error", e);
+			log.error(String.format("%s:%s", Tag, "init error"), e);
 		}
 	}
 
@@ -60,7 +60,7 @@ public class DiagnoseServiceImpl extends AbstractService implements
 			return new Result(ResultStatus.RS_FAIL, new Message("警告",
 					"未发现相应诊断码"));
 		}
-		
+
 		String tmp = String.format("[%s]", StringUtils.join(items, ","));
 		return new Result(ResultStatus.RS_OK, tmp);
 	}
@@ -82,7 +82,7 @@ public class DiagnoseServiceImpl extends AbstractService implements
 			return new Result(ResultStatus.RS_FAIL, new Message("警告",
 					"未发现相应诊断码"));
 		}
-		
+
 		String tmp = String.format("[%s]", StringUtils.join(items, ","));
 		return new Result(ResultStatus.RS_OK, tmp);
 	}

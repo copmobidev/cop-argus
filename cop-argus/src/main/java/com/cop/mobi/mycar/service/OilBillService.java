@@ -29,6 +29,14 @@ public interface OilBillService {
 	Result getBills(int uid, long beginTime, long endTime);
 
 	/**
+	 * 更新账单
+	 * 
+	 * @param bill
+	 * @return
+	 */
+	Result updateBill(OilBill bill);
+
+	/**
 	 * 根据账单号删除某一份账单
 	 * 
 	 * @param bill

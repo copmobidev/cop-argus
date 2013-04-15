@@ -40,12 +40,13 @@ public class AccountServiceImpl extends AbstractService implements
 			myCarService = (MyCarService) SpringApplicationContext
 					.getBean("myCarService");
 		} catch (Exception e) {
-			error(Tag, "init error", e);
+			log.error(String.format("%s:%s", Tag, "init error"), e);
 		}
 	}
 
 	@Override
 	public Result register(User user, MyCar myCar) {
+		Result result = null;
 		try {
 			Object data = null;
 			UserPo userPo = null;
@@ -79,12 +80,13 @@ public class AccountServiceImpl extends AbstractService implements
 			} else {
 				data = new Message("注册失败", "密码不能为空");
 			}
-			Result result = new Result(ResultStatus.RS_FAIL, data);
-			return result;
+			result = new Result(ResultStatus.RS_FAIL, data);
 		} catch (Exception e) {
-			return new Result(ResultStatus.RS_ERROR, new Message("系统错误",
-					"服务器内部错误"));
+			log.error(String.format("%s:%s", Tag, String.format(
+					"register() error with param:%s & %s", user, myCar)), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
+		return result;
 	}
 
 	@Override
@@ -116,8 +118,7 @@ public class AccountServiceImpl extends AbstractService implements
 			Result result = new Result(ResultStatus.RS_FAIL, data);
 			return result;
 		} catch (Exception e) {
-			return new Result(ResultStatus.RS_ERROR, new Message("系统错误",
-					"服务器内部错误"));
+			return new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 	}
 

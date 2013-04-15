@@ -19,8 +19,7 @@ public class OilBillDaoTest extends BaseTest {
 
 	@Autowired
 	private OilBillDao oilBillDao;
-	
-	
+
 	@Test
 	public void getOilBillTest() {
 		try {
@@ -33,8 +32,7 @@ public class OilBillDaoTest extends BaseTest {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	@Test
 	public void getOilBillsTest() {
 		try {
@@ -51,13 +49,31 @@ public class OilBillDaoTest extends BaseTest {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@Test
+	public void updateOilBillTest() {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			long addtime = sdf.parse("2012-01-02 00:00:00").getTime();
+			OilBill bill = new OilBill();
+			bill.setId(8);
+			bill.setUid(1);
+			bill.setOil(25.0);
+			bill.setUnitPrice(8.73);
+			bill.setAddtime(addtime);
+			Object result = oilBillDao.updateOilBill(bill);
+			System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Test
 	public void deleteOilBillTest() {
 		try {
 			int bid = 6;
 			Object result = oilBillDao.deleteOilBill(bid);
-			if ((Integer)result == 1) {
+			if ((Integer) result == 1) {
 				System.out.println("delete oil bill successfully");
 			} else {
 				System.out.println("fail to delete oil bill");

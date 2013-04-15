@@ -34,6 +34,14 @@
 		]]>
 	</select>
 	
+	<update id="updateOilBill">
+		UPDATE LC_OilBill SET
+		oil=#{oil},
+		unitPrice=#{unitPrice},
+		addtime=#{addtime}
+		WHERE id=#{id}
+	</update>
+	
 	<delete id="deleteOilBill">
 		DELETE FROM LC_OilBill WHERE id=#{bid}	
 	</delete>

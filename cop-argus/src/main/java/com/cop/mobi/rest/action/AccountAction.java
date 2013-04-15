@@ -32,7 +32,9 @@ public class AccountAction extends AbstractAction {
 			accountService = (AccountService) SpringApplicationContext
 					.getBean("accountService");
 		} catch (Exception e) {
-			error(Tag, "account service init error", e);
+			log.error(
+					String.format("%s:%s", Tag, "account service init error"),
+					e);
 		}
 	}
 
@@ -56,10 +58,10 @@ public class AccountAction extends AbstractAction {
 
 			result = accountService.register(user, myCar);
 		} catch (Exception e) {
-			error(Tag, "register exception", e);
+			log.error(String.format("%s:%s", Tag, "register exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return Response.status(Status.OK).entity(result.toString()).build();
+		return Response.status(Status.OK).entity(result).build();
 	}
 
 	@POST
@@ -74,10 +76,10 @@ public class AccountAction extends AbstractAction {
 			user.setPwd(pwd);
 			result = accountService.login(user);
 		} catch (Exception e) {
-			error(Tag, "login exception", e);
+			log.error(String.format("%s:%s", Tag, "login exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return Response.status(Status.OK).entity(result.toString()).build();
+		return Response.status(Status.OK).entity(result).build();
 	}
 
 	@POST

@@ -1,6 +1,9 @@
 package com.cop.mobi.mycar.service;
 
+import java.util.List;
+
 import com.cop.mobi.common.Result;
+import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
 
 /**
@@ -9,7 +12,7 @@ import com.cop.mobi.mycar.entity.MyCar;
  * 
  */
 public interface MyCarService {
-	
+
 	/**
 	 * 根据车辆id获取车辆信息
 	 * 
@@ -43,7 +46,7 @@ public interface MyCarService {
 	Result addMyCar(MyCar myCar);
 
 	/**
-	 * 获取车辆行车状况
+	 * 获取车辆行车记录
 	 * 
 	 * @param mcid
 	 * @param beginTime
@@ -59,7 +62,7 @@ public interface MyCarService {
 	 * @param data
 	 * @param startTime
 	 * @param endTime
-	 * @return
+	 * @return 最近一次行车记录
 	 */
-	Result uploadDriveRoutes(int mcid, String data, long startTime, long endTime);
+	Result uploadDriveRoutes(List<DriveRoutePo> driveRoutes);
 }

@@ -13,13 +13,13 @@ import org.apache.commons.lang.StringUtils;
  */
 public class DriveRoute {
 	private int mcid;
-	private List<DriveStatus> status;
+	private List<DriveStatus> route;
 	private long beginTime;
 	private long endTime;
 
 	public DriveRoute(DriveRoutePo drPo) {
 		this.mcid = drPo.getMcid();
-		this.status = parseStatus(drPo.getRoute());
+		this.route = parseStatus(drPo.getRoute());
 		this.beginTime = drPo.getBeginTime();
 		this.endTime = drPo.getEndTime();
 	}
@@ -32,12 +32,12 @@ public class DriveRoute {
 		this.mcid = mcid;
 	}
 
-	public List<DriveStatus> getStatus() {
-		return status;
+	public List<DriveStatus> getRoute() {
+		return route;
 	}
 
-	public void setStatus(List<DriveStatus> status) {
-		this.status = status;
+	public void setRoute(List<DriveStatus> route) {
+		this.route = route;
 	}
 
 	public long getBeginTime() {
@@ -78,8 +78,8 @@ public class DriveRoute {
 	}
 
 	private String status2JSONArray() {
-		if (status != null) {
-			String result = StringUtils.join(status, ",");
+		if (route != null) {
+			String result = StringUtils.join(route, ",");
 			return String.format("[%s]", result);
 		}
 		return "[]";
