@@ -8,16 +8,7 @@
 		<param-name>resteasy.scan.resources</param-name>
 		<param-value>true</param-value>
 	</context-param>
-<!-- 
-	<context-param>
-		<param-name>resteasy.resources</param-name>
-		<param-value>
-			com.cop.mobi.rest.action.AccountAction, 
-			com.cop.mobi.rest.action.MyCarAction, 
-			com.cop.mobi.rest.action.OilBillAction
-		</param-value>
-	</context-param>
- -->
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -30,7 +21,7 @@
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>
-			classpath:log/log4j-argus-mobi.xml
+			classpath:log/log4j-argus.xml
 		</param-value>
 	</context-param>
 
@@ -63,13 +54,17 @@
 	</listener>
 
 	<servlet>
-		<servlet-name>resteasy-servlet</servlet-name>
+		<servlet-name>argus-servlet</servlet-name>
 		<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>resteasy-servlet</servlet-name>
+		<servlet-name>argus-servlet</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
 
 </web-app>

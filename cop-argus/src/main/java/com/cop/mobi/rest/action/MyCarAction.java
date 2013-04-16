@@ -51,12 +51,12 @@ public class MyCarAction extends AbstractAction {
 			log.error(String.format("%s:%s", Tag, "info request error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return Response.status(Status.OK).entity(result).build();
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
 	@POST
-	@Path("/status")
-	public Response carStatus(@FormParam("mcid") int mcid,
+	@Path("/driveroutes")
+	public Response driveRoutes(@FormParam("mcid") int mcid,
 			@FormParam("beginTime") long beginTime,
 			@FormParam("endTime") long endTime) {
 		Result result = null;
@@ -68,11 +68,11 @@ public class MyCarAction extends AbstractAction {
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 
 		}
-		return Response.status(Status.OK).entity(result).build();
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
 	@POST
-	@Path("/uploadDriveRoutes")
+	@Path("/uploaddriveroutes")
 	public Response uploadDriveRoutes(@FormParam("mcid") int mcid,
 			@FormParam("routes") String routes) {
 		Result result = null;
@@ -85,7 +85,7 @@ public class MyCarAction extends AbstractAction {
 					"upload drive routes data request error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return Response.status(Status.OK).entity(result).build();
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
 	@POST

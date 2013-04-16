@@ -3,6 +3,7 @@ package com.cop.mobi.rest.action;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -19,6 +20,7 @@ import com.cop.mobi.rest.core.SpringApplicationContext;
  * 
  */
 @Path("/oilbill")
+@Produces("application/json;charset=UTF-8")
 public class OilBillAction extends AbstractAction {
 
 	private static final String Tag = "OilBillAction";
@@ -53,7 +55,7 @@ public class OilBillAction extends AbstractAction {
 			log.error(String.format("%s:%s", Tag, "add bill error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return Response.status(Status.OK).entity(result).build();
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
 	@POST
@@ -68,7 +70,7 @@ public class OilBillAction extends AbstractAction {
 			log.error(String.format("%s:%s", Tag, "get bill error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return Response.status(Status.OK).entity(result).build();
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
 	@POST
@@ -89,7 +91,7 @@ public class OilBillAction extends AbstractAction {
 			log.error(String.format("%s:%s", Tag, "delete bill error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return Response.status(Status.OK).entity(result).build();
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
 	@POST
@@ -102,6 +104,6 @@ public class OilBillAction extends AbstractAction {
 			log.error(String.format("%s:%s", Tag, "delete bill error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return Response.status(Status.OK).entity(result).build();
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 }

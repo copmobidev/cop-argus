@@ -76,7 +76,7 @@ public class AccountAction extends AbstractAction {
 			log.error(String.format("%s:%s", Tag, "register exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return Response.status(Status.OK).entity(result).build();
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
 	@POST
@@ -94,7 +94,7 @@ public class AccountAction extends AbstractAction {
 			log.error(String.format("%s:%s", Tag, "login exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return Response.status(Status.OK).entity(result).build();
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
 	@POST
@@ -138,7 +138,6 @@ public class AccountAction extends AbstractAction {
 		fop.write(content);
 		fop.flush();
 		fop.close();
-
 	}
 
 }
