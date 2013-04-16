@@ -38,7 +38,7 @@ import com.cop.mobi.rest.core.SpringApplicationContext;
 public class AccountAction extends AbstractAction {
 	private static final String Tag = "AccountAction";
 
-	private static final String PROFILE_UPLOADED_PATH = "d:/data/resources/profile/";
+	private static final String PROFILE_UPLOADED_PATH = "/data/resources/profile/";
 
 	private static AccountService accountService;
 
