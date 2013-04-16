@@ -92,7 +92,7 @@ public class MyCarDaoTest extends BaseTest {
 			if (diagnoseItems != null && diagnoseItems.size() > 0) {
 				for (KeyValuePair item : diagnoseItems) {
 					System.out.println(item.getKey() + "\t"
-							+ item.getValue().trim());
+							+ item.getValue());
 				}
 			}
 		} catch (Exception e) {
