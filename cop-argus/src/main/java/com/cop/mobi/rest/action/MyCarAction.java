@@ -57,8 +57,8 @@ public class MyCarAction extends AbstractAction {
 	@POST
 	@Path("/driveroutes")
 	public Response driveRoutes(@FormParam("mcid") int mcid,
-			@FormParam("beginTime") long beginTime,
-			@FormParam("endTime") long endTime) {
+			@FormParam("begin_time") long beginTime,
+			@FormParam("end_time") long endTime) {
 		Result result = null;
 		try {
 			result = myCarService.getDriveRoutes(mcid, beginTime, endTime);

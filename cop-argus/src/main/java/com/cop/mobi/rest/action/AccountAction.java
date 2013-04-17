@@ -1,7 +1,5 @@
 package com.cop.mobi.rest.action;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -38,8 +36,6 @@ import com.cop.mobi.rest.core.SpringApplicationContext;
 public class AccountAction extends AbstractAction {
 	private static final String Tag = "AccountAction";
 
-	private static final String PROFILE_UPLOADED_PATH = "/data/resources/profile/";
-
 	private static AccountService accountService;
 
 	static {
@@ -57,8 +53,9 @@ public class AccountAction extends AbstractAction {
 	@Path("/register")
 	public Response register(@FormParam("name") String name,
 			@FormParam("email") String email, @FormParam("pwd") String pwd,
-			@FormParam("sex") int sex, @FormParam("obd") String obd,
-			@FormParam("price") double price, @FormParam("buyDate") long buyDate) {
+			@FormParam("sex") Integer sex, @FormParam("obd") String obd,
+			@FormParam("price") Double price,
+			@FormParam("buy_date") Long buyDate) {
 		Result result = null;
 		try {
 			User user = new User();
@@ -101,43 +98,33 @@ public class AccountAction extends AbstractAction {
 	@Path("/uploadprofile")
 	@Consumes("multipart/form-data")
 	public Response uploadProfile(MultipartFormDataInput input) {
+		Result result = null;
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-		List<InputPart> inputParts = uploadForm.get("uploadedFile");
+		List<InputPart> inputParts = uploadForm.get("profile");
 		for (InputPart inputPart : inputParts) {
 			try {
 				// convert the uploaded file to inputstream
 				InputStream inputStream = inputPart.getBody(InputStream.class,
 						null);
 				byte[] data = IOUtils.toByteArray(inputStream);
-				String fileName = PROFILE_UPLOADED_PATH + MD5Util.digest(data) + ".png";
+				String filename = String.format("%s.png", MD5Util.digest(data));
 				// constructs upload file path
-				writeFile(data, fileName);
+				result = accountService.uploadProfile(1, filename, data);
 			} catch (IOException e) {
 				log.error(
 						String.format("%s:%s", Tag, "uploadprofile exception"),
 						e);
+				result = new Result(ResultStatus.RS_ERROR,
+						SERVER_INNER_ERROR_MSG);
 			}
 		}
-
-		return Response.status(Status.OK)
-				.entity("uploadFile is called, Uploaded file name").build();
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
 	@POST
 	@Path("/freeze")
 	public Response freeze() {
 		return null;
-	}
-
-	private void writeFile(byte[] content, String filename) throws IOException {
-		File file = new File(filename);
-		if (!file.exists()) {
-			file.createNewFile();
-		}
-		FileOutputStream fop = new FileOutputStream(file);
-		fop.write(content);
-		fop.flush();
-		fop.close();
 	}
 
 }

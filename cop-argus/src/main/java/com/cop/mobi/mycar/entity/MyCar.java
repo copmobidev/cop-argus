@@ -6,12 +6,12 @@ package com.cop.mobi.mycar.entity;
  * 
  */
 public class MyCar {
-	private int id;
-	private int uid;
+	private Integer id;
+	private Integer uid;
 	private String obd;
 	private String nameCH;
-	private double price;
-	private long buyDate;
+	private Double price;
+	private Long buyDate;
 
 	public MyCar() {
 
@@ -24,19 +24,19 @@ public class MyCar {
 		this.buyDate = buyDate;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 
@@ -56,19 +56,19 @@ public class MyCar {
 		this.nameCH = nameCH;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
-	public long getBuyDate() {
+	public Long getBuyDate() {
 		return buyDate;
 	}
 
-	public void setBuyDate(long buyDate) {
+	public void setBuyDate(Long buyDate) {
 		this.buyDate = buyDate;
 	}
 

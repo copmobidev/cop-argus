@@ -46,6 +46,14 @@ public interface MyCarService {
 	Result addMyCar(MyCar myCar);
 
 	/**
+	 * 删除车辆信息，并非真正意义上的删除，數據依然保留
+	 * 
+	 * @param myCar
+	 * @return
+	 */
+	Result deleteMyCar(int mcid);
+
+	/**
 	 * 获取车辆行车记录
 	 * 
 	 * @param mcid

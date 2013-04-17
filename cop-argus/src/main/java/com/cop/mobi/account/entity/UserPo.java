@@ -6,27 +6,31 @@ package com.cop.mobi.account.entity;
  * 
  */
 public class UserPo {
-	private int id;
-	private String obd;
+	private Integer id;
 	private String email;
 	private String name;
 	private String pwd;
-	private int sex; // 0--man; 1--female
+	private Integer sex; // 0--man; 1--female
+	private String profile;
 
-	public int getId() {
+	public UserPo() {
+
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getObd() {
-		return obd;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setObd(String obd) {
-		this.obd = obd;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getName() {
@@ -45,19 +49,20 @@ public class UserPo {
 		this.pwd = pwd;
 	}
 
-	public int getSex() {
+	public Integer getSex() {
 		return sex;
 	}
 
-	public void setSex(int sex) {
+	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getProfile() {
+		return profile;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
+
 }

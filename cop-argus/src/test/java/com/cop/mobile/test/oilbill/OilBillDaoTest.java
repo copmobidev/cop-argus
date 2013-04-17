@@ -1,8 +1,10 @@
 package com.cop.mobile.test.oilbill;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,8 +25,7 @@ public class OilBillDaoTest extends BaseTest {
 	@Test
 	public void getOilBillTest() {
 		try {
-			long addtime = 1363276800000l;
-			OilBill bill = oilBillDao.getOilBill(addtime);
+			OilBill bill = oilBillDao.getOilBillById(2);
 			if (bill != null) {
 				System.out.println(bill);
 			}
@@ -59,9 +60,22 @@ public class OilBillDaoTest extends BaseTest {
 			bill.setId(8);
 			bill.setUid(1);
 			bill.setOil(25.0);
-			bill.setUnitPrice(8.73);
+			bill.setUnitprice(8.73);
 			bill.setAddtime(addtime);
-			Object result = oilBillDao.updateOilBill(bill);
+
+			List<String> cols = new ArrayList<String>();
+			if (bill.getOil() != null) {
+				cols.add(String.format("oil=%f", bill.getOil()));
+			}
+			if (bill.getUnitprice() != null) {
+				cols.add(String.format("unitprice=%f", bill.getUnitprice()));
+			}
+			if (bill.getAddtime() != null) {
+				cols.add(String.format("oil=%d", bill.getAddtime()));
+			}
+			String updateCols = StringUtils.join(cols, ",");
+
+			Object result = oilBillDao.updateOilBill(bill.getId(), updateCols);
 			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -105,27 +105,48 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	public Result addMyCar(MyCar myCar) {
 		Result result = null;
 		try {
-			MyCar confirm = myCarDao.getMyCarByOBD(myCar.getObd());
-			if (confirm != null) {
-				result = new Result(ResultStatus.RS_FAIL, new Message("错误",
+			MyCar existedCar = myCarDao.getMyCarByOBD(myCar.getObd());
+			if (existedCar != null) {
+				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
 						"该OBD设备已存在"));
 			} else {
-				Object res = myCarDao.addMyCar(myCar);
-				if ((Integer) res == 1) {
-					result = new Result(ResultStatus.RS_OK, new Message("错误",
-							"该OBD设备已存在"));
+				int optCode = myCarDao.addMyCar(myCar);
+				if (optCode == 1) {
+					result = new Result(ResultStatus.RS_OK, myCar);
 				} else {
-					result = new Result(ResultStatus.RS_FAIL, new Message("错误",
+					result = new Result(ResultStatus.RS_FAIL, new Message("警告",
 							"添加该车辆信息失败"));
 				}
 			}
 
 		} catch (Exception e) {
-			log.error(String.format("%s:%s:%s", Tag,
-					"addMyCar() error with param", myCar), e);
+			log.error(
+					String.format("%s:%s:%s", Tag, "addMyCar() error", myCar),
+					e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 
+		return result;
+	}
+
+	@Override
+	public Result deleteMyCar(int mcid) {
+		Result result = null;
+		try {
+			int optCode = myCarDao.freezeMyCar(mcid);
+			if (optCode == 1) {
+				result = new Result(ResultStatus.RS_OK, new Message("提示",
+						"成功删除该车辆信息"));
+			} else {
+				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
+						"删除该车辆信息失败"));
+			}
+		} catch (Exception e) {
+			log.error(
+					String.format("%s:%s:%d", Tag, "deleteMyCar() error", mcid),
+					e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		}
 		return result;
 	}
 
@@ -162,7 +183,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 
 		Result result = null;
 		try {
-
+			
 		} catch (Exception e) {
 			log.error(String.format("%s:%s:%s", Tag, "uploadDriveRoutes()"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);

@@ -6,55 +6,66 @@ package com.cop.mobi.mycar.entity;
  * 
  */
 public class OilBill {
-	private int id;
-	private int uid;
-	private double oil;
-	private double unitPrice;
-	private long addtime;
+	private Integer id;
+	private Integer uid;
+	private Double oil;
+	private Double unitprice;
+	private Long addtime;
 
-	public int getId() {
+	public OilBill() {
+
+	}
+
+	public OilBill(Integer uid, Double oil, Double unitPrice, Long addtime) {
+		this.uid = uid;
+		this.oil = oil;
+		this.unitprice = unitPrice;
+		this.addtime = addtime;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 
-	public double getOil() {
+	public Double getOil() {
 		return oil;
 	}
 
-	public void setOil(double oil) {
+	public void setOil(Double oil) {
 		this.oil = oil;
 	}
 
-	public double getUnitPrice() {
-		return unitPrice;
+	public Double getUnitprice() {
+		return unitprice;
 	}
 
-	public void setUnitPrice(double unitPrice) {
-		this.unitPrice = unitPrice;
+	public void setUnitprice(Double unitprice) {
+		this.unitprice = unitprice;
 	}
 
-	public long getAddtime() {
+	public Long getAddtime() {
 		return addtime;
 	}
 
-	public void setAddtime(long addtime) {
+	public void setAddtime(Long addtime) {
 		this.addtime = addtime;
 	}
 
 	public String toString() {
-		return String.format(
-				"{\"uid\":%d,\"oil\":%f,\"unitPrice\":%f,\"addtime\":%d}", uid, oil,
-				unitPrice, addtime);
+		return String
+				.format("{\"id\":%d,\"uid\":%d,\"oil\":%f,\"unitprice\":%f,\"addtime\":%d}",
+						id, uid, oil, unitprice, addtime);
 	}
 }

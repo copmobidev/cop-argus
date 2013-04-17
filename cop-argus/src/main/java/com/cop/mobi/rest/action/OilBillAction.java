@@ -38,16 +38,22 @@ public class OilBillAction extends AbstractAction {
 
 	@POST
 	@Path("/add")
-	public Response add(@FormParam("uid") int uid,
-			@FormParam("oil") double oil,
-			@FormParam("unitPrice") double unitPrice,
-			@FormParam("addtime") long addtime) {
+	public Response add(@FormParam("uid") Integer uid,
+			@FormParam("oil") Double oil,
+			@FormParam("unitprice") Double unitPrice,
+			@FormParam("addtime") Long addtime) {
 		Result result = null;
+
+		if (uid == null || oil == null || unitPrice == null || addtime == null) {
+			result = new Result(ResultStatus.RS_ERROR, PARAM_ERROR_MSG);
+			return Response.status(Status.OK).entity(result.toString()).build();
+		}
+
 		try {
 			OilBill bill = new OilBill();
 			bill.setUid(uid);
 			bill.setOil(oil);
-			bill.setUnitPrice(unitPrice);
+			bill.setUnitprice(unitPrice);
 			bill.setAddtime(addtime);
 			result = oilBillService.addBill(bill);
 			return Response.status(Status.OK).entity(result.toString()).build();
@@ -60,10 +66,16 @@ public class OilBillAction extends AbstractAction {
 
 	@POST
 	@Path("/get")
-	public Response get(@FormParam("uid") int uid,
-			@FormParam("beginTime") long beginTime,
-			@FormParam("endTime") long endTime) {
+	public Response get(@FormParam("uid") Integer uid,
+			@FormParam("begin_time") Long beginTime,
+			@FormParam("end_time") Long endTime) {
 		Result result = null;
+
+		if (uid == null || beginTime == null || endTime == null) {
+			result = new Result(ResultStatus.RS_ERROR, PARAM_ERROR_MSG);
+			return Response.status(Status.OK).entity(result.toString()).build();
+		}
+
 		try {
 			result = oilBillService.getBills(uid, beginTime, endTime);
 		} catch (Exception e) {
@@ -75,16 +87,23 @@ public class OilBillAction extends AbstractAction {
 
 	@POST
 	@Path("update")
-	public Response update(@FormParam("bid") int bid,
-			@FormParam("oil") double oil,
-			@FormParam("unitPrice") double unitPrice,
-			@FormParam("addtime") long addtime) {
+	public Response update(@FormParam("bid") Integer bid,
+			@FormParam("uid") Integer uid, @FormParam("oil") Double oil,
+			@FormParam("unitprice") Double unitprice,
+			@FormParam("addtime") Long addtime) {
 		Result result = null;
+
+		if (bid == null || uid == null || addtime == null
+				|| (oil == null && unitprice == null)) {
+			result = new Result(ResultStatus.RS_ERROR, PARAM_ERROR_MSG);
+			return Response.status(Status.OK).entity(result.toString()).build();
+		}
+
 		try {
 			OilBill bill = new OilBill();
 			bill.setId(bid);
 			bill.setOil(oil);
-			bill.setUnitPrice(unitPrice);
+			bill.setUnitprice(unitprice);
 			bill.setAddtime(addtime);
 			result = oilBillService.updateBill(bill);
 		} catch (Exception e) {
@@ -96,7 +115,7 @@ public class OilBillAction extends AbstractAction {
 
 	@POST
 	@Path("delete")
-	public Response delete(@FormParam("bid") int bid) {
+	public Response delete(@FormParam("bid") Integer bid) {
 		Result result = null;
 		try {
 			result = oilBillService.deleteBill(bid);

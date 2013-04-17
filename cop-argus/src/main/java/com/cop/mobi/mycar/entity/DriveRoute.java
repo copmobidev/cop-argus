@@ -12,10 +12,10 @@ import org.apache.commons.lang.StringUtils;
  * 
  */
 public class DriveRoute {
-	private int mcid;
+	private Integer mcid;
 	private List<DriveStatus> route;
-	private long beginTime;
-	private long endTime;
+	private Long beginTime;
+	private Long endTime;
 
 	public DriveRoute(DriveRoutePo drPo) {
 		this.mcid = drPo.getMcid();
@@ -24,11 +24,11 @@ public class DriveRoute {
 		this.endTime = drPo.getEndTime();
 	}
 
-	public int getMcid() {
+	public Integer getMcid() {
 		return mcid;
 	}
 
-	public void setMcid(int mcid) {
+	public void setMcid(Integer mcid) {
 		this.mcid = mcid;
 	}
 
@@ -40,19 +40,19 @@ public class DriveRoute {
 		this.route = route;
 	}
 
-	public long getBeginTime() {
+	public Long getBeginTime() {
 		return beginTime;
 	}
 
-	public void setBeginTime(long beginTime) {
+	public void setBeginTime(Long beginTime) {
 		this.beginTime = beginTime;
 	}
 
-	public long getEndTime() {
+	public Long getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(long endTime) {
+	public void setEndTime(Long endTime) {
 		this.endTime = endTime;
 	}
 

@@ -22,6 +22,11 @@ public interface AccountDao {
 
 	List<UserPo> getUsers(@Param(value = "uids") String uids);
 
-	Object addUser(User user);
+	int addUser(User user);
+
+	int deleteUser(@Param(value = "uid") int uid);
+
+	int updateUserProfile(@Param(value = "uid") int uid,
+			@Param(value = "profile") String profile);
 
 }

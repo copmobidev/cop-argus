@@ -7,7 +7,7 @@ package com.cop.mobi.mycar.entity;
  */
 public class DriveStatus {
 	private String status;
-	private long date;
+	private Long date;
 
 	public DriveStatus(String info) throws Exception {
 		String[] tmp = info.split("\\;");
@@ -27,11 +27,11 @@ public class DriveStatus {
 		this.status = status;
 	}
 
-	public long getDate() {
+	public Long getDate() {
 		return date;
 	}
 
-	public void setDate(long date) {
+	public void setDate(Long date) {
 		this.date = date;
 	}
 

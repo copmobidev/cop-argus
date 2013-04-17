@@ -1,5 +1,6 @@
 package com.cop.mobi.mycar.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -40,13 +41,26 @@ public class OilBillServiceImpl extends AbstractService implements
 	public Result addBill(OilBill bill) {
 		Result result = null;
 		try {
-			oilBillDao.addOilBill(bill);
-			OilBill addedBill = oilBillDao.getOilBill(bill.getAddtime());
-			if (addedBill != null) {
-				result = new Result(ResultStatus.RS_OK, addedBill);
-			} else {
+			OilBill existBill = oilBillDao.getOilBillByAddtime(bill.getUid(),
+					bill.getAddtime());
+			if (existBill != null) {
 				result = new Result(ResultStatus.RS_FAIL, new Message("错误",
-						"添加账单失败"));
+						"该账单已存在"));
+			} else {
+				int optCode = oilBillDao.addOilBill(bill);
+				if ((Integer) optCode == 1) {
+					OilBill addedBill = oilBillDao.getOilBillByAddtime(
+							bill.getUid(), bill.getAddtime());
+					if (addedBill != null) {
+						result = new Result(ResultStatus.RS_OK, addedBill);
+					} else {
+						result = new Result(ResultStatus.RS_FAIL, new Message(
+								"错误", "添加账单失败"));
+					}
+				} else {
+					result = new Result(ResultStatus.RS_FAIL, new Message("错误",
+							"添加账单失败"));
+				}
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, String.format("addBill(%s)"),
@@ -81,7 +95,30 @@ public class OilBillServiceImpl extends AbstractService implements
 	public Result updateBill(OilBill bill) {
 		Result result = null;
 		try {
-
+			List<String> cols = new ArrayList<String>();
+			if (bill.getOil() != null) {
+				cols.add(String.format("oil=%f", bill.getOil()));
+			}
+			if (bill.getUnitprice() != null) {
+				cols.add(String.format("unitprice=%f", bill.getUnitprice()));
+			}
+			if (bill.getAddtime() != null) {
+				cols.add(String.format("oil=%d", bill.getAddtime()));
+			}
+			String updateCols = StringUtils.join(cols, ",");
+			int optCode = oilBillDao.updateOilBill(bill.getId(), updateCols);
+			if ((Integer) optCode == 1) {
+				OilBill updatedBill = oilBillDao.getOilBillById(bill.getId());
+				if (updatedBill != null) {
+					result = new Result(ResultStatus.RS_OK, updatedBill);
+				} else {
+					result = new Result(ResultStatus.RS_FAIL, new Message("错误",
+							"更新账单失败"));
+				}
+			} else {
+				result = new Result(ResultStatus.RS_FAIL, new Message("错误",
+						"更新账单失败"));
+			}
 		} catch (Exception e) {
 			log.error(
 					String.format("%s:%s", Tag,
@@ -96,8 +133,8 @@ public class OilBillServiceImpl extends AbstractService implements
 	public Result deleteBill(int bid) {
 		Result result = null;
 		try {
-			Object obj = oilBillDao.deleteOilBill(bid);
-			if ((Integer) obj == 1) {
+			int optCode = oilBillDao.deleteOilBill(bid);
+			if (optCode == 1) {
 				result = new Result(ResultStatus.RS_OK, new Message("帳單提示",
 						"成功删除该账单"));
 			} else {

@@ -29,6 +29,15 @@ public interface AccountService {
 	Result login(User user);
 
 	/**
+	 * 上传用户头像
+	 * 
+	 * @param content
+	 * @param filename
+	 * @return
+	 */
+	Result uploadProfile(Integer uid, String filename, byte[] content);
+
+	/**
 	 * 重新绑定用户和车辆
 	 * 
 	 * @param user

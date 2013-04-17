@@ -68,6 +68,10 @@
 		#{buyDate})
 	</insert>
 
+	<update id="freezeMyCar">
+		UPDATE LC_MyCar SET freeze=0 WHERE id=#{mcid}
+	</update>
+
 	<select id="getDriveRoutes" resultMap="routeResult">
 		SELECT
 		id, mcid, route, beginTime, endTime, addTime

@@ -21,6 +21,8 @@ public interface MyCarDao {
 	List<MyCar> getMyCarsByUid(@Param(value = "uid") int uid);
 
 	int addMyCar(MyCar myCar);
+	
+	int freezeMyCar(int mcid);
 
 	/**
 	 * get my car status by my car id during beginDate and end date

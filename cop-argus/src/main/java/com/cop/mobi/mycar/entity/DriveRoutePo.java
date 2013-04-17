@@ -6,26 +6,26 @@ package com.cop.mobi.mycar.entity;
  * 
  */
 public class DriveRoutePo {
-	private int id;
-	private int mcid;
+	private Integer id;
+	private Integer mcid;
 	private String route;
-	private long beginTime;
-	private long endTime;
-	private long addTime;
+	private Long beginTime;
+	private Long endTime;
+	private Long addTime;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getMcid() {
+	public Integer getMcid() {
 		return mcid;
 	}
 
-	public void setMcid(int mcid) {
+	public void setMcid(Integer mcid) {
 		this.mcid = mcid;
 	}
 
@@ -37,27 +37,27 @@ public class DriveRoutePo {
 		this.route = route;
 	}
 
-	public long getBeginTime() {
+	public Long getBeginTime() {
 		return beginTime;
 	}
 
-	public void setBeginTime(long beginTime) {
+	public void setBeginTime(Long beginTime) {
 		this.beginTime = beginTime;
 	}
 
-	public long getEndTime() {
+	public Long getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(long endTime) {
+	public void setEndTime(Long endTime) {
 		this.endTime = endTime;
 	}
 
-	public long getAddTime() {
+	public Long getAddTime() {
 		return addTime;
 	}
 
-	public void setAddTime(long addTime) {
+	public void setAddTime(Long addTime) {
 		this.addTime = addTime;
 	}
 

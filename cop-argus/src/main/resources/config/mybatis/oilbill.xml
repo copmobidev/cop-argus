@@ -9,18 +9,28 @@
 		<result property="unitPrice" column="unitPrice" />
 		<result property="addtime" column="addtime" />
 	</resultMap>
-	
+
 	<insert id="addOilBill">
 		INSERT INTO LC_OilBill (uid, oil, unitPrice, addtime)
 		VALUES(${uid}, ${oil}, ${unitPrice}, ${addtime})
 	</insert>
-	
-	<select id="getOilBill" resultMap="oilBillResult">
+
+	<select id="getOilBillById" resultMap="oilBillResult">
 		SELECT
-		id, uid, oil, unitPrice, addtime
+		id, uid, oil, unitPrice,
+		addtime
 		FROM
 		LC_OilBill
-		WHERE addtime=${addtime}
+		WHERE id=${bid}
+	</select>
+
+	<select id="getOilBillByAddtime" resultMap="oilBillResult">
+		SELECT
+		id, uid, oil, unitPrice,
+		addtime
+		FROM
+		LC_OilBill
+		WHERE uid=${uid} AND addtime=#{addtime}
 	</select>
 
 	<select id="getOilBills" resultMap="oilBillResult">
@@ -28,22 +38,21 @@
 		id, uid, oil, unitPrice, addtime
 		FROM
 		LC_OilBill
-		WHERE uid=${uid} AND 
+		WHERE uid=${uid}
+		AND 
 		<![CDATA[
 		addtime>=${beginTime} AND addtime<=${endTime}
 		]]>
 	</select>
-	
+
 	<update id="updateOilBill">
 		UPDATE LC_OilBill SET
-		oil=#{oil},
-		unitPrice=#{unitPrice},
-		addtime=#{addtime}
-		WHERE id=#{id}
+		${updatecols}
+		WHERE id=#{bid}
 	</update>
-	
+
 	<delete id="deleteOilBill">
-		DELETE FROM LC_OilBill WHERE id=#{bid}	
+		DELETE FROM LC_OilBill WHERE id=#{bid}
 	</delete>
-	
+
 </mapper>

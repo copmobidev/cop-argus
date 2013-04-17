@@ -1,5 +1,9 @@
 package com.cop.mobi.account.service.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -24,8 +28,9 @@ import com.cop.mobi.rest.core.SpringApplicationContext;
 @Service("accountService")
 public class AccountServiceImpl extends AbstractService implements
 		AccountService {
-
 	private static final String Tag = "AccountServiceImpl";
+
+	private static final String PROFILE_UPLOADED_PATH = "/data/resources/profile/";
 
 	private static final Logger AccountLog = Logger.getLogger("account-log");
 
@@ -48,42 +53,46 @@ public class AccountServiceImpl extends AbstractService implements
 	public Result register(User user, MyCar myCar) {
 		Result result = null;
 		try {
-			Object data = null;
-			UserPo userPo = null;
-			if (StringUtils.isNotBlank(user.getPwd())) {
-				if (user.getName() != null) {
-					userPo = accountDao.getUserByName(user.getName());
-					if (userPo != null) {
-						data = new Message("注册失败", "该用户名已被使用");
-						return new Result(ResultStatus.RS_FAIL, data);
-					}
-				} else if (user.getEmail() != null) {
-					userPo = accountDao.getUserByEmail(user.getEmail());
-					if (userPo != null) {
-						data = new Message("注册失败", "该邮箱已被使用");
-						return new Result(ResultStatus.RS_FAIL, data);
-					}
+			if (StringUtils.isNotBlank(user.getName())) {
+				boolean userExisted = accountDao.getUserByName(user.getName()) != null;
+				if (userExisted) {
+					return new Result(ResultStatus.RS_FAIL, new Message("账号",
+							"注册失败,该用户名已被使用"));
 				}
-
-				if (userPo == null) {
-					accountDao.addUser(user);
-					userPo = accountDao.getUserByName(user.getName());
-					if (userPo != null) {
-						data = new User(userPo);
-						myCar.setUid(userPo.getId());
-						myCarService.addMyCar(myCar);
-						if (myCarService.getMyCarByOBD(userPo.getObd()) != null) {
-							return new Result(ResultStatus.RS_OK, data);
-						}
-					}
-				}
-			} else {
-				data = new Message("注册失败", "密码不能为空");
 			}
-			result = new Result(ResultStatus.RS_FAIL, data);
+			if (StringUtils.isNotBlank(user.getName())) {
+				boolean userExisted = accountDao
+						.getUserByEmail(user.getEmail()) != null;
+				if (userExisted) {
+					return new Result(ResultStatus.RS_FAIL, new Message("账号",
+							"注册失败,该邮箱已被使用"));
+				}
+			}
+			if (StringUtils.isNotBlank(myCar.getObd())) {
+				boolean carExisted = myCarService.getMyCarByOBD(myCar.getObd()) != null;
+				if (carExisted) {
+					return new Result(ResultStatus.RS_FAIL, new Message("账号",
+							"注册失败,该OBD设备已被使用"));
+				}
+			}
+
+			if (accountDao.addUser(user) == 1) {
+				UserPo newUserPo = accountDao.getUserByName(user.getName());
+				if (newUserPo != null) {
+					User addedUser = new User(newUserPo);
+					myCar.setUid(newUserPo.getId());
+					if (myCarService.addMyCar(myCar).getStatus() == ResultStatus.RS_OK) {
+						return new Result(ResultStatus.RS_OK, addedUser);
+					} else {
+						accountDao.deleteUser(addedUser.getId());
+					}
+				}
+			}
+			return new Result(ResultStatus.RS_FAIL, new Message("账号",
+					"注册失败,未知错误"));
 		} catch (Exception e) {
-			log.error(String.format("%s:%s", Tag, String.format(
-					"register() error with param:%s & %s", user, myCar)), e);
+			log.error(String.format("%s:register() error with param:%s & %s",
+					Tag, user, myCar), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return result;
@@ -103,23 +112,49 @@ public class AccountServiceImpl extends AbstractService implements
 				}
 
 				if (userPo == null) {
-					data = new Message("登陆失败", "用户不存在");
+					data = new Message("账号", "登陆失败,用户不存在");
 				} else {
 					if (user.getPwd().equals(userPo.getPwd())) {
 						data = new User(userPo);
 						return new Result(ResultStatus.RS_OK, data);
 					} else {
-						data = new Message("登陆失败", "用户名或密码错误");
+						data = new Message("账号", "登陆失败,用户名或密码错误");
 					}
 				}
 			} else {
-				data = new Message("登陆失败", "密码错误");
+				data = new Message("账号", "登陆失败,密码错误");
 			}
 			Result result = new Result(ResultStatus.RS_FAIL, data);
 			return result;
 		} catch (Exception e) {
+			log.error(
+					String.format("%s:login() error: with param:%s", Tag, user),
+					e);
 			return new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
+	}
+
+	@Override
+	public Result uploadProfile(Integer uid, String filename, byte[] content) {
+		Result result = null;
+		try {
+			String fullPath = String.format("D:%s/%s", PROFILE_UPLOADED_PATH,
+					filename);
+			writeFile(fullPath, content);
+			int res = (Integer) accountDao.updateUserProfile(uid, filename);
+			if (res == 1) {
+				UserPo userPo = accountDao.getUserById(uid);
+				User user = new User(userPo);
+				result = new Result(ResultStatus.RS_OK, user);
+			} else {
+				result = new Result(ResultStatus.RS_FAIL, new Message("账号",
+						"上传头像失败"));
+			}
+		} catch (Exception e) {
+			log.error(String.format("%s:uploadProfile() error", Tag), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		}
+		return result;
 	}
 
 	@Override
@@ -128,4 +163,14 @@ public class AccountServiceImpl extends AbstractService implements
 		return null;
 	}
 
+	private void writeFile(String filename, byte[] content) throws IOException {
+		File file = new File(filename);
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		FileOutputStream fop = new FileOutputStream(file);
+		fop.write(content);
+		fop.flush();
+		fop.close();
+	}
 }
