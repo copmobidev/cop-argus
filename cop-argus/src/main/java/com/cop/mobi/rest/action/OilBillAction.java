@@ -39,12 +39,15 @@ public class OilBillAction extends AbstractAction {
 	@POST
 	@Path("/add")
 	public Response add(@FormParam("uid") Integer uid,
+			@FormParam("oil_type") Integer oil_type,
 			@FormParam("oil") Double oil,
-			@FormParam("unitprice") Double unitPrice,
+			@FormParam("unitprice") Double unitprice,
+			@FormParam("lat") Double lat,
+			@FormParam("lng") Double lng,
 			@FormParam("addtime") Long addtime) {
 		Result result = null;
 
-		if (uid == null || oil == null || unitPrice == null || addtime == null) {
+		if (uid == null || oil == null || unitprice == null || addtime == null) {
 			result = new Result(ResultStatus.RS_ERROR, PARAM_ERROR_MSG);
 			return Response.status(Status.OK).entity(result.toString()).build();
 		}
@@ -53,7 +56,7 @@ public class OilBillAction extends AbstractAction {
 			OilBill bill = new OilBill();
 			bill.setUid(uid);
 			bill.setOil(oil);
-			bill.setUnitprice(unitPrice);
+			bill.setUnitprice(unitprice);
 			bill.setAddtime(addtime);
 			result = oilBillService.addBill(bill);
 			return Response.status(Status.OK).entity(result.toString()).build();

@@ -22,6 +22,7 @@ public class User {
 		this.name = name;
 		this.pwd = pwd;
 		this.sex = sex;
+		this.profile = profile;
 	}
 
 	public User(UserPo user) {
@@ -84,7 +85,7 @@ public class User {
 	@Override
 	public String toString() {
 		return String
-				.format("{\"id\":%d,\"email\":\"%s\",\"name\":\"%s\",\"sex\":%d,\"profile\":%s}",
+				.format("{\"id\":%d,\"email\":\"%s\",\"name\":\"%s\",\"sex\":%d,\"profile\":\"%s\"}",
 						id, email, name, sex, profile);
 	}
 }

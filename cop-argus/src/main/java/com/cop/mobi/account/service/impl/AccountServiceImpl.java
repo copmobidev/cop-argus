@@ -138,7 +138,7 @@ public class AccountServiceImpl extends AbstractService implements
 	public Result uploadProfile(Integer uid, String filename, byte[] content) {
 		Result result = null;
 		try {
-			String fullPath = String.format("D:%s/%s", PROFILE_UPLOADED_PATH,
+			String fullPath = String.format("%s/%s", PROFILE_UPLOADED_PATH,
 					filename);
 			writeFile(fullPath, content);
 			int res = (Integer) accountDao.updateUserProfile(uid, filename);

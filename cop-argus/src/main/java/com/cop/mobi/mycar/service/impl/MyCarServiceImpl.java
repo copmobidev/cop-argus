@@ -1,6 +1,5 @@
 package com.cop.mobi.mycar.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -12,7 +11,6 @@ import com.cop.mobi.common.Message;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.DriveRoute;
-import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
@@ -154,14 +152,9 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	public Result getDriveRoutes(int mcid, long beginTime, long endTime) {
 		Result result = null;
 		try {
-			List<DriveRoutePo> drps = myCarDao.getDriveRoutes(mcid, beginTime,
+			List<DriveRoute> drs = myCarDao.getDriveRoutes(mcid, beginTime,
 					endTime);
-			if (drps != null && drps.size() > 0) {
-				List<DriveRoute> drs = new ArrayList<DriveRoute>();
-				for (DriveRoutePo drp : drps) {
-					DriveRoute dr = new DriveRoute(drp);
-					drs.add(dr);
-				}
+			if (drs != null && drs.size() > 0) {
 				result = new Result(ResultStatus.RS_OK, drs);
 			} else {
 				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
@@ -176,14 +169,14 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result uploadDriveRoutes(List<DriveRoutePo> driveRoutes) {
-		for (DriveRoutePo dr : driveRoutes) {
+	public Result uploadDriveRoutes(List<DriveRoute> driveRoutes) {
+		for (DriveRoute dr : driveRoutes) {
 			MyCarLog.info(String.format("%d-%s", dr.getMcid(), dr.getRoute()));
 		}
 
 		Result result = null;
 		try {
-			
+
 		} catch (Exception e) {
 			log.error(String.format("%s:%s:%s", Tag, "uploadDriveRoutes()"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);

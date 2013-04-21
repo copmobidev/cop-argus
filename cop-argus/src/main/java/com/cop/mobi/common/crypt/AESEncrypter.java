@@ -118,7 +118,7 @@ public class AESEncrypter {
 	 */
 	public static void main(String[] args) throws UnsupportedEncodingException {
 
-		String str = "你好";
+		String str = "4603528";
 		System.out.println("原文：" + str);
 
 		// 初始化密钥
@@ -139,6 +139,16 @@ public class AESEncrypter {
 			System.out.print("\n");
 
 			// 解密数据
+			data = AESEncrypter.decrypt(data, key);
+			System.out.println("解密后：" + new String(data));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			key = "81caeec22a6fea4150ec1ac092d65b14".getBytes();
+			String t = "4603528";
+			byte[] data = AESEncrypter.encrypt(t.getBytes(), key);
 			data = AESEncrypter.decrypt(data, key);
 			System.out.println("解密后：" + new String(data));
 		} catch (Exception e) {

@@ -1,27 +1,24 @@
 package com.cop.mobi.mycar.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.PatternSyntaxException;
-
-import org.apache.commons.lang.StringUtils;
-
 /**
  * 
  * @author chris.liu
  * 
  */
 public class DriveRoute {
+	private Integer id;
 	private Integer mcid;
-	private List<DriveStatus> route;
+	private String route;
 	private Long beginTime;
 	private Long endTime;
+	private Long addTime;
 
-	public DriveRoute(DriveRoutePo drPo) {
-		this.mcid = drPo.getMcid();
-		this.route = parseStatus(drPo.getRoute());
-		this.beginTime = drPo.getBeginTime();
-		this.endTime = drPo.getEndTime();
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Integer getMcid() {
@@ -32,11 +29,11 @@ public class DriveRoute {
 		this.mcid = mcid;
 	}
 
-	public List<DriveStatus> getRoute() {
+	public String getRoute() {
 		return route;
 	}
 
-	public void setRoute(List<DriveStatus> route) {
+	public void setRoute(String route) {
 		this.route = route;
 	}
 
@@ -56,39 +53,18 @@ public class DriveRoute {
 		this.endTime = endTime;
 	}
 
-	private List<DriveStatus> parseStatus(String str) {
-		try {
-			String[] tmp = str.split("\\|");
-			if (tmp != null && tmp.length > 0) {
-				List<DriveStatus> status = new ArrayList<DriveStatus>();
-				for (int i = 0; i < tmp.length; ++i) {
-					try {
-						DriveStatus ds = new DriveStatus(tmp[i]);
-						status.add(ds);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				return status;
-			}
-		} catch (PatternSyntaxException e) {
-
-		}
-		return null;
+	public Long getAddTime() {
+		return addTime;
 	}
 
-	private String status2JSONArray() {
-		if (route != null) {
-			String result = StringUtils.join(route, ",");
-			return String.format("[%s]", result);
-		}
-		return "[]";
+	public void setAddTime(Long addTime) {
+		this.addTime = addTime;
 	}
 
 	@Override
 	public String toString() {
 		return String.format(
-				"{\"mcid\":%d,\"status\":%s,\"beginTime\":%d,\"endTime\":%d}",
-				mcid, status2JSONArray(), beginTime, endTime);
+				"{\"mcid\":%d,\"route\":\"%s\",\"beginTime\":%d,\"endTime\":%d}",
+				mcid, route, beginTime, endTime);
 	}
 }

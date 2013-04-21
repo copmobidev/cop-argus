@@ -12,16 +12,19 @@ public class MyCar {
 	private String nameCH;
 	private Double price;
 	private Long buyDate;
+	private Integer isBound;
 
 	public MyCar() {
 
 	}
 
-	public MyCar(String obd, String nameCH, double price, long buyDate) {
+	public MyCar(String obd, String nameCH, double price, long buyDate,
+			int isBound) {
 		this.obd = obd;
 		this.nameCH = nameCH;
 		this.price = price;
 		this.buyDate = buyDate;
+		this.isBound = isBound;
 	}
 
 	public Integer getId() {
@@ -72,10 +75,18 @@ public class MyCar {
 		this.buyDate = buyDate;
 	}
 
+	public Integer getIsBound() {
+		return isBound;
+	}
+
+	public void setIsBound(Integer isBound) {
+		this.isBound = isBound;
+	}
+
 	@Override
 	public String toString() {
 		return String
-				.format("{\"id\":%d,\"uid\":%d,\"obd\":\"%s\",\"nameCH\":\"%s\",\"price\":%f,\"buyDate\":%d}",
-						id, uid, obd, nameCH, price, buyDate);
+				.format("{\"id\":%d,\"uid\":%d,\"obd\":\"%s\",\"nameCH\":\"%s\",\"price\":%f,\"buyDate\":%d, \"isBound\":%d}",
+						id, uid, obd, nameCH, price, buyDate, isBound);
 	}
 }

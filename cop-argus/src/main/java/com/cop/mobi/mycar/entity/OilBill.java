@@ -8,18 +8,25 @@ package com.cop.mobi.mycar.entity;
 public class OilBill {
 	private Integer id;
 	private Integer uid;
+	private int oilType;
 	private Double oil;
 	private Double unitprice;
+	private Double lat;
+	private Double lng;
 	private Long addtime;
 
 	public OilBill() {
 
 	}
 
-	public OilBill(Integer uid, Double oil, Double unitPrice, Long addtime) {
+	public OilBill(Integer uid, Integer oilType, Double oil, Double unitprice,
+			Double lat, Double lng, Long addtime) {
 		this.uid = uid;
+		this.oilType = oilType;
 		this.oil = oil;
-		this.unitprice = unitPrice;
+		this.unitprice = unitprice;
+		this.lat = lat;
+		this.lng = lng;
 		this.addtime = addtime;
 	}
 
@@ -39,6 +46,14 @@ public class OilBill {
 		this.uid = uid;
 	}
 
+	public int getOilType() {
+		return oilType;
+	}
+
+	public void setOilType(int oilType) {
+		this.oilType = oilType;
+	}
+
 	public Double getOil() {
 		return oil;
 	}
@@ -55,6 +70,22 @@ public class OilBill {
 		this.unitprice = unitprice;
 	}
 
+	public Double getLat() {
+		return lat;
+	}
+
+	public void setLat(Double lat) {
+		this.lat = lat;
+	}
+
+	public Double getLng() {
+		return lng;
+	}
+
+	public void setLng(Double lng) {
+		this.lng = lng;
+	}
+
 	public Long getAddtime() {
 		return addtime;
 	}
@@ -65,7 +96,7 @@ public class OilBill {
 
 	public String toString() {
 		return String
-				.format("{\"id\":%d,\"uid\":%d,\"oil\":%f,\"unitprice\":%f,\"addtime\":%d}",
-						id, uid, oil, unitprice, addtime);
+				.format("{\"id\":%d,\"uid\":%d,\"oilType\":%d,\"oil\":%f,\"unitprice\":%f,\"lat\":%f,\"lng\":%f,\"addtime\":%d}",
+						id, uid, oilType, oil, unitprice, lat, lng, addtime);
 	}
 }

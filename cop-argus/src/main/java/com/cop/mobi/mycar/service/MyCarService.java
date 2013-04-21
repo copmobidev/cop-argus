@@ -3,7 +3,7 @@ package com.cop.mobi.mycar.service;
 import java.util.List;
 
 import com.cop.mobi.common.Result;
-import com.cop.mobi.mycar.entity.DriveRoutePo;
+import com.cop.mobi.mycar.entity.DriveRoute;
 import com.cop.mobi.mycar.entity.MyCar;
 
 /**
@@ -72,5 +72,5 @@ public interface MyCarService {
 	 * @param endTime
 	 * @return 最近一次行车记录
 	 */
-	Result uploadDriveRoutes(List<DriveRoutePo> driveRoutes);
+	Result uploadDriveRoutes(List<DriveRoute> driveRoutes);
 }

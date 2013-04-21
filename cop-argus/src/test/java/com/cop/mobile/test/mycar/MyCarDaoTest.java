@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cop.mobi.common.KeyValuePair;
-import com.cop.mobi.mycar.entity.DriveRoutePo;
+import com.cop.mobi.mycar.entity.DriveRoute;
 import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.service.dao.DiagnoseDao;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
@@ -72,10 +72,10 @@ public class MyCarDaoTest extends BaseTest {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date beginTime = sdf.parse("2013-03-02 00:00:00");
 			Date endTime = sdf.parse("2013-03-03 00:00:00");
-			List<DriveRoutePo> status = myCarDao.getDriveRoutes(1,
+			List<DriveRoute> status = myCarDao.getDriveRoutes(1,
 					beginTime.getTime(), endTime.getTime());
 			if (status != null) {
-				for (DriveRoutePo s : status) {
+				for (DriveRoute s : status) {
 					System.out.println(sdf.format(new Date(s.getAddTime())));
 				}
 			}

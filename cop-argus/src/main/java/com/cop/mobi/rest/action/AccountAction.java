@@ -100,23 +100,23 @@ public class AccountAction extends AbstractAction {
 	public Response uploadProfile(MultipartFormDataInput input) {
 		Result result = null;
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-		List<InputPart> inputParts = uploadForm.get("profile");
-		for (InputPart inputPart : inputParts) {
-			try {
-				// convert the uploaded file to inputstream
-				InputStream inputStream = inputPart.getBody(InputStream.class,
-						null);
-				byte[] data = IOUtils.toByteArray(inputStream);
-				String filename = String.format("%s.png", MD5Util.digest(data));
-				// constructs upload file path
-				result = accountService.uploadProfile(1, filename, data);
-			} catch (IOException e) {
-				log.error(
-						String.format("%s:%s", Tag, "uploadprofile exception"),
-						e);
-				result = new Result(ResultStatus.RS_ERROR,
-						SERVER_INNER_ERROR_MSG);
-			}
+		InputPart ipUid = uploadForm.get("uid").get(0);
+		InputPart ipProfile = uploadForm.get("profile").get(0);
+		try {
+			int uid = Integer.parseInt(ipUid.getBodyAsString());
+			// convert the uploaded file to inputstream
+			InputStream inputStream = ipProfile.getBody(InputStream.class,
+					null);
+			byte[] data = IOUtils.toByteArray(inputStream);
+			String filename = String.format("%s.png", MD5Util.digest(data));
+			// constructs upload file path
+			result = accountService.uploadProfile(uid, filename, data);
+		} catch (IOException e) {
+			log.error(
+					String.format("%s:%s", Tag, "uploadprofile exception"),
+					e);
+			result = new Result(ResultStatus.RS_ERROR,
+					SERVER_INNER_ERROR_MSG);
 		}
 		return Response.status(Status.OK).entity(result.toString()).build();
 	}

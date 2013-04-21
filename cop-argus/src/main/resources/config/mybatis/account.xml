@@ -8,12 +8,13 @@
 		<result property="name" column="name" />
 		<result property="pwd" column="pwd" />
 		<result property="sex" column="sex" />
+		<result property="profile" column="profile" />
 	</resultMap>
 
 	<select id="getUserById" resultMap="userResult">
 		SELECT
 		id, email, name, pwd,
-		sex
+		sex, profile
 		FROM
 		LC_User
 		WHERE
@@ -23,7 +24,7 @@
 	<select id="getUserByName" resultMap="userResult">
 		SELECT
 		id, email, name, pwd,
-		sex
+		sex, profile
 		FROM
 		LC_User
 		WHERE
@@ -33,7 +34,7 @@
 	<select id="getUserByEmail" resultMap="userResult">
 		SELECT
 		id, email, name,
-		pwd, sex
+		pwd, sex, profile
 		FROM
 		LC_User
 		WHERE
@@ -42,7 +43,7 @@
 
 	<select id="getUsers" resultMap="userResult">
 		SELECT
-		id, email, name, pwd, sex
+		id, email, name, pwd, sex, profile
 		FROM
 		LC_User
 		WHERE

@@ -10,6 +10,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -225,41 +229,181 @@ public class CommonUtil {
 		}
 	}
 
-	public static void main(String[] args) {
-		String inFile = "data/obd_code.txt";
-		String outFile = "data/obd.txt";
+	public static void main(String[] args) throws Exception {
+		/*
+		 * String inFile = "data/obd_code.txt"; String outFile = "data/obd.txt";
+		 * 
+		 * File file = new File(inFile); BufferedReader reader = null;
+		 * FileWriter writer = null;
+		 * 
+		 * try { reader = new BufferedReader(new FileReader(file)); writer = new
+		 * FileWriter(outFile, true); String line = null; //
+		 * 一次读入一行，直到读入null为文件结束 while ((line = reader.readLine()) != null) { //
+		 * 显示行号 try { String code = line.substring(0, 5); String content =
+		 * line.substring(6, line.length()); writer.write(code + "\t" + content
+		 * + "\n"); writer.flush(); } catch (Exception e) {
+		 * System.out.println("error: " + line); } } writer.close();
+		 * reader.close(); } catch (IOException e) { e.printStackTrace(); }
+		 * finally { if (reader != null) { try { reader.close(); } catch
+		 * (IOException e1) { } } }
+		 */
+		String header = "011C0D04101330301F0D38204E01151C0862450F09503063190F03010203";
 
-		File file = new File(inFile);
-		BufferedReader reader = null;
-		FileWriter writer = null;
-		
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			writer = new FileWriter(outFile, true);
-			String line = null;
-			// 一次读入一行，直到读入null为文件结束
-			while ((line = reader.readLine()) != null) {
-				// 显示行号
-				try {
-					String code = line.substring(0, 5);
-					String content = line.substring(6, line.length());
-					writer.write(code + "\t" + content + "\n");
-					writer.flush();
-				} catch (Exception e) {
-					System.out.println("error: " + line);
-				}
-			}
-			writer.close();
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e1) {
-				}
+		for (int i = 0; i < header.length(); i += 2) {
+			if (i == 24 || i == 36) {
+				byte[] baKeyword = new byte[1];
+				baKeyword[0] = (byte) (0xff & Integer.parseInt(
+						header.substring(i, i + 2), 16));
+				String direct = new String(baKeyword, "utf-8");
+				System.out.print(direct);
+			} else {
+				char ch1 = header.charAt(i);
+				int tmp1 = Character.digit(ch1, 16) * 16;
+				char ch2 = header.charAt(i + 1);
+				int tmp2 = Character.digit(ch2, 16);
+				System.out.print(tmp1 + tmp2);
 			}
 		}
+		Map<String, Object> start = new HashMap<String, Object>();
+		try {
+			int year = 0;
+			int month = 0;
+			int day = 0;
+			int hour = 0;
+			int minute = 0;
+			int second = 0;
+			double lat = 0;
+			double lng = 0;
+			SimpleDateFormat sdf = new SimpleDateFormat("yy MM dd hh-mm-ss");
+			for (int i = 0; i < header.length(); i += 2) {
+				Object obj = null;
+				if (i == 24 || i == 36) {
+					byte[] baKeyword = new byte[1];
+					baKeyword[0] = (byte) (0xff & Integer.parseInt(
+							header.substring(i, i + 2), 16));
+					obj = new String(baKeyword, "utf-8");
+				} else {
+					char ch1 = header.charAt(i);
+					int tmp1 = Character.digit(ch1, 16) * 16;
+					char ch2 = header.charAt(i + 1);
+					int tmp2 = Character.digit(ch2, 16);
+					obj = tmp1 + tmp2;
+				}
+
+				switch (i) {
+				case 0:
+					start.put("type", obj);
+					break;
+				case 2:
+					start.put("len", obj);
+					break;
+				case 4:
+					year = (Integer)obj;
+					break;
+				case 6:
+					month = (Integer)obj;
+					break;
+				case 8:
+					day = (Integer)obj;
+					break;
+				case 10:
+					hour = (Integer)obj;
+					break;
+				case 12:
+					minute = (Integer)obj;
+					break;
+				case 14:
+					second = (Integer)obj;
+					String date = String.format("%d %d %d %d-%d-%d", year, month, day, hour, minute, second);
+					long time = sdf.parse(date).getTime();
+					start.put("second", time);
+					break;
+				case 16:
+					lat = (Integer) obj * 100.0;
+					break;
+				case 18:
+					lat = lat + (Integer) obj;
+					break;
+				case 20:
+					lat = lat + (Integer) obj / 100.0;
+					break;
+				case 22:
+					lat = lat + (Integer) obj / 10000.0;
+					start.put("lat", lat);
+					break;
+				case 24:
+					start.put("dir1", obj);
+					break;
+				case 26:
+					lng = (Integer) obj * 100.0;
+					break;
+				case 28:
+					lng += (Integer) obj;
+					break;
+				case 30:
+					lng += (Integer) obj / 100.0;
+					break;
+				case 32:
+					lng += (Integer) obj / 10000.0;
+					start.put("lng", lng);
+					break;
+				case 34:
+					break;
+				case 36:
+					start.put("dir2", obj);
+					break;
+				case 38:
+					start.put("ele", obj);
+					break;
+				case 40:
+					start.put("vin", obj);
+					break;
+				case 42:
+					start.put("fuelLv", obj);
+					break;
+				case 44:
+					start.put("bat", obj);
+					break;
+				case 46:
+					start.put("dist", obj);
+					break;
+				case 48:
+					start.put("temp", obj);
+					break;
+				case 50:
+					start.put("cTemp", obj);
+					break;
+				case 52:
+					start.put("dcodeNum", obj);
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		parseRouteData("");
+		System.out.println(start);
+	}
+
+	public static Map<String, Object> parseRouteData(String data) {
+		String test = "[1][2][3][4]";
+		Pattern p = Pattern.compile("[/]]+"); 
+		String[] result = p.split(test);
+		for(int i=0; i<result.length; ++i) {
+			System.out.println(result[i]);
+		}
+		return null;
+	}
+	
+	public static Map<String, Object> parseStartData(String data) {
+		return null;
+	}
+	
+	public static Map<String, Object> parseDrivingData(String data) {
+		return null;
+	}
+	
+	public static Map<String, Object> parseEndData(String data) {
+		return null;
 	}
 }
