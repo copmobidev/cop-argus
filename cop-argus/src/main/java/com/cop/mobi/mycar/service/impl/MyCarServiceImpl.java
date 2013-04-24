@@ -169,6 +169,24 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
+	public Result getOilCost(int mcid, long beginTime, long endTime) {
+
+		return null;
+	}
+
+	@Override
+	public Result getSpeed(int mcid, long beginTime, long endTime) {
+
+		return null;
+	}
+
+	@Override
+	public Result getTemperature(int mcid, long beginTime, long endTime) {
+
+		return null;
+	}
+
+	@Override
 	public Result uploadDriveRoutes(List<DriveRoute> driveRoutes) {
 		for (DriveRoute dr : driveRoutes) {
 			MyCarLog.info(String.format("%d-%s", dr.getMcid(), dr.getRoute()));
@@ -181,7 +199,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 			log.error(String.format("%s:%s:%s", Tag, "uploadDriveRoutes()"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return null;
+		return result;
 	}
 
 }

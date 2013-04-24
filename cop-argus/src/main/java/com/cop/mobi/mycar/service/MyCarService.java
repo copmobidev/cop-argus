@@ -64,6 +64,36 @@ public interface MyCarService {
 	Result getDriveRoutes(int mcid, long beginTime, long endTime);
 
 	/**
+	 * 获取给定时间区域内的平均油耗
+	 * 
+	 * @param mcid
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
+	public Result getOilCost(int mcid, long beginTime, long endTime);
+
+	/**
+	 * 获取给定时间区域内的平均速度
+	 * 
+	 * @param mcid
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
+	public Result getSpeed(int mcid, long beginTime, long endTime);
+
+	/**
+	 * 获取给定时间区域内的平均温度
+	 * 
+	 * @param mcid
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
+	public Result getTemperature(int mcid, long beginTime, long endTime);
+
+	/**
 	 * 存储客户端行车信息到server并记录数据log
 	 * 
 	 * @param mcid
