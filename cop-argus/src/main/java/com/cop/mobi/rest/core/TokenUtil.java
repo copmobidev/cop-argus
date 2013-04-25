@@ -1,6 +1,8 @@
 package com.cop.mobi.rest.core;
 
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -9,7 +11,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * 
  * @author chris.liu
- *
+ * 
  */
 public class TokenUtil {
 	private final static String[] hexDigits = { "0", "1", "2", "3", "4", "5",
@@ -17,6 +19,9 @@ public class TokenUtil {
 
 	private static final SecretKeySpec key;
 	private static final IvParameterSpec iv;
+
+	private static final SimpleDateFormat sdf = new SimpleDateFormat(
+			"yyyy-MM-dd hh:mm:ss");
 
 	static {
 		SecretKeySpec k = null;
@@ -83,11 +88,11 @@ public class TokenUtil {
 		}
 	}
 
-	public static String getUserToken(int userId) {
-		if (userId == 0)
+	public static String getUserToken(int uid) {
+		if (uid == 0)
 			return "";
 		try {
-			String str = String.valueOf(userId) + "|2011-05-01 00:00:00";
+			String str = String.format("%d|%s", uid, sdf.format(new Date()));
 			byte[] strBytes = str.getBytes("ASCII");
 			byte[] bytes = new byte[32];
 			System.arraycopy(strBytes, 0, bytes, 0, strBytes.length);

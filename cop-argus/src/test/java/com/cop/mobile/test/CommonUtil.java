@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.io.Reader;
 
+import com.cop.mobi.rest.core.TokenUtil;
+
 /**
  * 
  * @author chris.liu
@@ -226,38 +228,48 @@ public class CommonUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String inFile = "data/obd_code.txt";
-		String outFile = "data/obd.txt";
-
-		File file = new File(inFile);
-		BufferedReader reader = null;
-		FileWriter writer = null;
-
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			writer = new FileWriter(outFile, true);
-			String line = null;
-			while ((line = reader.readLine()) != null) { //
-				try {
-					String code = line.substring(0, 5);
-					String content = line.substring(6, line.length());
-					writer.write(code + "\t" + content + "\n");
-					writer.flush();
-				} catch (Exception e) {
-					System.out.println("error: " + line);
-				}
-			}
-			writer.close();
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e1) {
-				}
-			}
-		}
+//		String inFile = "data/obd_code.txt";
+//		String outFile = "data/obd.txt";
+//
+//		File file = new File(inFile);
+//		BufferedReader reader = null;
+//		FileWriter writer = null;
+//
+//		try {
+//			reader = new BufferedReader(new FileReader(file));
+//			writer = new FileWriter(outFile, true);
+//			String line = null;
+//			while ((line = reader.readLine()) != null) { //
+//				try {
+//					String code = line.substring(0, 5);
+//					String content = line.substring(6, line.length());
+//					writer.write(code + "\t" + content + "\n");
+//					writer.flush();
+//				} catch (Exception e) {
+//					System.out.println("error: " + line);
+//				}
+//			}
+//			writer.close();
+//			reader.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (reader != null) {
+//				try {
+//					reader.close();
+//				} catch (IOException e1) {
+//				}
+//			}
+//		}
+		
+		String token = TokenUtil.getUserToken(1);
+		System.out.println(token);
+		int uid = TokenUtil.getUserId(token);
+		System.out.println(uid);
+		
+		token = TokenUtil.getUserToken(1);
+		System.out.println(token);
+		uid = TokenUtil.getUserId(token);
+		System.out.println(uid);
 	}
 }
