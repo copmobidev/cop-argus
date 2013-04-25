@@ -1,5 +1,7 @@
 package com.cop.mobi.account.entity;
 
+import com.cop.mobi.rest.core.TokenUtil;
+
 /**
  * 
  * @author chris.liu
@@ -12,6 +14,7 @@ public class User {
 	private String pwd;
 	private Integer sex; // 0--man; 1--female
 	private String profile;
+	private String token;
 
 	public User() {
 
@@ -32,6 +35,7 @@ public class User {
 		pwd = user.getPwd();
 		sex = user.getSex();
 		profile = user.getProfile();
+		token = TokenUtil.getUserToken(id);
 	}
 
 	public Integer getId() {
