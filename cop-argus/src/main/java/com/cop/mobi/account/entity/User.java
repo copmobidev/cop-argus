@@ -1,7 +1,5 @@
 package com.cop.mobi.account.entity;
 
-import com.cop.mobi.rest.core.TokenUtil;
-
 /**
  * 
  * @author chris.liu
@@ -35,7 +33,7 @@ public class User {
 		pwd = user.getPwd();
 		sex = user.getSex();
 		profile = user.getProfile();
-		token = TokenUtil.getUserToken(id);
+		token = null;
 	}
 
 	public Integer getId() {
@@ -86,10 +84,18 @@ public class User {
 		this.profile = profile;
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	@Override
 	public String toString() {
 		return String
-				.format("{\"id\":%d,\"email\":\"%s\",\"name\":\"%s\",\"sex\":%d,\"profile\":\"%s\"}",
-						id, email, name, sex, profile);
+				.format("{\"id\":%d,\"email\":\"%s\",\"name\":\"%s\",\"sex\":%d,\"profile\":\"%s\", \"token\":\"%s\"}",
+						id, email, name, sex, profile, token);
 	}
 }

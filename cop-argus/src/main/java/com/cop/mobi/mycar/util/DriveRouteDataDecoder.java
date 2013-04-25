@@ -1,11 +1,11 @@
-package com.cop.mobile.test;
+package com.cop.mobi.mycar.util;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class DataDecoder {
+public class DriveRouteDataDecoder {
 	public static Map<String, Object> parseRouteData(String data) {
 		String test = "[1][2][3][4]";
 		Pattern p = Pattern.compile("[[.]]+");

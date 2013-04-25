@@ -5,6 +5,7 @@ import java.util.List;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.DriveRoute;
 import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.Span;
 
 /**
  * 
@@ -57,41 +58,12 @@ public interface MyCarService {
 	 * 获取车辆行车记录
 	 * 
 	 * @param mcid
-	 * @param beginTime
-	 * @param endTime
+	 * @param beginTime 起始时间
+	 * @param endTime 结束时间
+	 * @param span 时间跨度
 	 * @return
 	 */
-	Result getDriveRoutes(int mcid, long beginTime, long endTime);
-
-	/**
-	 * 获取给定时间区域内的平均油耗
-	 * 
-	 * @param mcid
-	 * @param beginTime
-	 * @param endTime
-	 * @return
-	 */
-	public Result getOilCost(int mcid, long beginTime, long endTime);
-
-	/**
-	 * 获取给定时间区域内的平均速度
-	 * 
-	 * @param mcid
-	 * @param beginTime
-	 * @param endTime
-	 * @return
-	 */
-	public Result getSpeed(int mcid, long beginTime, long endTime);
-
-	/**
-	 * 获取给定时间区域内的平均温度
-	 * 
-	 * @param mcid
-	 * @param beginTime
-	 * @param endTime
-	 * @return
-	 */
-	public Result getTemperature(int mcid, long beginTime, long endTime);
+	Result getDriveRoutes(int mcid, long beginTime, long endTime, Span span);
 
 	/**
 	 * 存储客户端行车信息到server并记录数据log

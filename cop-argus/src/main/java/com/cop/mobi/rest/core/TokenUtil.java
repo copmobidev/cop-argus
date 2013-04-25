@@ -1,7 +1,6 @@
 package com.cop.mobi.rest.core;
 
 import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.crypto.Cipher;
@@ -17,22 +16,20 @@ public class TokenUtil {
 	private final static String[] hexDigits = { "0", "1", "2", "3", "4", "5",
 			"6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
 
-	private static final SecretKeySpec key;
-	private static final IvParameterSpec iv;
-
-	private static final SimpleDateFormat sdf = new SimpleDateFormat(
-			"yyyy-MM-dd hh:mm:ss");
+	private static final SecretKeySpec SECRET_SPEC;
+	private static final IvParameterSpec IV_SPEC;
 
 	static {
-		SecretKeySpec k = null;
-		IvParameterSpec v = null;
+		SecretKeySpec secretSpec = null;
+		IvParameterSpec ivSpec = null;
 		try {
-			k = new SecretKeySpec("55C930D827BDABFD".getBytes("ASCII"), "AES");
-			v = new IvParameterSpec("D7C6F71A12153EE5".getBytes("ASCII"));
+			secretSpec = new SecretKeySpec(
+					"55C930D827BDABFD".getBytes("ASCII"), "AES");
+			ivSpec = new IvParameterSpec("D7C6F71A12153EE5".getBytes("ASCII"));
 		} catch (Exception e) {
 		}
-		key = k;
-		iv = v;
+		SECRET_SPEC = secretSpec;
+		IV_SPEC = ivSpec;
 	}
 
 	/** return null if malformed */
@@ -67,38 +64,44 @@ public class TokenUtil {
 	}
 
 	/** return 0 if token is not valid */
-	public static int getUserId(String token) {
+	public static Token parseToken(String token) {
 		if (token == null)
-			return 0;
+			return null;
 		try {
 			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-			cipher.init(Cipher.DECRYPT_MODE, key, iv);
+			cipher.init(Cipher.DECRYPT_MODE, SECRET_SPEC, IV_SPEC);
 			byte[] bytes = parseHexString(token);
 			if (bytes == null)
-				return 0;
+				return null;
 			byte[] decrBuffer = cipher.doFinal(bytes);
 			String decrStr = new String(decrBuffer, "ASCII");
-			int i = decrStr.indexOf('|');
-			if (i < 0)
-				return 0;
-			String strId = decrStr.substring(0, i);
-			return Integer.parseInt(strId);
+			String[] str = decrStr.split("\\|");
+			if (str == null || str.length != 4) {
+				return null;
+			}
+			int uid = Integer.parseInt(str[0].trim());
+			int mcid = Integer.parseInt(str[1].trim());
+			long expiredTime = Long.parseLong(str[2].trim());
+			int count = Integer.parseInt(str[3].trim());
+			return new Token(uid, mcid, expiredTime, count);
 		} catch (Exception e) {
-			return 0;
+			e.printStackTrace();
+			return null;
 		}
 	}
 
-	public static String getUserToken(int uid) {
+	public static String generateToken(int uid, int mcid, int count) {
 		if (uid == 0)
 			return "";
 		try {
-			String str = String.format("%d|%s", uid, sdf.format(new Date()));
+			String str = String.format("%d|%d|%s|%d", uid, mcid,
+					new Date().getTime(), count);
 			byte[] strBytes = str.getBytes("ASCII");
 			byte[] bytes = new byte[32];
 			System.arraycopy(strBytes, 0, bytes, 0, strBytes.length);
 
 			Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-			cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+			cipher.init(Cipher.ENCRYPT_MODE, SECRET_SPEC, IV_SPEC);
 			byte[] encrBuffer = cipher.doFinal(bytes);
 			String hex = byteArrayToHexString(encrBuffer);
 			return hex;
@@ -134,5 +137,19 @@ public class TokenUtil {
 		} catch (Exception ex) {
 		}
 		return resultString;
+	}
+
+	public static boolean isValid(Token token) {
+		if (token == null || token.getUid() == 0 || token.getMcid() == 0
+				|| token.getExpiredTime() == 0 || token.getCount() == 0) {
+			return false;
+		}
+
+		if (token.getCount() > 100
+				&& new Date().getTime() - token.getExpiredTime() > 36000) {
+			return false;
+		}
+
+		return true;
 	}
 }

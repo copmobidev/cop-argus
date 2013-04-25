@@ -25,6 +25,7 @@ import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.MD5Util;
 import com.cop.mobi.rest.core.SpringApplicationContext;
+import com.cop.mobi.rest.core.Token;
 import com.cop.mobi.rest.core.TokenUtil;
 
 /**
@@ -104,14 +105,15 @@ public class AccountAction extends AbstractAction {
 		InputPart ipToken = uploadForm.get("token").get(0);
 		InputPart ipProfile = uploadForm.get("profile").get(0);
 		try {
-			int uid = TokenUtil.getUserId(ipToken.getBodyAsString());
+			Token token = TokenUtil.parseToken(ipToken.getBodyAsString());
 			// convert the uploaded file to inputstream
 			InputStream inputStream = ipProfile
 					.getBody(InputStream.class, null);
 			byte[] data = IOUtils.toByteArray(inputStream);
 			String filename = String.format("%s.png", MD5Util.digest(data));
 			// constructs upload file path
-			result = accountService.uploadProfile(uid, filename, data);
+			result = accountService.uploadProfile(token.getUid(), filename,
+					data);
 		} catch (IOException e) {
 			log.error(String.format("%s:%s", Tag, "uploadprofile exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);

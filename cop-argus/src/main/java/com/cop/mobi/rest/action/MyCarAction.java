@@ -14,9 +14,12 @@ import javax.ws.rs.core.Response.Status;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.DriveRoute;
+import com.cop.mobi.mycar.entity.Span;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.SpringApplicationContext;
+import com.cop.mobi.rest.core.Token;
+import com.cop.mobi.rest.core.TokenUtil;
 
 /**
  * 
@@ -42,11 +45,15 @@ public class MyCarAction extends AbstractAction {
 
 	@POST
 	@Path("/info")
-	public Response carInfo(@FormParam("mcid") int mcid) {
+	public Response carInfo(@FormParam("token") String strToken) {
 		Result result = null;
 		try {
-			result = myCarService.getMyCarById(mcid);
-			return Response.status(Status.OK).entity(result.toString()).build();
+			Token token = TokenUtil.parseToken(strToken);
+			if (TokenUtil.isValid(token)) {
+				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
+			} else {
+				result = myCarService.getMyCarById(token.getMcid());
+			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "info request error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
@@ -56,13 +63,18 @@ public class MyCarAction extends AbstractAction {
 
 	@POST
 	@Path("/driveroutes")
-	public Response driveRoutes(@FormParam("mcid") int mcid,
-			@FormParam("begin_time") long beginTime,
-			@FormParam("end_time") long endTime) {
+	public Response driveRoutes(@FormParam("token") String strToken,
+			@FormParam("begin_time") Long beginTime,
+			@FormParam("end_time") Long endTime, @FormParam("span") Integer span) {
 		Result result = null;
 		try {
-			result = myCarService.getDriveRoutes(mcid, beginTime, endTime);
-			return Response.status(Status.OK).entity(result.toString()).build();
+			Token token = TokenUtil.parseToken(strToken);
+			if (TokenUtil.isValid(token)) {
+				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
+			} else {
+				result = myCarService.getDriveRoutes(token.getMcid(),
+						beginTime, endTime, Span.MONTH);
+			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "status request error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
@@ -73,13 +85,17 @@ public class MyCarAction extends AbstractAction {
 
 	@POST
 	@Path("/uploaddriveroutes")
-	public Response uploadDriveRoutes(@FormParam("mcid") int mcid,
+	public Response uploadDriveRoutes(@FormParam("token") String strToken,
 			@FormParam("routes") String routes) {
 		Result result = null;
 		try {
-			List<DriveRoute> drs = parseDriveRoutes(routes);
-			result = myCarService.uploadDriveRoutes(drs);
-
+			Token token = TokenUtil.parseToken(strToken);
+			if (TokenUtil.isValid(token)) {
+				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
+			} else {
+				List<DriveRoute> drs = parseDriveRoutes(routes);
+				result = myCarService.uploadDriveRoutes(drs);
+			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag,
 					"upload drive routes data request error"), e);

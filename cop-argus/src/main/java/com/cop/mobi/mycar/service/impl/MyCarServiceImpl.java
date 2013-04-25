@@ -12,6 +12,7 @@ import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.DriveRoute;
 import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.Span;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
 import com.cop.mobi.rest.core.SpringApplicationContext;
@@ -149,17 +150,27 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result getDriveRoutes(int mcid, long beginTime, long endTime) {
+	public Result getDriveRoutes(int mcid, long beginTime, long endTime,
+			Span span) {
 		Result result = null;
 		try {
 			List<DriveRoute> drs = myCarDao.getDriveRoutes(mcid, beginTime,
 					endTime);
 			if (drs != null && drs.size() > 0) {
-				result = new Result(ResultStatus.RS_OK, drs);
+				String actions = parseAction(drs, span);
+				String oilcosts = parseOilCost(drs, span);
+				String speeds = parseSpeed(drs, span);
+				String temps = parseTemperature(drs, span);
+				String data = String
+						.format("\"action\":\"%s\",\"oilcost\":\"%s\",\"speed\":\"%s\",\"temp\":\"%s\"",
+								actions, oilcosts, speeds, temps);
+
+				result = new Result(ResultStatus.RS_OK, data);
 			} else {
 				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
 						"未发现该车辆行车信息"));
 			}
+
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, String.format(
 					"getMyCarStatus(%d, %d, %d)", mcid, beginTime, endTime)), e);
@@ -168,20 +179,51 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 		return result;
 	}
 
-	@Override
-	public Result getOilCost(int mcid, long beginTime, long endTime) {
+	/**
+	 * 获取给定时间区域内的各项指标数据（加速、刹车等）统计
+	 * 
+	 * @param routes
+	 * @param span
+	 * @return 
+	 *         break-span0:value0|...|spanN:valueN;acc-span0:value0|...|spanN:valueN
+	 */
+	private String parseAction(List<DriveRoute> routes, Span span) {
 
 		return null;
 	}
 
-	@Override
-	public Result getSpeed(int mcid, long beginTime, long endTime) {
+	/**
+	 * 获取给定时间区域内的平均油耗
+	 * 
+	 * @param routes
+	 * @param span
+	 * @return the string with format span0:value0|span1:value1|...|spanN:valueN
+	 */
+	private String parseOilCost(List<DriveRoute> routes, Span span) {
 
 		return null;
 	}
 
-	@Override
-	public Result getTemperature(int mcid, long beginTime, long endTime) {
+	/**
+	 * 获取给定时间区域内的平均速度
+	 * 
+	 * @param routes
+	 * @param span
+	 * @return the string with format span0:value0|span1:value1|...|spanN:valueN
+	 */
+	private String parseSpeed(List<DriveRoute> routes, Span span) {
+
+		return null;
+	}
+
+	/**
+	 * 获取给定时间区域内的平均温度
+	 * 
+	 * @param routes
+	 * @param span
+	 * @return the string with format span0:value0|span1:value1|...|spanN:valueN
+	 */
+	private String parseTemperature(List<DriveRoute> routes, Span span) {
 
 		return null;
 	}

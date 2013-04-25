@@ -15,6 +15,9 @@ public abstract class AbstractAction {
 	protected static final Message PARAM_ERROR_MSG = new Message("系统错误",
 			"请求参数错误");
 	
+	protected static final Message QUERY_LIMIT_MSG = new Message("系统错误",
+			"请求次数过于频繁");
+	
 	protected static final Message SERVER_INNER_ERROR_MSG = new Message("系统错误",
 			"服务器内部错误");
 
