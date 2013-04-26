@@ -1,5 +1,6 @@
 package com.cop.mobi.mycar.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -11,6 +12,7 @@ import com.cop.mobi.common.Message;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.DriveRoute;
+import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.Span;
 import com.cop.mobi.mycar.service.MyCarService;
@@ -154,9 +156,13 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 			Span span) {
 		Result result = null;
 		try {
-			List<DriveRoute> drs = myCarDao.getDriveRoutes(mcid, beginTime,
+			List<DriveRoutePo> drps = myCarDao.getDriveRoutes(mcid, beginTime,
 					endTime);
-			if (drs != null && drs.size() > 0) {
+			List<DriveRoute> drs = new ArrayList<DriveRoute>();
+			for (DriveRoutePo drp : drps) {
+				drs.add(new DriveRoute(drp));
+			}
+			if (drps != null && drps.size() > 0) {
 				String actions = parseAction(drs, span);
 				String oilcosts = parseOilCost(drs, span);
 				String speeds = parseSpeed(drs, span);
@@ -188,7 +194,19 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	 *         break-span0:value0|...|spanN:valueN;acc-span0:value0|...|spanN:valueN
 	 */
 	private String parseAction(List<DriveRoute> routes, Span span) {
-
+		for (DriveRoute route : routes) {
+			switch (span) {
+			case PIECE:
+//				DriveRouteDataDecoder.parseRouteData(route.getRoute());
+				break;
+			case WEEK:
+				break;
+			case MONTH:
+				break;
+			case YEAR:
+				break;
+			}
+		}
 		return null;
 	}
 
@@ -229,8 +247,8 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result uploadDriveRoutes(List<DriveRoute> driveRoutes) {
-		for (DriveRoute dr : driveRoutes) {
+	public Result uploadDriveRoutes(List<DriveRoutePo> driveRoutes) {
+		for (DriveRoutePo dr : driveRoutes) {
 			MyCarLog.info(String.format("%d-%s", dr.getMcid(), dr.getRoute()));
 		}
 

@@ -13,7 +13,7 @@
 		<result property="isBound" column="isBound" />
 	</resultMap>
 
-	<resultMap id="routeResult" type="com.cop.mobi.mycar.entity.DriveRoute">
+	<resultMap id="routeResult" type="com.cop.mobi.mycar.entity.DriveRoutePo">
 		<result property="id" column="id" />
 		<result property="mcid" column="mcid" />
 		<result property="route" column="route" />

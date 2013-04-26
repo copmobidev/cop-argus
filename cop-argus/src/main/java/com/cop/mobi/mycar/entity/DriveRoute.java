@@ -1,5 +1,9 @@
 package com.cop.mobi.mycar.entity;
 
+import java.util.List;
+
+import com.cop.mobi.mycar.util.DriveRouteDataDecoder;
+
 /**
  * 
  * @author chris.liu
@@ -8,10 +12,27 @@ package com.cop.mobi.mycar.entity;
 public class DriveRoute {
 	private Integer id;
 	private Integer mcid;
-	private String route;
+	private RouteStartPiece startPiece;
+	private List<RouteDrivingPiece> drivingPieces;
+	private RouteEndPiece endPiece;
 	private Long beginTime;
 	private Long endTime;
 	private Long addTime;
+
+	public DriveRoute() {
+
+	}
+
+	public DriveRoute(DriveRoutePo drp) throws Exception {
+		this.id = drp.getId();
+		this.mcid = drp.getMcid();
+		this.beginTime = drp.getBeginTime();
+		this.endTime = drp.getEndTime();
+		DriveRoute dr = DriveRouteDataDecoder.parseRouteData(drp.getRoute());
+		this.startPiece = dr.getStartPiece();
+		this.drivingPieces = dr.getDrivingPieces();
+		this.endPiece = dr.getEndPiece();
+	}
 
 	public Integer getId() {
 		return id;
@@ -29,12 +50,28 @@ public class DriveRoute {
 		this.mcid = mcid;
 	}
 
-	public String getRoute() {
-		return route;
+	public RouteStartPiece getStartPiece() {
+		return startPiece;
 	}
 
-	public void setRoute(String route) {
-		this.route = route;
+	public void setStartPiece(RouteStartPiece startPiece) {
+		this.startPiece = startPiece;
+	}
+
+	public List<RouteDrivingPiece> getDrivingPieces() {
+		return drivingPieces;
+	}
+
+	public void setDrivingPieces(List<RouteDrivingPiece> drivingPieces) {
+		this.drivingPieces = drivingPieces;
+	}
+
+	public RouteEndPiece getEndPiece() {
+		return endPiece;
+	}
+
+	public void setEndPiece(RouteEndPiece endPiece) {
+		this.endPiece = endPiece;
 	}
 
 	public Long getBeginTime() {
@@ -59,12 +96,5 @@ public class DriveRoute {
 
 	public void setAddTime(Long addTime) {
 		this.addTime = addTime;
-	}
-
-	@Override
-	public String toString() {
-		return String.format(
-				"{\"mcid\":%d,\"route\":\"%s\",\"beginTime\":%d,\"endTime\":%d}",
-				mcid, route, beginTime, endTime);
 	}
 }

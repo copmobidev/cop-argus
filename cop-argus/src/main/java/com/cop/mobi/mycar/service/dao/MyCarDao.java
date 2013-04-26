@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.cop.mobi.mycar.entity.DriveRoute;
+import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
 
 /**
@@ -21,7 +21,7 @@ public interface MyCarDao {
 	List<MyCar> getMyCarsByUid(@Param(value = "uid") int uid);
 
 	int addMyCar(MyCar myCar);
-	
+
 	int freezeMyCar(int mcid);
 
 	/**
@@ -32,7 +32,7 @@ public interface MyCarDao {
 	 * @param endDate
 	 * @return
 	 */
-	List<DriveRoute> getDriveRoutes(@Param(value = "mcid") int mcid,
+	List<DriveRoutePo> getDriveRoutes(@Param(value = "mcid") int mcid,
 			@Param(value = "beginTime") long beginTime,
 			@Param(value = "endTime") long endTime);
 }

@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
-import com.cop.mobi.mycar.entity.DriveRoute;
+import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.Span;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.AbstractAction;
@@ -93,8 +93,8 @@ public class MyCarAction extends AbstractAction {
 			if (TokenUtil.isValid(token)) {
 				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
 			} else {
-				List<DriveRoute> drs = parseDriveRoutes(routes);
-				result = myCarService.uploadDriveRoutes(drs);
+				List<DriveRoutePo> drps = parseDriveRoutes(routes);
+				result = myCarService.uploadDriveRoutes(drps);
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag,
@@ -111,28 +111,28 @@ public class MyCarAction extends AbstractAction {
 		return null;
 	}
 
-	private List<DriveRoute> parseDriveRoutes(String routes) throws Exception {
+	private List<DriveRoutePo> parseDriveRoutes(String routes) throws Exception {
 		StringTokenizer st = new StringTokenizer(routes, "|");
 		if (st.countTokens() <= 0) {
 			return null;
 		}
-		List<DriveRoute> drPos = new ArrayList<DriveRoute>();
+		List<DriveRoutePo> drps = new ArrayList<DriveRoutePo>();
 		while (st.hasMoreTokens()) {
 			try {
 				StringTokenizer subSt = new StringTokenizer(st.nextToken());
 				String route = subSt.nextToken();
 				long beginTime = Long.parseLong(subSt.nextToken());
 				long endTime = Long.parseLong(subSt.nextToken());
-				DriveRoute drPo = new DriveRoute();
-				drPo.setRoute(route);
-				drPo.setBeginTime(beginTime);
-				drPo.setEndTime(endTime);
-				drPos.add(drPo);
+				DriveRoutePo drp = new DriveRoutePo();
+				drp.setRoute(route);
+				drp.setBeginTime(beginTime);
+				drp.setEndTime(endTime);
+				drps.add(drp);
 			} catch (Exception e) {
 				log.error(String.format("%s:%s", Tag,
 						"parse upload drive routes data error"), e);
 			}
 		}
-		return drPos;
+		return drps;
 	}
 }
