@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cop.mobi.account.entity.User;
 import com.cop.mobi.account.service.AccountService;
 import com.cop.mobi.common.Result;
-import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobile.test.BaseTest;
 
 /**
@@ -35,7 +35,7 @@ public class AccountServiceTest extends BaseTest {
 			}
 		}
 	}
-	
+
 	@Test
 	public void loginFailTest() {
 		User loginUser = new User();
@@ -51,7 +51,7 @@ public class AccountServiceTest extends BaseTest {
 			}
 		}
 	}
-	
+
 	@Test
 	public void registerSuccessTest() {
 		User registerUser = new User();
@@ -59,9 +59,8 @@ public class AccountServiceTest extends BaseTest {
 		registerUser.setEmail("test@gmail.com");
 		registerUser.setPwd("111");
 		registerUser.setSex(0);
-		MyCar registerCar = new MyCar();
-		registerCar.setNameCH("大众宝来1.6T");
-		registerCar.setObd("E20A39F4-73F5-4BC4-A12F-17D1AD07A961");
+		MyCarPo registerCar = new MyCarPo();
+		registerCar.setVin("E20A39F4-73F5-4BC4-A12F-17D1AD20");
 		registerCar.setBuyDate(1362529391000l);
 		Result result = accountService.register(registerUser, registerCar);
 		if (result != null) {

@@ -4,12 +4,8 @@ import java.util.List;
 
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
-import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.entity.Span;
-
-
-
-
 
 /**
  * 
@@ -32,7 +28,7 @@ public interface MyCarService {
 	 * @param obd
 	 * @return
 	 */
-	Result getMyCarByOBD(String obd);
+	Result getMyCarByVIN(String vin);
 
 	/**
 	 * 获取用户所有车辆
@@ -48,7 +44,7 @@ public interface MyCarService {
 	 * @param myCar
 	 * @return
 	 */
-	Result addMyCar(MyCar myCar);
+	Result addMyCar(MyCarPo myCarPo);
 
 	/**
 	 * 删除车辆信息，并非真正意义上的删除，數據依然保留
@@ -62,9 +58,12 @@ public interface MyCarService {
 	 * 获取车辆行车记录
 	 * 
 	 * @param mcid
-	 * @param beginTime 起始时间
-	 * @param endTime 结束时间
-	 * @param span 时间跨度
+	 * @param beginTime
+	 *            起始时间
+	 * @param endTime
+	 *            结束时间
+	 * @param span
+	 *            时间跨度
 	 * @return
 	 */
 	Result getDriveRoutes(int mcid, long beginTime, long endTime, Span span);

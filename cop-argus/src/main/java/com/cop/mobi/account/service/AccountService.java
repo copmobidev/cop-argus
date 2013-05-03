@@ -3,6 +3,7 @@ package com.cop.mobi.account.service;
 import com.cop.mobi.account.entity.User;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.MyCarPo;
 
 /**
  * 
@@ -18,7 +19,7 @@ public interface AccountService {
 	 * @param myCar
 	 * @return
 	 */
-	Result register(User user, MyCar myCar);
+	Result register(User user, MyCarPo myCar);
 
 	/**
 	 * 登陆

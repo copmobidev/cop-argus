@@ -7,6 +7,7 @@ package com.cop.mobi.account.entity;
  */
 public class User {
 	private Integer id;
+	private String obd;
 	private String email;
 	private String name;
 	private String pwd;
@@ -18,7 +19,9 @@ public class User {
 
 	}
 
-	public User(String email, String name, String pwd, int sex, String profile) {
+	public User(String obd, String email, String name, String pwd, int sex,
+			String profile) {
+		this.obd = obd;
 		this.email = email;
 		this.name = name;
 		this.pwd = pwd;
@@ -28,6 +31,7 @@ public class User {
 
 	public User(UserPo user) {
 		id = user.getId();
+		obd = user.getObd();
 		email = user.getEmail();
 		name = user.getName();
 		pwd = user.getPwd();
@@ -42,6 +46,14 @@ public class User {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getObd() {
+		return obd;
+	}
+
+	public void setObd(String obd) {
+		this.obd = obd;
 	}
 
 	public String getEmail() {
@@ -95,7 +107,7 @@ public class User {
 	@Override
 	public String toString() {
 		return String
-				.format("{\"id\":%d,\"email\":\"%s\",\"name\":\"%s\",\"sex\":%d,\"profile\":\"%s\", \"token\":\"%s\"}",
-						id, email, name, sex, profile, token);
+				.format("{\"id\":%d,\"obd\":\"%s\", \"email\":\"%s\",\"name\":\"%s\",\"sex\":%d,\"profile\":\"%s\", \"token\":\"%s\"}",
+						id, obd, email, name, sex, profile, token);
 	}
 }

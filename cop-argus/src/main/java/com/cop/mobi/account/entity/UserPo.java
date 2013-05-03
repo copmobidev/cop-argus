@@ -7,6 +7,7 @@ package com.cop.mobi.account.entity;
  */
 public class UserPo {
 	private Integer id;
+	private String obd;
 	private String email;
 	private String name;
 	private String pwd;
@@ -23,6 +24,14 @@ public class UserPo {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getObd() {
+		return obd;
+	}
+
+	public void setObd(String obd) {
+		this.obd = obd;
 	}
 
 	public String getEmail() {

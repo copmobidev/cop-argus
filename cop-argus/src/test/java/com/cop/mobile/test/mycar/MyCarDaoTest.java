@@ -9,8 +9,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cop.mobi.common.KeyValuePair;
-import com.cop.mobi.mycar.entity.DriveRoute;
+import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.service.dao.DiagnoseDao;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
 import com.cop.mobi.mycar.service.dao.OilBillDao;
@@ -47,16 +48,16 @@ public class MyCarDaoTest extends BaseTest {
 
 	@Test
 	public void addMyCarTest() {
-		MyCar registerCar = new MyCar();
+		MyCarPo registerCar = new MyCarPo();
 		registerCar.setUid(3);
-		registerCar.setNameCH("大众宝来1.6T");
-		registerCar.setObd("E20A39F4-73F5-4BC4-A12F-17D1AD07A963");
+		registerCar.setVin("E20A39F4-73F5-4BC4-A12F-17D1AD07");
 		registerCar.setPrice(125000.0);
 		registerCar.setBuyDate(1360857600000l);
 		try {
 			int result = myCarDao.addMyCar(registerCar);
 			if (result == 1) {
-				MyCar finalMyCar = myCarDao.getMyCarByOBD("E20A39F4-73F5-4BC4-A12F-17D1AD07A963");
+				MyCar finalMyCar = myCarDao
+						.getMyCarByVIN("E20A39F4-73F5-4BC4-A12F-17D1AD07");
 				if (finalMyCar != null) {
 					System.out.println(finalMyCar.toString());
 				}
@@ -67,18 +68,27 @@ public class MyCarDaoTest extends BaseTest {
 	}
 
 	@Test
-	public void statusTest() {
+	public void getDriveRoutesTest() {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date beginTime = sdf.parse("2013-03-02 00:00:00");
 			Date endTime = sdf.parse("2013-03-03 00:00:00");
-			List<DriveRoute> status = myCarDao.getDriveRoutes(1,
+			List<DriveRoutePo> drs = myCarDao.getDriveRoutes(1,
 					beginTime.getTime(), endTime.getTime());
-			if (status != null) {
-				for (DriveRoute s : status) {
-					System.out.println(sdf.format(new Date(s.getAddTime())));
+			if (drs != null && drs.size() > 0) {
+				for (DriveRoutePo dr : drs) {
+					System.out.println(sdf.format(new Date(dr.getAddTime())));
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void addDriveRoutesTest() {
+		try {
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -91,8 +101,7 @@ public class MyCarDaoTest extends BaseTest {
 					.getAllDiagnoseItems();
 			if (diagnoseItems != null && diagnoseItems.size() > 0) {
 				for (KeyValuePair item : diagnoseItems) {
-					System.out.println(item.getKey() + "\t"
-							+ item.getValue());
+					System.out.println(item.getKey() + "\t" + item.getValue());
 				}
 			}
 		} catch (Exception e) {

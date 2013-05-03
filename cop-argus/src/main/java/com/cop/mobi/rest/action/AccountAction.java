@@ -21,7 +21,7 @@ import com.cop.mobi.account.entity.User;
 import com.cop.mobi.account.service.AccountService;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
-import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.MD5Util;
 import com.cop.mobi.rest.core.SpringApplicationContext;
@@ -53,10 +53,10 @@ public class AccountAction extends AbstractAction {
 
 	@POST
 	@Path("/register")
-	public Response register(@FormParam("name") String name,
-			@FormParam("email") String email, @FormParam("pwd") String pwd,
-			@FormParam("sex") Integer sex, @FormParam("obd") String obd,
-			@FormParam("price") Double price,
+	public Response register(@FormParam("obd") String obd,
+			@FormParam("name") String name, @FormParam("email") String email,
+			@FormParam("pwd") String pwd, @FormParam("sex") Integer sex,
+			@FormParam("vin") String vin, @FormParam("price") Double price,
 			@FormParam("buy_date") Long buyDate) {
 		Result result = null;
 		try {
@@ -65,12 +65,12 @@ public class AccountAction extends AbstractAction {
 			user.setName(name);
 			user.setPwd(pwd);
 			user.setSex(sex);
-			MyCar myCar = new MyCar();
-			myCar.setObd(obd);
-			myCar.setPrice(price);
-			myCar.setBuyDate(buyDate);
+			MyCarPo myCarPo = new MyCarPo();
+			myCarPo.setVin(vin);
+			myCarPo.setPrice(price);
+			myCarPo.setBuyDate(buyDate);
 
-			result = accountService.register(user, myCar);
+			result = accountService.register(user, myCarPo);
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "register exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);

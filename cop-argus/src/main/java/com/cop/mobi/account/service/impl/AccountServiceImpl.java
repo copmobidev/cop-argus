@@ -17,6 +17,7 @@ import com.cop.mobi.common.Message;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.SpringApplicationContext;
 
@@ -50,7 +51,7 @@ public class AccountServiceImpl extends AbstractService implements
 	}
 
 	@Override
-	public Result register(User user, MyCar myCar) {
+	public Result register(User user, MyCarPo myCarPo) {
 		Result result = null;
 		try {
 			if (StringUtils.isNotBlank(user.getName())) {
@@ -68,8 +69,9 @@ public class AccountServiceImpl extends AbstractService implements
 							"注册失败,该邮箱已被使用"));
 				}
 			}
-			if (StringUtils.isNotBlank(myCar.getObd())) {
-				boolean carExisted = myCarService.getMyCarByOBD(myCar.getObd()) != null;
+			if (StringUtils.isNotBlank(myCarPo.getVin())) {
+				boolean carExisted = myCarService.getMyCarByVIN(myCarPo
+						.getVin()) != null;
 				if (carExisted) {
 					return new Result(ResultStatus.RS_FAIL, new Message("账号",
 							"注册失败,该OBD设备已被使用"));
@@ -80,8 +82,8 @@ public class AccountServiceImpl extends AbstractService implements
 				UserPo newUserPo = accountDao.getUserByName(user.getName());
 				if (newUserPo != null) {
 					User addedUser = new User(newUserPo);
-					myCar.setUid(newUserPo.getId());
-					if (myCarService.addMyCar(myCar).getStatus() == ResultStatus.RS_OK) {
+					myCarPo.setUid(newUserPo.getId());
+					if (myCarService.addMyCar(myCarPo).getStatus() == ResultStatus.RS_OK) {
 						return new Result(ResultStatus.RS_OK, addedUser);
 					} else {
 						accountDao.deleteUser(addedUser.getId());
@@ -92,7 +94,7 @@ public class AccountServiceImpl extends AbstractService implements
 					"注册失败,未知错误"));
 		} catch (Exception e) {
 			log.error(String.format("%s:register() error with param:%s & %s",
-					Tag, user, myCar), e);
+					Tag, user, myCarPo), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return result;

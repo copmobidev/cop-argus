@@ -14,6 +14,7 @@ import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.DriveRoute;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.entity.Span;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
@@ -62,10 +63,10 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result getMyCarByOBD(String obd) {
+	public Result getMyCarByVIN(String vin) {
 		Result result = null;
 		try {
-			MyCar myCar = myCarDao.getMyCarByOBD(obd);
+			MyCar myCar = myCarDao.getMyCarByVIN(vin);
 			if (myCar != null) {
 				result = new Result(ResultStatus.RS_OK, myCar);
 			} else {
@@ -75,7 +76,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 		} catch (Exception e) {
 			log.error(
 					String.format("%s:%s", Tag,
-							String.format("getMyCar(%d)", obd)), e);
+							String.format("getMyCar(%d)", vin)), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return result;
@@ -103,17 +104,17 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result addMyCar(MyCar myCar) {
+	public Result addMyCar(MyCarPo myCarPo) {
 		Result result = null;
 		try {
-			MyCar existedCar = myCarDao.getMyCarByOBD(myCar.getObd());
+			MyCar existedCar = myCarDao.getMyCarByVIN(myCarPo.getVin());
 			if (existedCar != null) {
 				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
 						"该OBD设备已存在"));
 			} else {
-				int optCode = myCarDao.addMyCar(myCar);
+				int optCode = myCarDao.addMyCar(myCarPo);
 				if (optCode == 1) {
-					result = new Result(ResultStatus.RS_OK, myCar);
+					result = new Result(ResultStatus.RS_OK, myCarPo);
 				} else {
 					result = new Result(ResultStatus.RS_FAIL, new Message("警告",
 							"添加该车辆信息失败"));
@@ -122,7 +123,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 
 		} catch (Exception e) {
 			log.error(
-					String.format("%s:%s:%s", Tag, "addMyCar() error", myCar),
+					String.format("%s:%s:%s", Tag, "addMyCar() error", myCarPo),
 					e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
@@ -197,7 +198,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 		for (DriveRoute route : routes) {
 			switch (span) {
 			case PIECE:
-//				DriveRouteDataDecoder.parseRouteData(route.getRoute());
+				
 				break;
 			case WEEK:
 				break;

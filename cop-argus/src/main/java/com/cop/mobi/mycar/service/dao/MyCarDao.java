@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.MyCarPo;
 
 /**
  * 
@@ -16,11 +17,11 @@ public interface MyCarDao {
 
 	MyCar getMyCarById(@Param(value = "id") int id);
 
-	MyCar getMyCarByOBD(@Param(value = "obd") String obd);
+	MyCar getMyCarByVIN(@Param(value = "vin") String vin);
 
 	List<MyCar> getMyCarsByUid(@Param(value = "uid") int uid);
 
-	int addMyCar(MyCar myCar);
+	int addMyCar(MyCarPo myCar);
 
 	int freezeMyCar(int mcid);
 
