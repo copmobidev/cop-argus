@@ -14,7 +14,7 @@ public class MyCarPo {
 	private Integer isBound;
 
 	public MyCarPo() {
-
+		
 	}
 
 	public MyCarPo(String vin, double price, long buyDate, int isBound) {
