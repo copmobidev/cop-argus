@@ -6,11 +6,8 @@
 	<resultMap id="myCarResult" type="com.cop.mobi.mycar.entity.MyCar">
 		<result property="id" column="id" />
 		<result property="uid" column="uid" />
-		<result property="obd" column="obd" />
-		<result property="nameCH" column="nameCH" />
-		<result property="price" column="price" />
-		<result property="buyDate" column="buyDate" />
-		<result property="isBound" column="isBound" />
+		<result property="sid" column="sid" />
+		<result property="bid" column="bid" />
 	</resultMap>
 
 	<resultMap id="routeResult" type="com.cop.mobi.mycar.entity.DriveRoutePo">
@@ -22,51 +19,45 @@
 		<result property="addTime" column="addTime" />
 	</resultMap>
 
+
+	<select id="getAllCarBrands" resultMap="carBrandResult">
+		SELECT
+		id, brand, model,
+		engine
+		FROM
+		LC_CarBrand
+	</select>
+
 	<select id="getMyCarById" resultMap="myCarResult">
 		SELECT
-		id, uid, obd, nameCH,
-		price, buyDate, isBound
+		id, uid, sid, bid
 		FROM
 		LC_MyCar
 		WHERE id=#{id}
 	</select>
 
-	<select id="getMyCarByOBD" resultMap="myCarResult">
+	<select id="getMyCarBySid" resultMap="myCarResult">
 		SELECT
-		id, uid, obd, nameCH,
-		price, buyDate, isBound
+		id, uid, sid, bid
 		FROM
 		LC_MyCar
-		WHERE obd=#{obd}
+		WHERE sid=#{sid}
 	</select>
 
 	<select id="getMyCarsByUid" resultMap="myCarResult">
 		SELECT
-		id, uid, obd,
-		nameCH,
-		price, buyDate, isBound
-		FROM
-		LC_MyCar
-		WHERE id=#{id}
-	</select>
-
-	<select id="getMyCars" resultMap="myCarResult">
-		SELECT
-		id, uid, obd, nameCH,
-		price, buyDate, isBound
+		id, uid, sid, bid
 		FROM
 		LC_MyCar
 		WHERE uid=#{uid}
 	</select>
 
 	<insert id="addMyCar" parameterType="com.cop.mobi.mycar.entity.MyCar">
-		INSERT INTO LC_MyCar (uid,
-		obd, nameCH, price, buyDate, isBound)
+		INSERT INTO LC_MyCar
+		(uid,
+		sid, bid)
 		VALUES
-		(#{uid}, #{obd},
-		#{nameCH},
-		#{price},
-		#{buyDate}, #{isBound})
+		(#{uid}, #{sid}, #{bid})
 	</insert>
 
 	<update id="freezeMyCar">

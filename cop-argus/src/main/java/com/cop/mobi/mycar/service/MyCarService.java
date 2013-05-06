@@ -1,9 +1,12 @@
 package com.cop.mobi.mycar.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cop.mobi.common.Result;
+import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
+import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.entity.Span;
 
@@ -13,6 +16,20 @@ import com.cop.mobi.mycar.entity.Span;
  * 
  */
 public interface MyCarService {
+
+	/**
+	 * 获取根据关键字索引的汽车品牌
+	 * 
+	 * @return
+	 */
+	public Map<String, CarBrand> getCarBrandMap();
+
+	/**
+	 * 获取根据id索引的汽车品牌
+	 * 
+	 * @return
+	 */
+	public Map<Integer, CarBrand> getRevCarBrandMap();
 
 	/**
 	 * 根据车辆id获取车辆信息
@@ -28,7 +45,7 @@ public interface MyCarService {
 	 * @param obd
 	 * @return
 	 */
-	Result getMyCarByVIN(String vin);
+	Result getMyCarBySid(String sid);
 
 	/**
 	 * 获取用户所有车辆
@@ -44,15 +61,7 @@ public interface MyCarService {
 	 * @param myCar
 	 * @return
 	 */
-	Result addMyCar(MyCarPo myCarPo);
-
-	/**
-	 * 删除车辆信息，并非真正意义上的删除，數據依然保留
-	 * 
-	 * @param myCar
-	 * @return
-	 */
-	Result deleteMyCar(int mcid);
+	MyCar addMyCar(int uid, String sid, CarBrand carBrand);
 
 	/**
 	 * 获取车辆行车记录

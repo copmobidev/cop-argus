@@ -17,10 +17,11 @@ import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
-import com.cop.mobi.account.entity.User;
+import com.cop.mobi.account.entity.UserPo;
 import com.cop.mobi.account.service.AccountService;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
+import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.MD5Util;
@@ -54,23 +55,15 @@ public class AccountAction extends AbstractAction {
 	@POST
 	@Path("/register")
 	public Response register(@FormParam("obd") String obd,
-			@FormParam("name") String name, @FormParam("email") String email,
-			@FormParam("pwd") String pwd, @FormParam("sex") Integer sex,
-			@FormParam("vin") String vin, @FormParam("price") Double price,
-			@FormParam("buy_date") Long buyDate) {
+			@FormParam("sid") String sid, @FormParam("addtime") Long addtime) {
 		Result result = null;
 		try {
-			User user = new User();
-			user.setEmail(email);
-			user.setName(name);
-			user.setPwd(pwd);
-			user.setSex(sex);
+			UserPo userPo = new UserPo();
+			userPo.setObd(obd);
+			userPo.setAddtime(addtime);
 			MyCarPo myCarPo = new MyCarPo();
-			myCarPo.setVin(vin);
-			myCarPo.setPrice(price);
-			myCarPo.setBuyDate(buyDate);
-
-			result = accountService.register(user, myCarPo);
+			myCarPo.setSid(sid);
+			result = accountService.register(userPo, myCarPo);
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "register exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
@@ -84,11 +77,36 @@ public class AccountAction extends AbstractAction {
 			@FormParam("email") String email, @FormParam("pwd") String pwd) {
 		Result result = null;
 		try {
-			User user = new User();
-			user.setEmail(email);
-			user.setName(name);
-			user.setPwd(pwd);
-			result = accountService.login(user);
+			UserPo userPo = new UserPo();
+			userPo.setEmail(email);
+			userPo.setName(name);
+			userPo.setPwd(pwd);
+			result = accountService.login(userPo);
+		} catch (Exception e) {
+			log.error(String.format("%s:%s", Tag, "login exception"), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		}
+		return Response.status(Status.OK).entity(result.toString()).build();
+	}
+
+	@POST
+	@Path("/update")
+	public Response update(@FormParam("token") String token,
+			@FormParam("name") String name, @FormParam("email") String email,
+			@FormParam("pwd") String pwd, @FormParam("brand") String brand,
+			@FormParam("model") String model, @FormParam("engine") String engine) {
+		Result result = null;
+		try {
+			Token tk = TokenUtil.parseToken(token);
+			UserPo userPo = new UserPo();
+			userPo.setId(tk.getUid());
+			userPo.setEmail(email);
+			userPo.setName(name);
+			userPo.setPwd(pwd);
+			MyCarPo myCarPo = new MyCarPo();
+			myCarPo.setId(tk.getMcid());
+			CarBrand cb = new CarBrand(brand, model, engine);
+			result = accountService.update(userPo, myCarPo, cb);
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "login exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);

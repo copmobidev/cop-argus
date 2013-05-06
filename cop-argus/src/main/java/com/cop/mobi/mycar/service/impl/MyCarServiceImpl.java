@@ -1,7 +1,9 @@
 package com.cop.mobi.mycar.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -11,6 +13,7 @@ import com.cop.mobi.common.AbstractService;
 import com.cop.mobi.common.Message;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
+import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.DriveRoute;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
@@ -34,21 +37,53 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 
 	private static MyCarDao myCarDao;
 
+	private static Map<String, CarBrand> CarBrandMap = new HashMap<String, CarBrand>();
+	private static Map<Integer, CarBrand> RevCarBrandMap = new HashMap<Integer, CarBrand>();
+
 	static {
 		try {
 			myCarDao = (MyCarDao) SpringApplicationContext.getBean("myCarDao");
+
+			init();
+		} catch (Exception e) {
+			log.error(String.format("%s:%s", Tag, "init error"), e);
+		}
+	}
+
+	public static void init() {
+		try {
+			List<CarBrand> carBrands = myCarDao.getAllCarBrands();
+			if (carBrands != null && carBrands.size() > 0) {
+				for (CarBrand carBrand : carBrands) {
+					CarBrandMap.put(String.format("%s%s%s",
+							carBrand.getBrand(), carBrand.getModel(),
+							carBrand.getEngine()), carBrand);
+
+					RevCarBrandMap.put(carBrand.getId(), carBrand);
+				}
+			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "init error"), e);
 		}
 	}
 
 	@Override
+	public Map<String, CarBrand> getCarBrandMap() {
+		return CarBrandMap;
+	}
+
+	@Override
+	public Map<Integer, CarBrand> getRevCarBrandMap() {
+		return RevCarBrandMap;
+	}
+
+	@Override
 	public Result getMyCarById(int id) {
 		Result result = null;
 		try {
-			MyCar myCar = myCarDao.getMyCarById(id);
-			if (myCar != null) {
-				result = new Result(ResultStatus.RS_OK, myCar);
+			MyCarPo myCarPo = myCarDao.getMyCarById(id);
+			if (myCarPo != null) {
+				result = new Result(ResultStatus.RS_OK, myCarPo);
 			} else {
 				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
 						"未发现该车辆"));
@@ -63,12 +98,15 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result getMyCarByVIN(String vin) {
+	public Result getMyCarBySid(String sid) {
 		Result result = null;
 		try {
-			MyCar myCar = myCarDao.getMyCarByVIN(vin);
-			if (myCar != null) {
-				result = new Result(ResultStatus.RS_OK, myCar);
+			MyCarPo myCarPo = myCarDao.getMyCarBySid(sid);
+			if (myCarPo != null) {
+				MyCar myCar = new MyCar();
+				CarBrand carBrand = CarBrandMap.get(myCarPo.getBid());
+				myCar.setCarBrand(carBrand);
+				result = new Result(ResultStatus.RS_OK, myCar.toLCString());
 			} else {
 				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
 						"未发现该车辆"));
@@ -76,7 +114,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 		} catch (Exception e) {
 			log.error(
 					String.format("%s:%s", Tag,
-							String.format("getMyCar(%d)", vin)), e);
+							String.format("getMyCar(%d)", sid)), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return result;
@@ -86,9 +124,9 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	public Result getMyCars(int uid) {
 		Result result = null;
 		try {
-			List<MyCar> myCars = myCarDao.getMyCarsByUid(uid);
-			if (myCars != null && myCars.size() > 0) {
-				String str = StringUtils.join(myCars, ",");
+			List<MyCarPo> myCarPos = myCarDao.getMyCarsByUid(uid);
+			if (myCarPos != null && myCarPos.size() > 0) {
+				String str = StringUtils.join(myCarPos, ",");
 				result = new Result(ResultStatus.RS_OK, str);
 			} else {
 				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
@@ -104,52 +142,28 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result addMyCar(MyCarPo myCarPo) {
-		Result result = null;
+	public MyCar addMyCar(int uid, String sid, CarBrand carBrand) {
+		MyCar myCar = null;
 		try {
-			MyCar existedCar = myCarDao.getMyCarByVIN(myCarPo.getVin());
-			if (existedCar != null) {
-				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
-						"该OBD设备已存在"));
+			MyCarPo existedCarPo = myCarDao.getMyCarBySid(sid);
+			if (existedCarPo != null) {
+				return null;
 			} else {
-				int optCode = myCarDao.addMyCar(myCarPo);
+				int optCode = myCarDao.addMyCar(uid, sid);
 				if (optCode == 1) {
-					result = new Result(ResultStatus.RS_OK, myCarPo);
-				} else {
-					result = new Result(ResultStatus.RS_FAIL, new Message("警告",
-							"添加该车辆信息失败"));
+					MyCarPo myCarPo = myCarDao.getMyCarBySid(sid);
+					if (myCarPo != null) {
+						CarBrand cb = CarBrandMap.get(String.format("%s%s%s",
+								carBrand.getBrand(), carBrand.getModel(),
+								carBrand.getEngine()));
+						myCar = new MyCar(myCarPo.getId(), sid, cb);
+					}
 				}
 			}
-
 		} catch (Exception e) {
-			log.error(
-					String.format("%s:%s:%s", Tag, "addMyCar() error", myCarPo),
-					e);
-			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
-		}
 
-		return result;
-	}
-
-	@Override
-	public Result deleteMyCar(int mcid) {
-		Result result = null;
-		try {
-			int optCode = myCarDao.freezeMyCar(mcid);
-			if (optCode == 1) {
-				result = new Result(ResultStatus.RS_OK, new Message("提示",
-						"成功删除该车辆信息"));
-			} else {
-				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
-						"删除该车辆信息失败"));
-			}
-		} catch (Exception e) {
-			log.error(
-					String.format("%s:%s:%d", Tag, "deleteMyCar() error", mcid),
-					e);
-			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return result;
+		return myCar;
 	}
 
 	@Override
@@ -198,7 +212,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 		for (DriveRoute route : routes) {
 			switch (span) {
 			case PIECE:
-				
+
 				break;
 			case WEEK:
 				break;

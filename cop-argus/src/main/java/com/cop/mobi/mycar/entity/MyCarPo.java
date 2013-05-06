@@ -7,21 +7,18 @@ package com.cop.mobi.mycar.entity;
  */
 public class MyCarPo {
 	private Integer id;
-	private Integer uid;
-	private String vin;
-	private Double price;
-	private Long buyDate;
-	private Integer isBound;
+	private String sid; // 车辆序列号
+	private Integer uid; // 用户ID
+	private Integer bid; // CarBrand ID
 
 	public MyCarPo() {
-		
+
 	}
 
-	public MyCarPo(String vin, double price, long buyDate, int isBound) {
-		this.vin = vin;
-		this.price = price;
-		this.buyDate = buyDate;
-		this.isBound = isBound;
+	public MyCarPo(String sid, int uid, int bid) {
+		this.sid = sid;
+		this.uid = uid;
+		this.bid = bid;
 	}
 
 	public Integer getId() {
@@ -32,6 +29,14 @@ public class MyCarPo {
 		this.id = id;
 	}
 
+	public String getSid() {
+		return sid;
+	}
+
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
+
 	public Integer getUid() {
 		return uid;
 	}
@@ -40,35 +45,12 @@ public class MyCarPo {
 		this.uid = uid;
 	}
 
-	public String getVin() {
-		return vin;
+	public Integer getBid() {
+		return bid;
 	}
 
-	public void setVin(String vin) {
-		this.vin = vin;
+	public void setBid(Integer bid) {
+		this.bid = bid;
 	}
 
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
-	public Long getBuyDate() {
-		return buyDate;
-	}
-
-	public void setBuyDate(Long buyDate) {
-		this.buyDate = buyDate;
-	}
-
-	public Integer getIsBound() {
-		return isBound;
-	}
-
-	public void setIsBound(Integer isBound) {
-		this.isBound = isBound;
-	}
 }

@@ -7,12 +7,13 @@ package com.cop.mobi.account.entity;
  */
 public class UserPo {
 	private Integer id;
-	private String obd;
-	private String email;
-	private String name;
-	private String pwd;
+	private String obd; // OBD硬件序列号
+	private String email; // 邮箱
+	private String name; // 用户名
+	private String pwd; // 密码
 	private Integer sex; // 0--man; 1--female
-	private String profile;
+	private String profile; // 头像文件名
+	private Long addtime; // 注册时间
 
 	public UserPo() {
 
@@ -72,6 +73,14 @@ public class UserPo {
 
 	public void setProfile(String profile) {
 		this.profile = profile;
+	}
+
+	public Long getAddtime() {
+		return addtime;
+	}
+
+	public void setAddtime(Long addtime) {
+		this.addtime = addtime;
 	}
 
 }

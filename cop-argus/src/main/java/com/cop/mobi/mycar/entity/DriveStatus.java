@@ -39,4 +39,5 @@ public class DriveStatus {
 	public String toString() {
 		return String.format("{\"status\":\"%s\",\"date\":%d}", status, date);
 	}
+	
 }

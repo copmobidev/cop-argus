@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.cop.mobi.account.entity.User;
+import com.cop.mobi.account.entity.UserPo;
 import com.cop.mobi.account.service.AccountService;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.MyCarPo;
@@ -22,46 +22,23 @@ public class AccountServiceTest extends BaseTest {
 
 	@Test
 	public void loginSuccessTest() {
-		User loginUser = new User();
-		loginUser.setName("chris");
-		loginUser.setPwd("111");
-		Result result = accountService.login(loginUser);
-		if (result != null) {
-			try {
-				JSONObject jo = new JSONObject(result.toString());
-				System.out.println(jo.toString());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+
 	}
 
 	@Test
 	public void loginFailTest() {
-		User loginUser = new User();
-		loginUser.setName("chrisliu");
-		loginUser.setPwd("1111");
-		Result result = accountService.login(loginUser);
-		if (result != null) {
-			try {
-				JSONObject jo = new JSONObject(result.toString());
-				System.out.println(jo.toString());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+
 	}
 
 	@Test
 	public void registerSuccessTest() {
-		User registerUser = new User();
+		UserPo registerUser = new UserPo();
 		registerUser.setName("test");
 		registerUser.setEmail("test@gmail.com");
 		registerUser.setPwd("111");
 		registerUser.setSex(0);
 		MyCarPo registerCar = new MyCarPo();
-		registerCar.setVin("E20A39F4-73F5-4BC4-A12F-17D1AD20");
-		registerCar.setBuyDate(1362529391000l);
+		registerCar.setSid("E20A39F4-73F5-4BC4-A12F-17D1AD20");
 		Result result = accountService.register(registerUser, registerCar);
 		if (result != null) {
 			try {

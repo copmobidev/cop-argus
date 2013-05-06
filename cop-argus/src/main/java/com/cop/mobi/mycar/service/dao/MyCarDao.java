@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
-import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
 
 /**
@@ -15,13 +15,15 @@ import com.cop.mobi.mycar.entity.MyCarPo;
  */
 public interface MyCarDao {
 
-	MyCar getMyCarById(@Param(value = "id") int id);
+	List<CarBrand> getAllCarBrands();
 
-	MyCar getMyCarByVIN(@Param(value = "vin") String vin);
+	MyCarPo getMyCarById(@Param(value = "id") int id);
 
-	List<MyCar> getMyCarsByUid(@Param(value = "uid") int uid);
+	MyCarPo getMyCarBySid(@Param(value = "sid") String sid);
 
-	int addMyCar(MyCarPo myCar);
+	List<MyCarPo> getMyCarsByUid(@Param(value = "uid") int uid);
+
+	int addMyCar(@Param(value = "uid") int uid, @Param(value = "sid") String sid);
 
 	int freezeMyCar(int mcid);
 

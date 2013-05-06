@@ -10,22 +10,33 @@
 		<result property="pwd" column="pwd" />
 		<result property="sex" column="sex" />
 		<result property="profile" column="profile" />
+		<result property="addtiem" column="addtime" />
 	</resultMap>
 
 	<select id="getUserById" resultMap="userResult">
 		SELECT
 		id, obd, email, name,
-		pwd, sex, profile
+		pwd, sex, profile, addtime
 		FROM
 		LC_User
 		WHERE
 		id=#{uid}
 	</select>
 
+	<select id="getUserByOBD" resultMap="userResult">
+		SELECT
+		id, obd, email, name,
+		pwd, sex, profile, addtime
+		FROM
+		LC_User
+		WHERE
+		obd=#{obd}
+	</select>
+
 	<select id="getUserByName" resultMap="userResult">
 		SELECT
 		id, obd, email, name,
-		pwd, sex, profile
+		pwd, sex, profile, addtime
 		FROM
 		LC_User
 		WHERE
@@ -35,7 +46,7 @@
 	<select id="getUserByEmail" resultMap="userResult">
 		SELECT
 		id, email, name,
-		pwd, sex, profile
+		pwd, sex, profile, addtime
 		FROM
 		LC_User
 		WHERE
@@ -45,7 +56,7 @@
 	<select id="getUsers" resultMap="userResult">
 		SELECT
 		id, obd, email, name, pwd,
-		sex, profile
+		sex, profile, addtime
 		FROM
 		LC_User
 		WHERE
@@ -55,10 +66,9 @@
 	<insert id="addUser" parameterType="com.cop.mobi.account.entity.User">
 		INSERT INTO
 		LC_User
-		(obd,
-		email, name, pwd, sex)
+		(obd, addtime)
 		VALUES
-		(#{obd}, #{email}, #{name}, #{pwd}, #{sex})
+		(#{obd}, #{addtime})
 	</insert>
 
 	<update id="updateUser" parameterType="com.cop.mobi.account.entity.User">
@@ -68,7 +78,7 @@
 		pwd=#{pwd},
 		sex=#{sex}
 		WHERE
-		id=#{id}
+		id=#{uid}
 	</update>
 
 	<update id="updateUserProfile">
@@ -79,6 +89,6 @@
 
 	<delete id="deleteUser" parameterType="int">
 		DELETE FROM LC_User WHERE
-		id=#{id}
+		id=#{uid}
 	</delete>
 </mapper>

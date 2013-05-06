@@ -6,46 +6,29 @@ package com.cop.mobi.account.entity;
  * 
  */
 public class User {
-	private Integer id;
+	private String token;
 	private String obd;
 	private String email;
 	private String name;
-	private String pwd;
-	private Integer sex; // 0--man; 1--female
-	private String profile;
-	private String token;
+	private Long addtime; // 注册时间
 
 	public User() {
 
 	}
 
-	public User(String obd, String email, String name, String pwd, int sex,
-			String profile) {
+	public User(String obd, String email, String name, long addtime) {
 		this.obd = obd;
 		this.email = email;
 		this.name = name;
-		this.pwd = pwd;
-		this.sex = sex;
-		this.profile = profile;
+		this.addtime = addtime;
 	}
 
-	public User(UserPo user) {
-		id = user.getId();
-		obd = user.getObd();
-		email = user.getEmail();
-		name = user.getName();
-		pwd = user.getPwd();
-		sex = user.getSex();
-		profile = user.getProfile();
-		token = null;
+	public String getToken() {
+		return token;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public String getObd() {
@@ -72,42 +55,22 @@ public class User {
 		this.name = name;
 	}
 
-	public String getPwd() {
-		return pwd;
+	public Long getAddtime() {
+		return addtime;
 	}
 
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
-	}
-
-	public Integer getSex() {
-		return sex;
-	}
-
-	public void setSex(Integer sex) {
-		this.sex = sex;
-	}
-
-	public String getProfile() {
-		return profile;
-	}
-
-	public void setProfile(String profile) {
-		this.profile = profile;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
+	public void setAddtime(Long addtime) {
+		this.addtime = addtime;
 	}
 
 	@Override
 	public String toString() {
-		return String
-				.format("{\"id\":%d,\"obd\":\"%s\", \"email\":\"%s\",\"name\":\"%s\",\"sex\":%d,\"profile\":\"%s\", \"token\":\"%s\"}",
-						id, obd, email, name, sex, profile, token);
+		return String.format(
+				"{\"obd\":\"%s\", \"email\":\"%s\",\"name\":\"%s\"}", obd,
+				email, name);
+	}
+
+	public String toLCString() {
+		return String.format("%s|%s|%s", obd, email, name);
 	}
 }
