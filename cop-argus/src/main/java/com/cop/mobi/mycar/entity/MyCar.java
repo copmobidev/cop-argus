@@ -7,6 +7,7 @@ package com.cop.mobi.mycar.entity;
  */
 public class MyCar {
 	private Integer id;
+	private Integer uid;
 	private String sid;
 	private CarBrand carBrand;
 
@@ -14,8 +15,9 @@ public class MyCar {
 
 	}
 
-	public MyCar(int id, String sid, CarBrand carBrand) {
+	public MyCar(int id, int uid, String sid, CarBrand carBrand) {
 		this.id = id;
+		this.uid = uid;
 		this.sid = sid;
 		this.carBrand = carBrand;
 	}
@@ -26,6 +28,14 @@ public class MyCar {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getUid() {
+		return uid;
+	}
+
+	public void setUid(Integer uid) {
+		this.uid = uid;
 	}
 
 	public String getSid() {
@@ -46,7 +56,8 @@ public class MyCar {
 
 	@Override
 	public String toString() {
-		return String.format("{\"id\":%d,\"sid\":\"%s\",\"brand\":%s}", id,
+		return String.format(
+				"{\"id\":%d,\"uid\":%d,\"sid\":\"%s\",\"brand\":%s}", id, uid,
 				sid, carBrand);
 	}
 

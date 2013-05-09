@@ -27,6 +27,10 @@ public class DiagnoseAction extends AbstractAction {
 	private static DiagnoseService diagnoseService;
 
 	static {
+		init();
+	}
+
+	private static void init() {
 		try {
 			diagnoseService = (DiagnoseService) SpringApplicationContext
 					.getBean("diagnoseService");
@@ -47,7 +51,7 @@ public class DiagnoseAction extends AbstractAction {
 			@FormParam("codes") String codes) {
 		Result result = null;
 		try {
-			
+
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "suggest error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);

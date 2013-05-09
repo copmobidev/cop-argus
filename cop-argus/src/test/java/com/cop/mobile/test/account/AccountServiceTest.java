@@ -1,13 +1,14 @@
 package com.cop.mobile.test.account;
 
+import java.util.Date;
+
 import org.json.JSONObject;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.cop.mobi.account.entity.UserPo;
 import com.cop.mobi.account.service.AccountService;
 import com.cop.mobi.common.Result;
-import com.cop.mobi.mycar.entity.MyCarPo;
+import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobile.test.BaseTest;
 
 /**
@@ -32,14 +33,15 @@ public class AccountServiceTest extends BaseTest {
 
 	@Test
 	public void registerSuccessTest() {
-		UserPo registerUser = new UserPo();
-		registerUser.setName("test");
-		registerUser.setEmail("test@gmail.com");
-		registerUser.setPwd("111");
-		registerUser.setSex(0);
-		MyCarPo registerCar = new MyCarPo();
-		registerCar.setSid("E20A39F4-73F5-4BC4-A12F-17D1AD20");
-		Result result = accountService.register(registerUser, registerCar);
+		String obd = "E20A39F4-73F5-4BC4-A12F-17D1AD20";
+		String sid = "E20A39F4-73F5-4BC4-A12F-17D1AD20";
+		String manufacturer = "大众";
+		String brand = "奥迪";
+		String model = "A4";
+		String engine = "1.8";
+		CarBrand cb = new CarBrand(manufacturer, brand, model, engine);
+		Result result = accountService.register(obd, sid, cb,
+				new Date().getTime());
 		if (result != null) {
 			try {
 				JSONObject jo = new JSONObject(result.toString());

@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
@@ -23,6 +24,7 @@ import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.MyCarPo;
+import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.MD5Util;
 import com.cop.mobi.rest.core.SpringApplicationContext;
@@ -40,11 +42,18 @@ public class AccountAction extends AbstractAction {
 	private static final String Tag = "AccountAction";
 
 	private static AccountService accountService;
+	private static MyCarService myCarService;
 
 	static {
+		init();
+	}
+
+	private static void init() {
 		try {
 			accountService = (AccountService) SpringApplicationContext
 					.getBean("accountService");
+			myCarService = (MyCarService) SpringApplicationContext
+					.getBean("myCarService");
 		} catch (Exception e) {
 			log.error(
 					String.format("%s:%s", Tag, "account service init error"),
@@ -55,15 +64,15 @@ public class AccountAction extends AbstractAction {
 	@POST
 	@Path("/register")
 	public Response register(@FormParam("obd") String obd,
-			@FormParam("sid") String sid, @FormParam("addtime") Long addtime) {
+			@FormParam("sid") String sid,
+			@FormParam("manufacturer") String manufacturer,
+			@FormParam("brand") String brand, @FormParam("model") String model,
+			@FormParam("engine") String engine,
+			@FormParam("timestamp") Long timestamp) {
 		Result result = null;
 		try {
-			UserPo userPo = new UserPo();
-			userPo.setObd(obd);
-			userPo.setAddtime(addtime);
-			MyCarPo myCarPo = new MyCarPo();
-			myCarPo.setSid(sid);
-			result = accountService.register(userPo, myCarPo);
+			CarBrand carBrand = new CarBrand(manufacturer, brand, model, engine);
+			result = accountService.register(obd, sid, carBrand, timestamp);
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "register exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
@@ -98,15 +107,29 @@ public class AccountAction extends AbstractAction {
 		Result result = null;
 		try {
 			Token tk = TokenUtil.parseToken(token);
-			UserPo userPo = new UserPo();
-			userPo.setId(tk.getUid());
-			userPo.setEmail(email);
-			userPo.setName(name);
-			userPo.setPwd(pwd);
-			MyCarPo myCarPo = new MyCarPo();
-			myCarPo.setId(tk.getMcid());
-			CarBrand cb = new CarBrand(brand, model, engine);
-			result = accountService.update(userPo, myCarPo, cb);
+			UserPo userPo = null;
+			MyCarPo myCarPo = null;
+
+			if (StringUtils.isNotBlank(name) || StringUtils.isNotBlank(email)
+					|| StringUtils.isNotBlank(pwd)) {
+				userPo = new UserPo();
+				userPo.setId(tk.getUid());
+				userPo.setEmail(email);
+				userPo.setName(name);
+				userPo.setPwd(pwd);
+			}
+
+			if (StringUtils.isNotEmpty(brand) && StringUtils.isNotBlank(model)
+					&& StringUtils.isNotBlank(engine)) {
+				myCarPo = new MyCarPo();
+				myCarPo.setId(tk.getMcid());
+				CarBrand cb = myCarService.getCarBrandMap().get(
+						String.format("%s%s%s", brand, model, engine));
+			}
+
+			if (userPo != null && myCarPo != null) {
+				result = accountService.update(userPo, myCarPo);
+			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "login exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);

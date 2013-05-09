@@ -3,17 +3,21 @@ package com.cop.mobi.account.service.impl;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.cop.mobi.account.entity.User;
 import com.cop.mobi.account.entity.UserPo;
 import com.cop.mobi.account.service.AccountService;
 import com.cop.mobi.account.service.dao.AccountDao;
 import com.cop.mobi.common.AbstractService;
+import com.cop.mobi.common.Message;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.CarBrand;
+import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.SpringApplicationContext;
@@ -48,13 +52,37 @@ public class AccountServiceImpl extends AbstractService implements
 	}
 
 	@Override
-	public Result register(UserPo userPo, MyCarPo myCarPo) {
+	public Result register(String obd, String sid, CarBrand carBrand,
+			long registerTime) {
 		Result result = null;
+		AccountLog.info(String.format("register:%s,%s@%s", obd, sid,
+				carBrand.toLCString(), new Date()));
 		try {
+			boolean isUserExisted = accountDao.getUserByOBD(obd) == null ? false
+					: true;
+
+			boolean isCarExisted = myCarService.getMyCarBySid(sid) == null ? false
+					: true;
+			if (isUserExisted || isCarExisted) {
+				return new Result(ResultStatus.RS_FAIL, new Message("注册失败",
+						"该设备或车辆已注册"));
+			}
+			accountDao.addUser(obd, registerTime);
+			UserPo newUserPo = accountDao.getUserByOBD(obd);
+			if (newUserPo != null) {
+				myCarService.addMyCar(newUserPo.getId(), sid, carBrand);
+				MyCar newCar = myCarService.getMyCarBySid(sid);
+				User user = new User(newUserPo.getObd(), newUserPo.getEmail(),
+						newUserPo.getName(), newUserPo.getRegisterTime());
+				String data = String.format(
+						"{\"profile\":\"%s\",\"carinfo\":\"%s\"}",
+						user.toLCString(), newCar.toLCString());
+				result = new Result(ResultStatus.RS_OK, data);
+			}
 
 		} catch (Exception e) {
 			log.error(String.format("%s:register() error with param:%s & %s",
-					Tag, userPo, myCarPo), e);
+					Tag, obd, sid), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return result;
@@ -66,7 +94,7 @@ public class AccountServiceImpl extends AbstractService implements
 	}
 
 	@Override
-	public Result update(UserPo userPo, MyCarPo myCarPo, CarBrand carBrand) {
+	public Result update(UserPo userPo, MyCarPo myCarPo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

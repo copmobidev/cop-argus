@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -78,67 +77,65 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result getMyCarById(int id) {
-		Result result = null;
+	public MyCar getMyCarById(int id) {
+		MyCar myCar = null;
 		try {
 			MyCarPo myCarPo = myCarDao.getMyCarById(id);
 			if (myCarPo != null) {
-				result = new Result(ResultStatus.RS_OK, myCarPo);
-			} else {
-				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
-						"未发现该车辆"));
+				CarBrand carBrand = CarBrandMap.get(myCarPo.getBid());
+				myCar = new MyCar(myCarPo.getId(), myCarPo.getUid(),
+						myCarPo.getSid(), carBrand);
 			}
 		} catch (Exception e) {
 			log.error(
 					String.format("%s:%s", Tag,
 							String.format("getMyCarByID(%d)", id)), e);
-			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+			myCar = null;
 		}
-		return result;
+		return myCar;
 	}
 
 	@Override
-	public Result getMyCarBySid(String sid) {
-		Result result = null;
+	public MyCar getMyCarBySid(String sid) {
+		MyCar myCar = null;
 		try {
 			MyCarPo myCarPo = myCarDao.getMyCarBySid(sid);
 			if (myCarPo != null) {
-				MyCar myCar = new MyCar();
+				myCar = new MyCar();
 				CarBrand carBrand = CarBrandMap.get(myCarPo.getBid());
 				myCar.setCarBrand(carBrand);
-				result = new Result(ResultStatus.RS_OK, myCar.toLCString());
-			} else {
-				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
-						"未发现该车辆"));
+				return myCar;
 			}
 		} catch (Exception e) {
 			log.error(
 					String.format("%s:%s", Tag,
 							String.format("getMyCar(%d)", sid)), e);
-			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+			myCar = null;
 		}
-		return result;
+		return myCar;
 	}
 
 	@Override
-	public Result getMyCars(int uid) {
-		Result result = null;
+	public List<MyCar> getMyCars(int uid) {
+		List<MyCar> myCars = null;
 		try {
 			List<MyCarPo> myCarPos = myCarDao.getMyCarsByUid(uid);
 			if (myCarPos != null && myCarPos.size() > 0) {
-				String str = StringUtils.join(myCarPos, ",");
-				result = new Result(ResultStatus.RS_OK, str);
-			} else {
-				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
-						"未发现该车辆"));
+				myCars = new ArrayList<MyCar>();
+				for (MyCarPo myCarPo : myCarPos) {
+					CarBrand carBrand = CarBrandMap.get(myCarPo.getBid());
+					MyCar myCar = new MyCar(myCarPo.getId(), myCarPo.getUid(),
+							myCarPo.getSid(), carBrand);
+					myCars.add(myCar);
+				}
 			}
 		} catch (Exception e) {
 			log.error(
 					String.format("%s:%s", Tag,
 							String.format("getMyCarByUid(%d)", uid)), e);
-			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+			myCars = null;
 		}
-		return result;
+		return myCars;
 	}
 
 	@Override
@@ -156,12 +153,13 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 						CarBrand cb = CarBrandMap.get(String.format("%s%s%s",
 								carBrand.getBrand(), carBrand.getModel(),
 								carBrand.getEngine()));
-						myCar = new MyCar(myCarPo.getId(), sid, cb);
+						myCar = new MyCar(myCarPo.getId(), myCarPo.getUid(),
+								sid, cb);
 					}
 				}
 			}
 		} catch (Exception e) {
-
+			myCar = null;
 		}
 		return myCar;
 	}

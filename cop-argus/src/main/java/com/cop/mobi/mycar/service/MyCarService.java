@@ -7,7 +7,6 @@ import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
-import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.entity.Span;
 
 /**
@@ -37,7 +36,7 @@ public interface MyCarService {
 	 * @param obd
 	 * @return
 	 */
-	Result getMyCarById(int id);
+	MyCar getMyCarById(int id);
 
 	/**
 	 * 根据OBD设备id获取车辆信息
@@ -45,7 +44,7 @@ public interface MyCarService {
 	 * @param obd
 	 * @return
 	 */
-	Result getMyCarBySid(String sid);
+	MyCar getMyCarBySid(String sid);
 
 	/**
 	 * 获取用户所有车辆
@@ -53,7 +52,7 @@ public interface MyCarService {
 	 * @param uid
 	 * @return
 	 */
-	Result getMyCars(int uid);
+	List<MyCar> getMyCars(int uid);
 
 	/**
 	 * 注册车辆信息

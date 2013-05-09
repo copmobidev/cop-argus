@@ -28,6 +28,13 @@ public class OilBillAction extends AbstractAction {
 	private static OilBillService oilBillService;
 
 	static {
+		init();
+	}
+
+	/**
+	 * 初始化函数，rest action被注入时调用一次
+	 */
+	protected static void init() {
 		try {
 			oilBillService = (OilBillService) SpringApplicationContext
 					.getBean("oilBillService");
@@ -42,8 +49,7 @@ public class OilBillAction extends AbstractAction {
 			@FormParam("oil_type") Integer oil_type,
 			@FormParam("oil") Double oil,
 			@FormParam("unitprice") Double unitprice,
-			@FormParam("lat") Double lat,
-			@FormParam("lng") Double lng,
+			@FormParam("lat") Double lat, @FormParam("lng") Double lng,
 			@FormParam("addtime") Long addtime) {
 		Result result = null;
 

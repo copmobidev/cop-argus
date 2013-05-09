@@ -3,6 +3,15 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cop.mobi.mycar.service.dao.MyCarDao">
 
+
+	<resultMap id="carBrandResult" type="com.cop.mobi.mycar.entity.CarBrand">
+		<result property="id" column="id" />
+		<result property="manufacturer" column="manufacturer" />
+		<result property="brand" column="brand" />
+		<result property="model" column="model" />
+		<result property="engine" column="engine" />
+	</resultMap>
+
 	<resultMap id="myCarResult" type="com.cop.mobi.mycar.entity.MyCar">
 		<result property="id" column="id" />
 		<result property="uid" column="uid" />
@@ -22,7 +31,8 @@
 
 	<select id="getAllCarBrands" resultMap="carBrandResult">
 		SELECT
-		id, brand, model,
+		id, manufacturer,
+		brand, model,
 		engine
 		FROM
 		LC_CarBrand

@@ -7,11 +7,14 @@ package com.cop.mobi.mycar.entity;
  */
 public class CarBrand {
 	private Integer id;
+	private String manufacturer; // 制造商
 	private String brand; // 品牌
 	private String model; // 型号
 	private String engine; // 排量
 
-	public CarBrand(String brand, String model, String engine) {
+	public CarBrand(String manufacturer, String brand, String model,
+			String engine) {
+		this.manufacturer = manufacturer;
 		this.brand = brand;
 		this.model = model;
 		this.engine = engine;
@@ -23,6 +26,14 @@ public class CarBrand {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
 	}
 
 	public String getBrand() {
@@ -51,11 +62,12 @@ public class CarBrand {
 
 	@Override
 	public String toString() {
-		return String.format("{\"id\":%d,\"brand\":\"%s\",\"engine\":\"%s\"}",
-				id, brand, model, engine);
+		return String
+				.format("{\"id\":%d,\"manufacturer\":\"%s\",\"brand\":\"%s\",\"engine\":\"%s\"}",
+						id, manufacturer, brand, model, engine);
 	}
 
 	public String toLCString() {
-		return String.format("%s|%s|%s", brand, model, engine);
+		return String.format("%s|%s|%s|%s", manufacturer, brand, model, engine);
 	}
 }

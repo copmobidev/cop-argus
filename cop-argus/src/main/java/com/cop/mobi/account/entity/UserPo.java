@@ -13,7 +13,7 @@ public class UserPo {
 	private String pwd; // 密码
 	private Integer sex; // 0--man; 1--female
 	private String profile; // 头像文件名
-	private Long addtime; // 注册时间
+	private Long registerTime; // 注册时间
 
 	public UserPo() {
 
@@ -75,12 +75,12 @@ public class UserPo {
 		this.profile = profile;
 	}
 
-	public Long getAddtime() {
-		return addtime;
+	public Long getRegisterTime() {
+		return registerTime;
 	}
 
-	public void setAddtime(Long addtime) {
-		this.addtime = addtime;
+	public void setRegisterTime(Long registerTime) {
+		this.registerTime = registerTime;
 	}
 
 }

@@ -35,6 +35,10 @@ public class MyCarAction extends AbstractAction {
 	private static MyCarService myCarService;
 
 	static {
+		init();
+	}
+
+	private static void init() {
 		try {
 			myCarService = (MyCarService) SpringApplicationContext
 					.getBean("myCarService");
@@ -44,25 +48,7 @@ public class MyCarAction extends AbstractAction {
 	}
 
 	@POST
-	@Path("/info")
-	public Response carInfo(@FormParam("token") String strToken) {
-		Result result = null;
-		try {
-			Token token = TokenUtil.parseToken(strToken);
-			if (TokenUtil.isValid(token)) {
-				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
-			} else {
-				result = myCarService.getMyCarById(token.getMcid());
-			}
-		} catch (Exception e) {
-			log.error(String.format("%s:%s", Tag, "info request error"), e);
-			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
-		}
-		return Response.status(Status.OK).entity(result.toString()).build();
-	}
-
-	@POST
-	@Path("/driveroutes")
+	@Path("/get")
 	public Response driveRoutes(@FormParam("token") String strToken,
 			@FormParam("begin_time") Long beginTime,
 			@FormParam("end_time") Long endTime, @FormParam("span") Integer span) {
@@ -84,7 +70,7 @@ public class MyCarAction extends AbstractAction {
 	}
 
 	@POST
-	@Path("/uploaddriveroutes")
+	@Path("/upload")
 	public Response uploadDriveRoutes(@FormParam("token") String strToken,
 			@FormParam("routes") String routes) {
 		Result result = null;
@@ -102,13 +88,6 @@ public class MyCarAction extends AbstractAction {
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return Response.status(Status.OK).entity(result.toString()).build();
-	}
-
-	@POST
-	@Path("/diagnose")
-	public Response diagnose(@FormParam("codes") String codes) {
-
-		return null;
 	}
 
 	private List<DriveRoutePo> parseDriveRoutes(String routes) throws Exception {

@@ -23,7 +23,8 @@ public interface AccountDao {
 
 	List<UserPo> getUsers(@Param(value = "uids") String uids);
 
-	int addUser(UserPo userPo);
+	int addUser(@Param(value = "obd") String obd,
+			@Param(value = "registerTime") long registerTime);
 
 	int deleteUser(@Param(value = "uid") int uid);
 

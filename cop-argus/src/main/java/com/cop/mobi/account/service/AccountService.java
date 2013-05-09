@@ -1,10 +1,8 @@
 package com.cop.mobi.account.service;
 
-import com.cop.mobi.account.entity.User;
 import com.cop.mobi.account.entity.UserPo;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.CarBrand;
-import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
 
 /**
@@ -17,11 +15,12 @@ public interface AccountService {
 	/**
 	 * 根据用户和车辆注册
 	 * 
-	 * @param user
-	 * @param myCar
+	 * @param obd
+	 * @param sid
+	 * @param carBrand
 	 * @return
 	 */
-	Result register(UserPo userPo, MyCarPo myCarPo);
+	Result register(String obd, String sid, CarBrand carBrand, long registerTime);
 
 	/**
 	 * 登陆
@@ -39,7 +38,7 @@ public interface AccountService {
 	 * @param carBrand
 	 * @return
 	 */
-	Result update(UserPo userPo, MyCarPo myCarPo, CarBrand carBrand);
+	Result update(UserPo userPo, MyCarPo myCarPo);
 
 	/**
 	 * 上传用户头像
