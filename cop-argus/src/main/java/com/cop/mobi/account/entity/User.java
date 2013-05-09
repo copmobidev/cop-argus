@@ -6,7 +6,7 @@ package com.cop.mobi.account.entity;
  * 
  */
 public class User {
-	private String token;
+	private int id;
 	private String obd;
 	private String email;
 	private String name;
@@ -16,19 +16,20 @@ public class User {
 
 	}
 
-	public User(String obd, String email, String name, long addtime) {
+	public User(int id, String obd, String email, String name, long addtime) {
+		this.id = id;
 		this.obd = obd;
 		this.email = email;
 		this.name = name;
 		this.addtime = addtime;
 	}
 
-	public String getToken() {
-		return token;
+	public int getId() {
+		return id;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getObd() {

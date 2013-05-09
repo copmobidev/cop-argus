@@ -63,6 +63,14 @@ public interface MyCarService {
 	MyCar addMyCar(int uid, String sid, CarBrand carBrand);
 
 	/**
+	 * 根据车辆id删除车辆
+	 * 
+	 * @param mcid
+	 * @return
+	 */
+	int deleteMyCar(int mcid);
+
+	/**
 	 * 获取车辆行车记录
 	 * 
 	 * @param mcid

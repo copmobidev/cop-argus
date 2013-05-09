@@ -11,10 +11,6 @@ public class MyCar {
 	private String sid;
 	private CarBrand carBrand;
 
-	public MyCar() {
-
-	}
-
 	public MyCar(int id, int uid, String sid, CarBrand carBrand) {
 		this.id = id;
 		this.uid = uid;

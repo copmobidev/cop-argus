@@ -12,6 +12,10 @@ public class CarBrand {
 	private String model; // 型号
 	private String engine; // 排量
 
+	public CarBrand() {
+
+	}
+
 	public CarBrand(String manufacturer, String brand, String model,
 			String engine) {
 		this.manufacturer = manufacturer;

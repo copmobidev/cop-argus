@@ -32,6 +32,10 @@ public class DiagnoseServiceImpl extends AbstractService implements
 	private static DiagnoseDao diagnoseDao;
 
 	static {
+		init();
+	}
+	
+	private static void init() {
 		try {
 			diagnoseDao = (DiagnoseDao) SpringApplicationContext
 					.getBean("diagnoseDao");

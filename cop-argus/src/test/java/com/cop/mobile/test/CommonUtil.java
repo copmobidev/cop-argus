@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.cop.mobi.rest.core.Token;
 import com.cop.mobi.rest.core.TokenUtil;
@@ -238,5 +240,11 @@ public class CommonUtil {
 		System.out.println(strToken);
 		token = TokenUtil.parseToken(strToken);
 		System.out.println(token);
+		
+		Map<Integer, String> test = new HashMap<Integer, String>();
+		test.put(1, "hello");
+		test.put(2, "world");
+		
+		System.out.println(test.get(2));
 	}
 }

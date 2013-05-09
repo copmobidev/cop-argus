@@ -40,17 +40,12 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	private static Map<Integer, CarBrand> RevCarBrandMap = new HashMap<Integer, CarBrand>();
 
 	static {
-		try {
-			myCarDao = (MyCarDao) SpringApplicationContext.getBean("myCarDao");
-
-			init();
-		} catch (Exception e) {
-			log.error(String.format("%s:%s", Tag, "init error"), e);
-		}
+		init();
 	}
 
 	public static void init() {
 		try {
+			myCarDao = (MyCarDao) SpringApplicationContext.getBean("myCarDao");
 			List<CarBrand> carBrands = myCarDao.getAllCarBrands();
 			if (carBrands != null && carBrands.size() > 0) {
 				for (CarBrand carBrand : carBrands) {
@@ -101,10 +96,12 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 		try {
 			MyCarPo myCarPo = myCarDao.getMyCarBySid(sid);
 			if (myCarPo != null) {
-				myCar = new MyCar();
-				CarBrand carBrand = CarBrandMap.get(myCarPo.getBid());
-				myCar.setCarBrand(carBrand);
-				return myCar;
+				CarBrand carBrand = RevCarBrandMap.get(myCarPo.getBid());
+				if (carBrand != null) {
+					myCar = new MyCar(myCarPo.getId(), myCarPo.getUid(),
+							myCarPo.getSid(), carBrand);
+					return myCar;
+				}
 			}
 		} catch (Exception e) {
 			log.error(
@@ -142,17 +139,21 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	public MyCar addMyCar(int uid, String sid, CarBrand carBrand) {
 		MyCar myCar = null;
 		try {
+			CarBrand cb = CarBrandMap.get(String.format("%s%s%s",
+					carBrand.getBrand(), carBrand.getModel(),
+					carBrand.getEngine()));
+			if (cb == null) {
+				return null;
+			}
+
 			MyCarPo existedCarPo = myCarDao.getMyCarBySid(sid);
 			if (existedCarPo != null) {
 				return null;
 			} else {
-				int optCode = myCarDao.addMyCar(uid, sid);
+				int optCode = myCarDao.addMyCar(uid, sid, cb.getId());
 				if (optCode == 1) {
 					MyCarPo myCarPo = myCarDao.getMyCarBySid(sid);
 					if (myCarPo != null) {
-						CarBrand cb = CarBrandMap.get(String.format("%s%s%s",
-								carBrand.getBrand(), carBrand.getModel(),
-								carBrand.getEngine()));
 						myCar = new MyCar(myCarPo.getId(), myCarPo.getUid(),
 								sid, cb);
 					}
@@ -162,6 +163,16 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 			myCar = null;
 		}
 		return myCar;
+	}
+
+	@Override
+	public int deleteMyCar(int mcid) {
+		try {
+			return myCarDao.deleteMyCar(mcid);
+		} catch (Exception e) {
+			log.error(String.format("%s:%s", Tag, "deleteMyCar() error"), e);
+		}
+		return 0;
 	}
 
 	@Override

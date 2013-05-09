@@ -40,6 +40,10 @@ public class AccountServiceImpl extends AbstractService implements
 	private static MyCarService myCarService;
 
 	static {
+		init();
+	}
+
+	private static void init() {
 		try {
 			accountDao = (AccountDao) SpringApplicationContext
 					.getBean("accountDao");
@@ -57,6 +61,8 @@ public class AccountServiceImpl extends AbstractService implements
 		Result result = null;
 		AccountLog.info(String.format("register:%s,%s@%s", obd, sid,
 				carBrand.toLCString(), new Date()));
+		User user = null;
+		MyCar newCar = null;
 		try {
 			boolean isUserExisted = accountDao.getUserByOBD(obd) == null ? false
 					: true;
@@ -71,18 +77,31 @@ public class AccountServiceImpl extends AbstractService implements
 			UserPo newUserPo = accountDao.getUserByOBD(obd);
 			if (newUserPo != null) {
 				myCarService.addMyCar(newUserPo.getId(), sid, carBrand);
-				MyCar newCar = myCarService.getMyCarBySid(sid);
-				User user = new User(newUserPo.getObd(), newUserPo.getEmail(),
-						newUserPo.getName(), newUserPo.getRegisterTime());
-				String data = String.format(
-						"{\"profile\":\"%s\",\"carinfo\":\"%s\"}",
-						user.toLCString(), newCar.toLCString());
-				result = new Result(ResultStatus.RS_OK, data);
+				newCar = myCarService.getMyCarBySid(sid);
+				if (newCar != null) {
+					user = new User(newUserPo.getId(), newUserPo.getObd(),
+							newUserPo.getEmail(), newUserPo.getName(),
+							newUserPo.getRegisterTime());
+					String data = String.format(
+							"{\"profile\":\"%s\",\"carinfo\":\"%s\"}",
+							user.toLCString(), newCar.toLCString());
+					result = new Result(ResultStatus.RS_OK, data);
+				} else {
+					accountDao.deleteUser(newUserPo.getId());
+					result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+				}
+			} else {
+				result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 			}
-
 		} catch (Exception e) {
 			log.error(String.format("%s:register() error with param:%s & %s",
 					Tag, obd, sid), e);
+			if (user != null) {
+				accountDao.deleteUser(user.getId());
+			}
+			if (newCar != null) {
+				myCarService.deleteMyCar(newCar.getId());
+			}
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return result;

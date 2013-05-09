@@ -8,7 +8,7 @@
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
-			value="jdbc:mysql://localhost:3306/LC_Cop?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull" />
+			value="jdbc:mysql://58.210.101.202:59101/LC_Cop?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull" />
 		<property name="username" value="devdev" />
 		<property name="password" value="123456" />
 		<property name="maxActive" value="100" />

@@ -23,7 +23,10 @@ public interface MyCarDao {
 
 	List<MyCarPo> getMyCarsByUid(@Param(value = "uid") int uid);
 
-	int addMyCar(@Param(value = "uid") int uid, @Param(value = "sid") String sid);
+	int addMyCar(@Param(value = "uid") int uid,
+			@Param(value = "sid") String sid, @Param(value = "bid") int bid);
+
+	int deleteMyCar(@Param(value = "mcid") int mcid);
 
 	int freezeMyCar(int mcid);
 

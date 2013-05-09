@@ -12,7 +12,7 @@
 		<result property="engine" column="engine" />
 	</resultMap>
 
-	<resultMap id="myCarResult" type="com.cop.mobi.mycar.entity.MyCar">
+	<resultMap id="myCarResult" type="com.cop.mobi.mycar.entity.MyCarPo">
 		<result property="id" column="id" />
 		<result property="uid" column="uid" />
 		<result property="sid" column="sid" />
@@ -69,6 +69,11 @@
 		VALUES
 		(#{uid}, #{sid}, #{bid})
 	</insert>
+
+	<delete id="deleteMyCar">
+		DELTE FROM LC_MyCar
+		WHERE id=#{mcid}
+	</delete>
 
 	<update id="freezeMyCar">
 		UPDATE LC_MyCar SET freeze=0 WHERE id=#{mcid}

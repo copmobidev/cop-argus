@@ -14,6 +14,7 @@ import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.Span;
 import com.cop.mobi.mycar.service.DiagnoseService;
 import com.cop.mobi.mycar.service.MyCarService;
+import com.cop.mobi.mycar.service.dao.MyCarDao;
 import com.cop.mobile.test.BaseTest;
 
 /**
@@ -27,7 +28,20 @@ public class MyCarServiceTest extends BaseTest {
 	private MyCarService myCarService;
 
 	@Autowired
+	private MyCarDao myCarDao;
+
+	@Autowired
 	private DiagnoseService diagnoseService;
+
+	@Test
+	public void addMyCarTest() {
+		try {
+			String sid = "E20A39F4-73F5-4BC4-A12F-17D1AD20";
+			myCarDao.addMyCar(1, sid, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Test
 	public void myCarServiceTest4Route() {

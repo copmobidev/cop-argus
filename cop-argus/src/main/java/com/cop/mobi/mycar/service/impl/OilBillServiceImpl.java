@@ -29,6 +29,10 @@ public class OilBillServiceImpl extends AbstractService implements
 	private static OilBillDao oilBillDao;
 
 	static {
+		init();
+	}
+	
+	private static void init() {
 		try {
 			oilBillDao = (OilBillDao) SpringApplicationContext
 					.getBean("oilBillDao");
