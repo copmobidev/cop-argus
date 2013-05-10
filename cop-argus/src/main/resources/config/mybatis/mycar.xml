@@ -70,6 +70,13 @@
 		(#{uid}, #{sid}, #{bid})
 	</insert>
 
+	<update id="updateMyCarInfo">
+		UPDATE LC_MyCar 
+		SET 
+		bid=#{bid}
+		WHERE id=#{id}
+	</update>
+
 	<delete id="deleteMyCar">
 		DELTE FROM LC_MyCar
 		WHERE id=#{mcid}

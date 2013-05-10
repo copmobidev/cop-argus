@@ -72,12 +72,9 @@
 		#{registerTime})
 	</insert>
 
-	<update id="updateUser" parameterType="com.cop.mobi.account.entity.User">
+	<update id="updateUser">
 		UPDATE LC_User SET
-		email=#{email},
-		name=#{name},
-		pwd=#{pwd},
-		sex=#{sex}
+		${update}
 		WHERE
 		id=#{uid}
 	</update>

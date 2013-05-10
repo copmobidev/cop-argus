@@ -120,7 +120,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 			if (myCarPos != null && myCarPos.size() > 0) {
 				myCars = new ArrayList<MyCar>();
 				for (MyCarPo myCarPo : myCarPos) {
-					CarBrand carBrand = CarBrandMap.get(myCarPo.getBid());
+					CarBrand carBrand = RevCarBrandMap.get(myCarPo.getBid());
 					MyCar myCar = new MyCar(myCarPo.getId(), myCarPo.getUid(),
 							myCarPo.getSid(), carBrand);
 					myCars.add(myCar);
@@ -160,6 +160,29 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 				}
 			}
 		} catch (Exception e) {
+			log.error(
+					String.format("%addMyCar() error with param:%s", Tag, sid),
+					e);
+			myCar = null;
+		}
+		return myCar;
+	}
+
+	@Override
+	public MyCar updateMyCarInfo(MyCarPo myCarPo) {
+		MyCar myCar = null;
+		try {
+			myCarDao.updateMyCarInfo(myCarPo.getId(), myCarPo.getBid());
+
+			MyCarPo updatedMyCarPo = myCarDao.getMyCarById(myCarPo.getId());
+			CarBrand cb = RevCarBrandMap.get(myCarPo.getBid());
+			if (cb != null) {
+				myCar = new MyCar(updatedMyCarPo.getId(),
+						updatedMyCarPo.getUid(), updatedMyCarPo.getSid(), cb);
+			}
+		} catch (Exception e) {
+			log.error(String.format("%s:updateMyCarInfo() error with param:%s",
+					Tag, myCarPo.getId()), e);
 			myCar = null;
 		}
 		return myCar;

@@ -3,8 +3,11 @@ package com.cop.mobi.account.service.impl;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,7 @@ import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.SpringApplicationContext;
+import com.cop.mobi.rest.core.TokenUtil;
 
 /**
  * 
@@ -82,16 +86,21 @@ public class AccountServiceImpl extends AbstractService implements
 					user = new User(newUserPo.getId(), newUserPo.getObd(),
 							newUserPo.getEmail(), newUserPo.getName(),
 							newUserPo.getRegisterTime());
-					String data = String.format(
-							"{\"profile\":\"%s\",\"carinfo\":\"%s\"}",
-							user.toLCString(), newCar.toLCString());
+					String token = TokenUtil.generateToken(user.getId(),
+							newCar.getId(), 1);
+					String data = String
+							.format("{\"token\":\"%s\",\"profile\":\"%s\",\"carinfo\":\"%s\"}",
+									token, user.toLCString(),
+									newCar.toLCString());
 					result = new Result(ResultStatus.RS_OK, data);
 				} else {
 					accountDao.deleteUser(newUserPo.getId());
-					result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+					result = new Result(ResultStatus.RS_ERROR,
+							SERVER_INNER_ERROR_MSG);
 				}
 			} else {
-				result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+				result = new Result(ResultStatus.RS_ERROR,
+						SERVER_INNER_ERROR_MSG);
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:register() error with param:%s & %s",
@@ -114,7 +123,34 @@ public class AccountServiceImpl extends AbstractService implements
 
 	@Override
 	public Result update(UserPo userPo, MyCarPo myCarPo) {
-		// TODO Auto-generated method stub
+		Result result = null;
+		try {
+			User user = null;
+			MyCar myCar = null;
+			if (userPo != null) {
+				List<String> values = new ArrayList<String>();
+				if (StringUtils.isNotBlank(userPo.getEmail())) {
+					values.add(String.format("email=%s", userPo.getEmail()));
+				}
+				if (StringUtils.isNotBlank(userPo.getName())) {
+					values.add(String.format("name=%s", userPo.getName()));
+				}
+				if (StringUtils.isNotBlank(userPo.getPwd())) {
+					values.add(String.format("pwd=%s", userPo.getPwd()));
+				}
+				accountDao.updateUserInfo(StringUtils.join(values, ","));
+				UserPo updatedUserPo = accountDao.getUserById(userPo.getId());
+				user = new User(updatedUserPo.getId(), updatedUserPo.getObd(),
+						updatedUserPo.getEmail(), updatedUserPo.getName(),
+						updatedUserPo.getRegisterTime());
+			}
+
+			if (myCarPo != null) {
+				myCar = myCarService.updateMyCarInfo(myCarPo);
+			}
+		} catch (Exception e) {
+
+		}
 		return null;
 	}
 

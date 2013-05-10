@@ -7,6 +7,7 @@ import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
+import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.entity.Span;
 
 /**
@@ -61,6 +62,14 @@ public interface MyCarService {
 	 * @return
 	 */
 	MyCar addMyCar(int uid, String sid, CarBrand carBrand);
+
+	/**
+	 * 更新车辆信息
+	 * 
+	 * @param myCarPo
+	 * @return
+	 */
+	MyCar updateMyCarInfo(MyCarPo myCarPo);
 
 	/**
 	 * 根据车辆id删除车辆

@@ -13,7 +13,7 @@ import com.cop.mobi.account.entity.UserPo;
  */
 public interface AccountDao {
 
-	UserPo getUserById(@Param(value = "uid") int uid);
+	UserPo getUserById(@Param(value = "id") int id);
 
 	UserPo getUserByOBD(@Param(value = "obd") String obd);
 
@@ -21,14 +21,23 @@ public interface AccountDao {
 
 	UserPo getUserByEmail(@Param(value = "email") String email);
 
-	List<UserPo> getUsers(@Param(value = "uids") String uids);
+	List<UserPo> getUsers(@Param(value = "ids") String ids);
 
 	int addUser(@Param(value = "obd") String obd,
 			@Param(value = "registerTime") long registerTime);
 
-	int deleteUser(@Param(value = "uid") int uid);
+	/**
+	 * 更新用户信息
+	 * 
+	 * @param value
+	 *            数据格式为col1=val1,...,coln=valn
+	 * @return
+	 */
+	int updateUserInfo(@Param(value = "value") String value);
 
-	int updateUserProfile(@Param(value = "uid") int uid,
+	int updateUserProfile(@Param(value = "id") int id,
 			@Param(value = "profile") String profile);
+
+	int deleteUser(@Param(value = "uid") int uid);
 
 }

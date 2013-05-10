@@ -31,17 +31,6 @@ public class AccountServiceTest extends BaseTest {
 	}
 
 	@Test
-	public void loginFailTest() {
-		try {
-			System.out.println(new Date().getTime());
-			String obd = "E20A39F4-73F5-4BC4-A12F-17D1AD20";
-			accountDao.addUser(obd, new Date().getTime());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
 	public void registerSuccessTest() {
 		String obd = "E20A39F4-73F5-4BC4-A12F-17D1AD20";
 		String sid = "E20A39F4-73F5-4BC4-A12F-17D1AD20";

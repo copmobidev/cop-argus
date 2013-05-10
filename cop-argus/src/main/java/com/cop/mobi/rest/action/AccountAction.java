@@ -20,6 +20,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.cop.mobi.account.entity.UserPo;
 import com.cop.mobi.account.service.AccountService;
+import com.cop.mobi.common.Message;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.CarBrand;
@@ -102,8 +103,10 @@ public class AccountAction extends AbstractAction {
 	@Path("/update")
 	public Response update(@FormParam("token") String token,
 			@FormParam("name") String name, @FormParam("email") String email,
-			@FormParam("pwd") String pwd, @FormParam("brand") String brand,
-			@FormParam("model") String model, @FormParam("engine") String engine) {
+			@FormParam("pwd") String pwd,
+			@FormParam("manufacturer") String manufacturer,
+			@FormParam("brand") String brand, @FormParam("model") String model,
+			@FormParam("engine") String engine) {
 		Result result = null;
 		try {
 			Token tk = TokenUtil.parseToken(token);
@@ -121,14 +124,20 @@ public class AccountAction extends AbstractAction {
 
 			if (StringUtils.isNotEmpty(brand) && StringUtils.isNotBlank(model)
 					&& StringUtils.isNotBlank(engine)) {
-				myCarPo = new MyCarPo();
-				myCarPo.setId(tk.getMcid());
 				CarBrand cb = myCarService.getCarBrandMap().get(
 						String.format("%s%s%s", brand, model, engine));
+				if (cb != null) {
+					myCarPo = new MyCarPo();
+					myCarPo.setId(tk.getMcid());
+					myCarPo.setBid(cb.getId());
+				}
 			}
 
-			if (userPo != null && myCarPo != null) {
+			if (userPo != null || myCarPo != null) {
 				result = accountService.update(userPo, myCarPo);
+			} else {
+				result = new Result(ResultStatus.RS_FAIL, new Message("更新失败",
+						"传入数据错误"));
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "login exception"), e);

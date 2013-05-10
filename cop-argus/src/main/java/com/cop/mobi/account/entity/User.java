@@ -10,18 +10,18 @@ public class User {
 	private String obd;
 	private String email;
 	private String name;
-	private Long addtime; // 注册时间
+	private Long registerTime; // 注册时间
 
 	public User() {
 
 	}
 
-	public User(int id, String obd, String email, String name, long addtime) {
+	public User(int id, String obd, String email, String name, long registerTime) {
 		this.id = id;
 		this.obd = obd;
 		this.email = email;
 		this.name = name;
-		this.addtime = addtime;
+		this.registerTime = registerTime;
 	}
 
 	public int getId() {
@@ -56,22 +56,22 @@ public class User {
 		this.name = name;
 	}
 
-	public Long getAddtime() {
-		return addtime;
+	public Long getRegisterTime() {
+		return registerTime;
 	}
 
-	public void setAddtime(Long addtime) {
-		this.addtime = addtime;
+	public void setRegisterTime(Long registerTime) {
+		this.registerTime = registerTime;
 	}
 
 	@Override
 	public String toString() {
-		return String.format(
-				"{\"obd\":\"%s\", \"email\":\"%s\",\"name\":\"%s\"}", obd,
-				email, name);
+		return String
+				.format("{\"obd\":\"%s\", \"email\":\"%s\",\"name\":\"%s\",\"registerTime\":%d}",
+						obd, email, name, registerTime);
 	}
 
 	public String toLCString() {
-		return String.format("%s|%s|%s", obd, email, name);
+		return String.format("%s|%s|%s|%d", obd, email, name, registerTime);
 	}
 }

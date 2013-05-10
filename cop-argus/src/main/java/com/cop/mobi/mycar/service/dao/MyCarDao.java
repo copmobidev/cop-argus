@@ -26,6 +26,9 @@ public interface MyCarDao {
 	int addMyCar(@Param(value = "uid") int uid,
 			@Param(value = "sid") String sid, @Param(value = "bid") int bid);
 
+	int updateMyCarInfo(@Param(value = "id") int id,
+			@Param(value = "bid") int bid);
+
 	int deleteMyCar(@Param(value = "mcid") int mcid);
 
 	int freezeMyCar(int mcid);
