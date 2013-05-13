@@ -207,7 +207,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 					endTime);
 			List<DriveRoute> drs = new ArrayList<DriveRoute>();
 			for (DriveRoutePo drp : drps) {
-				drs.add(new DriveRoute(drp));
+//				drs.add(new DriveRoute(drp));
 			}
 			if (drps != null && drps.size() > 0) {
 				String actions = parseAction(drs, span);
