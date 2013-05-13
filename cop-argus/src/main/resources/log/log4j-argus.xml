@@ -4,7 +4,7 @@
 	threshold="null" debug="false">
 
 	<appender name="accountAppender" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="./data/cop-argus/account.log" />
+		<param name="File" value="/data/cop-argus/account.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%p][%d{yyyy-MM-dd HH:mm:ss}]-[%m]%n" />
 		</layout>
@@ -16,7 +16,7 @@
 	</logger>
 
 	<appender name="rootAppender" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="./data/cop-argus/root.log" />
+		<param name="File" value="/data/cop-argus/root.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}]-[%m]%n" />
 		</layout>

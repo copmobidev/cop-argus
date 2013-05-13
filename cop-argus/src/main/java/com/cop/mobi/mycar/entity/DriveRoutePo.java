@@ -9,6 +9,8 @@ public class DriveRoutePo {
 	private Integer id;
 	private Integer mcid;
 	private String route;
+	private Integer brk;
+	private Integer acc;
 	private Long beginTime;
 	private Long endTime;
 	private Long addTime;

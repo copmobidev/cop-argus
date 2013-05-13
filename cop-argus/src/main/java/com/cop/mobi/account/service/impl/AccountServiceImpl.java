@@ -148,10 +148,20 @@ public class AccountServiceImpl extends AbstractService implements
 			if (myCarPo != null) {
 				myCar = myCarService.updateMyCarInfo(myCarPo);
 			}
+			if (user != null && myCar != null) {
+				String token = TokenUtil.generateToken(user.getId(),
+						myCar.getId(), 1);
+				String data = String
+						.format("{\"token\":\"%s\",\"profile\":\"%s\",\"carinfo\":\"%s\"}",
+								token, user.toLCString(), myCar.toLCString());
+				result = new Result(ResultStatus.RS_OK, data);
+			}
 		} catch (Exception e) {
-
+			log.error(String.format("%s:update() error with param:%s & %s",
+					Tag, userPo.getId(), myCarPo.getId()), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return null;
+		return result;
 	}
 
 	@Override
