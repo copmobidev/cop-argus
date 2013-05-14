@@ -6,15 +6,11 @@ package com.cop.mobi.common;
  * 
  */
 public class UserAgent {
-
 	private String protcolVersion;
-	private String clientVersion;
 	private MobiClient mobiClient;
 
-	public UserAgent(String protocolVersion, String clientVersion,
-			MobiClient mobiClient) {
+	public UserAgent(String protocolVersion, MobiClient mobiClient) {
 		this.protcolVersion = protocolVersion;
-		this.clientVersion = clientVersion;
 		this.mobiClient = mobiClient;
 	}
 
@@ -26,14 +22,6 @@ public class UserAgent {
 		this.protcolVersion = protcolVersion;
 	}
 
-	public String getClientVersion() {
-		return clientVersion;
-	}
-
-	public void setClientVersion(String clientVersion) {
-		this.clientVersion = clientVersion;
-	}
-
 	public MobiClient getMobiClient() {
 		return mobiClient;
 	}
@@ -42,4 +30,8 @@ public class UserAgent {
 		this.mobiClient = mobiClient;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("mapi %s %s", protcolVersion, mobiClient);
+	}
 }

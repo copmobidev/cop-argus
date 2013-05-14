@@ -8,6 +8,7 @@ package com.cop.mobi.mycar.entity;
 public class OilBill {
 	private Integer id;
 	private Integer uid;
+	private Integer mcid;
 	private int oilType;
 	private Double oil;
 	private Double unitprice;
@@ -19,9 +20,10 @@ public class OilBill {
 
 	}
 
-	public OilBill(Integer uid, Integer oilType, Double oil, Double unitprice,
-			Double lat, Double lng, Long addtime) {
+	public OilBill(int uid, int mcid, int oilType, double oil,
+			double unitprice, double lat, double lng, long addtime) {
 		this.uid = uid;
+		this.mcid = mcid;
 		this.oilType = oilType;
 		this.oil = oil;
 		this.unitprice = unitprice;
@@ -44,6 +46,14 @@ public class OilBill {
 
 	public void setUid(Integer uid) {
 		this.uid = uid;
+	}
+
+	public Integer getMcid() {
+		return mcid;
+	}
+
+	public void setMcid(Integer mcid) {
+		this.mcid = mcid;
 	}
 
 	public int getOilType() {
@@ -94,9 +104,15 @@ public class OilBill {
 		this.addtime = addtime;
 	}
 
+	@Override
 	public String toString() {
 		return String
 				.format("{\"id\":%d,\"uid\":%d,\"oilType\":%d,\"oil\":%f,\"unitprice\":%f,\"lat\":%f,\"lng\":%f,\"addtime\":%d}",
 						id, uid, oilType, oil, unitprice, lat, lng, addtime);
+	}
+
+	public String toLCString() {
+		return String.format("%d|%d|%d|%d|%f|%f|%d", id, oilType, oil,
+				unitprice, lat, lng, addtime);
 	}
 }

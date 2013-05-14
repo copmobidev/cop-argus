@@ -13,6 +13,8 @@ import com.cop.mobi.mycar.entity.OilBill;
 import com.cop.mobi.mycar.service.OilBillService;
 import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.SpringApplicationContext;
+import com.cop.mobi.rest.core.Token;
+import com.cop.mobi.rest.core.TokenUtil;
 
 /**
  * 
@@ -45,7 +47,7 @@ public class OilBillAction extends AbstractAction {
 
 	@POST
 	@Path("/add")
-	public Response add(@FormParam("uid") Integer uid,
+	public Response add(@FormParam("token") String token,
 			@FormParam("oil_type") Integer oil_type,
 			@FormParam("oil") Double oil,
 			@FormParam("unitprice") Double unitprice,
@@ -53,14 +55,22 @@ public class OilBillAction extends AbstractAction {
 			@FormParam("addtime") Long addtime) {
 		Result result = null;
 
-		if (uid == null || oil == null || unitprice == null || addtime == null) {
+		if (token == null || oil == null || unitprice == null
+				|| addtime == null) {
+			result = new Result(ResultStatus.RS_ERROR, PARAM_ERROR_MSG);
+			return Response.status(Status.OK).entity(result.toString()).build();
+		}
+
+		Token tk = TokenUtil.parseToken(token);
+		if (tk == null) {
 			result = new Result(ResultStatus.RS_ERROR, PARAM_ERROR_MSG);
 			return Response.status(Status.OK).entity(result.toString()).build();
 		}
 
 		try {
 			OilBill bill = new OilBill();
-			bill.setUid(uid);
+			bill.setUid(tk.getUid());
+			bill.setMcid(tk.getMcid());
 			bill.setOil(oil);
 			bill.setUnitprice(unitprice);
 			bill.setAddtime(addtime);

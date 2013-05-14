@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -64,8 +65,8 @@ public class AccountAction extends AbstractAction {
 
 	@POST
 	@Path("/register")
-	public Response register(@FormParam("obd") String obd,
-			@FormParam("sid") String sid,
+	public Response register(@HeaderParam("ua") String ua,
+			@FormParam("obd") String obd, @FormParam("sid") String sid,
 			@FormParam("manufacturer") String manufacturer,
 			@FormParam("brand") String brand, @FormParam("model") String model,
 			@FormParam("engine") String engine,
@@ -83,8 +84,9 @@ public class AccountAction extends AbstractAction {
 
 	@POST
 	@Path("/login")
-	public Response login(@FormParam("name") String name,
-			@FormParam("email") String email, @FormParam("pwd") String pwd) {
+	public Response login(@HeaderParam("ua") String ua,
+			@FormParam("name") String name, @FormParam("email") String email,
+			@FormParam("pwd") String pwd) {
 		Result result = null;
 		try {
 			UserPo userPo = new UserPo();
@@ -101,9 +103,9 @@ public class AccountAction extends AbstractAction {
 
 	@POST
 	@Path("/update")
-	public Response update(@FormParam("token") String token,
-			@FormParam("name") String name, @FormParam("email") String email,
-			@FormParam("pwd") String pwd,
+	public Response update(@HeaderParam("ua") String ua,
+			@FormParam("token") String token, @FormParam("name") String name,
+			@FormParam("email") String email, @FormParam("pwd") String pwd,
 			@FormParam("manufacturer") String manufacturer,
 			@FormParam("brand") String brand, @FormParam("model") String model,
 			@FormParam("engine") String engine) {

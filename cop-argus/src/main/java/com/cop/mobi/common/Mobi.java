@@ -5,16 +5,19 @@ package com.cop.mobi.common;
  * @author chris.liu
  * 
  */
-public class MobiOS {
+public class Mobi {
+	private String phoneType;
 	private OS os;
 	private String version;
 
-	public MobiOS(OS os, String version) {
+	public Mobi(String phoneType, OS os, String version) {
+		this.phoneType = phoneType;
 		this.os = os;
 		this.version = version;
 	}
 
-	public MobiOS(String os, String version) {
+	public Mobi(String phoneType, String os, String version) {
+		this.phoneType = phoneType;
 		if (os == null) {
 			this.os = OS.UNKNOWN;
 		} else if ("android".equals(os.toLowerCase())) {
@@ -25,6 +28,14 @@ public class MobiOS {
 			this.os = OS.UNKNOWN;
 		}
 		this.version = version;
+	}
+
+	public String getPhoneType() {
+		return phoneType;
+	}
+
+	public void setPhoneType(String phoneType) {
+		this.phoneType = phoneType;
 	}
 
 	public OS getOs() {
@@ -45,5 +56,10 @@ public class MobiOS {
 
 	public static enum OS {
 		UNKNOWN, IOS, ANDROID
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s %s %s", phoneType, os, version);
 	}
 }

@@ -47,7 +47,7 @@ public class DiagnoseAction extends AbstractAction {
 
 	@POST
 	@Path("/suggestion")
-	public Response suggest(@FormParam("mcid") int mcid,
+	public Response suggest(@FormParam("token") String token,
 			@FormParam("codes") String codes) {
 		Result result = null;
 		try {

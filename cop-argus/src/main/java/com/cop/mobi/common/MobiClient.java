@@ -6,27 +6,42 @@ package com.cop.mobi.common;
  * 
  */
 public class MobiClient {
-	private String phoneType;
-	private MobiOS os;
+	private String client;
+	private String version;
+	private Mobi mobi;
 
-	public MobiClient(String phoneType, MobiOS os) {
-		this.phoneType = phoneType;
-		this.os = os;
+	public MobiClient(String client, String version, Mobi mobi) {
+		this.client = client;
+		this.version = version;
+		this.mobi = mobi;
 	}
 
-	public String getPhoneType() {
-		return phoneType;
+	public String getClient() {
+		return client;
 	}
 
-	public void setPhoneType(String phoneType) {
-		this.phoneType = phoneType;
+	public void setClient(String client) {
+		this.client = client;
 	}
 
-	public MobiOS getOs() {
-		return os;
+	public String getVersion() {
+		return version;
 	}
 
-	public void setOs(MobiOS os) {
-		this.os = os;
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public Mobi getMobi() {
+		return mobi;
+	}
+
+	public void setMobi(Mobi mobi) {
+		this.mobi = mobi;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s %s %s", client, version, mobi);
 	}
 }

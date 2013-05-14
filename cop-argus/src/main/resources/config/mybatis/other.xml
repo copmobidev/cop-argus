@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cop.mobi.mycar.service.dao.OilBillDao">
+	<resultMap id="configResult" type="com.cop.mobi.other.entity.NameValuePair">
+		<result property="key" column="key" />
+		<result property="value" column="val" />
+	</resultMap>
+
+	<insert id="addFeedback">
+		INSERT INTO LC_Feedback (uid, mcid, ua, content)
+		VALUES (#{uid}, #{mcid}, #{ua}, #{content})
+	</insert>
+
+	<select id="getConfig" resultMap="configResult">
+		SELECT
+		key, value
+		FROM LC_Config
+	</select>
+</mapper>
