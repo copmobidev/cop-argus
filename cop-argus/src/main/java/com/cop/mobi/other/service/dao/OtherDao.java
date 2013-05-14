@@ -1,7 +1,9 @@
 package com.cop.mobi.other.service.dao;
 
-import com.cop.mobi.other.entity.Config;
+import java.util.List;
+
 import com.cop.mobi.other.entity.Feedback;
+import com.cop.mobi.other.entity.NameValuePair;
 
 /**
  * 
@@ -10,7 +12,7 @@ import com.cop.mobi.other.entity.Feedback;
  */
 public interface OtherDao {
 
-	Config getConfig();
+	List<NameValuePair> getConfig();
 
 	int addFeedback(Feedback feedback);
 }

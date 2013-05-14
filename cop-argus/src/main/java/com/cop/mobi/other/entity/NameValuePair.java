@@ -7,15 +7,15 @@ package com.cop.mobi.other.entity;
  */
 public class NameValuePair {
 	private String key;
-	private String val;
+	private String value;
 
 	public NameValuePair() {
 
 	}
 
-	public NameValuePair(String key, String val) {
+	public NameValuePair(String key, String value) {
 		this.key = key;
-		this.val = val;
+		this.value = value;
 	}
 
 	public String getKey() {
@@ -26,11 +26,11 @@ public class NameValuePair {
 		this.key = key;
 	}
 
-	public String getVal() {
-		return val;
+	public String getValue() {
+		return value;
 	}
 
-	public void setVal(String val) {
-		this.val = val;
+	public void setValue(String value) {
+		this.value = value;
 	}
 }

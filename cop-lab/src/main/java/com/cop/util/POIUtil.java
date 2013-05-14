@@ -1,4 +1,4 @@
-package com.cop.mobile.test;
+package com.cop.util;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -157,7 +157,6 @@ public class POIUtil {
 	}
 
 	public static void main(String[] args) {
-		
 		String city = "太仓";
 		int[] pointer = getPOI(city, 1);
 		for (int i = 2; i <= pointer[0]; ++i) {

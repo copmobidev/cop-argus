@@ -7,14 +7,14 @@
 		<result property="value" column="val" />
 	</resultMap>
 
-	<insert id="addFeedback">
-		INSERT INTO LC_Feedback (uid, mcid, ua, content)
-		VALUES (#{uid}, #{mcid}, #{ua}, #{content})
-	</insert>
-
 	<select id="getConfig" resultMap="configResult">
 		SELECT
 		key, value
 		FROM LC_Config
 	</select>
+	
+	<insert id="addFeedback">
+		INSERT INTO LC_Feedback (uid, mcid, ua, content)
+		VALUES (#{uid}, #{mcid}, #{ua}, #{content})
+	</insert>
 </mapper>

@@ -244,7 +244,6 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 		for (DriveRoute route : routes) {
 			switch (span) {
 			case PIECE:
-
 				break;
 			case WEEK:
 				break;
