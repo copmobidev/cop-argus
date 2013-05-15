@@ -5,15 +5,15 @@ package com.cop.mobi.common;
  * @author chris.liu
  * 
  */
-public class KeyValuePair {
+public class NameValuePair {
 	private String key;
 	private String value;
 
-	public KeyValuePair() {
+	public NameValuePair() {
 
 	}
 
-	public KeyValuePair(String key, String value) {
+	public NameValuePair(String key, String value) {
 		this.key = key;
 		this.value = value;
 	}
@@ -32,10 +32,5 @@ public class KeyValuePair {
 
 	public void setValue(String value) {
 		this.value = value;
-	}
-
-	@Override
-	public String toString() {
-		return String.format("{\"key\":\"%s\",\"value\":\"%s\"}", key, value);
 	}
 }

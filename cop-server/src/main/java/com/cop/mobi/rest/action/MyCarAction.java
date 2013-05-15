@@ -15,6 +15,7 @@ import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.Span;
+import com.cop.mobi.mycar.service.DiagnoseService;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.SpringApplicationContext;
@@ -33,6 +34,7 @@ public class MyCarAction extends AbstractAction {
 	private static final String Tag = "MyCarAction";
 
 	private static MyCarService myCarService;
+	private static DiagnoseService diagnoseService;
 
 	static {
 		init();
@@ -42,6 +44,9 @@ public class MyCarAction extends AbstractAction {
 		try {
 			myCarService = (MyCarService) SpringApplicationContext
 					.getBean("myCarService");
+
+			diagnoseService = (DiagnoseService) SpringApplicationContext
+					.getBean("diagnoseService");
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "init error"), e);
 		}
@@ -113,5 +118,19 @@ public class MyCarAction extends AbstractAction {
 			}
 		}
 		return drps;
+	}
+
+	@POST
+	@Path("/diagnose")
+	public Response suggest(@FormParam("token") String token,
+			@FormParam("codes") String codes) {
+		Result result = null;
+		try {
+
+		} catch (Exception e) {
+			log.error(String.format("%s:%s", Tag, "suggest error"), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		}
+		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 }

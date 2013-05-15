@@ -7,11 +7,11 @@ import org.apache.commons.lang.StringUtils;
 
 import com.cop.mobi.common.AbstractService;
 import com.cop.mobi.common.Message;
+import com.cop.mobi.common.NameValuePair;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.common.UserAgent;
 import com.cop.mobi.other.entity.Feedback;
-import com.cop.mobi.other.entity.NameValuePair;
 import com.cop.mobi.other.service.OtherService;
 import com.cop.mobi.other.service.dao.OtherDao;
 import com.cop.mobi.rest.core.SpringApplicationContext;

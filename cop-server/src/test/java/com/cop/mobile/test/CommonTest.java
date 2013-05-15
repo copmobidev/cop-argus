@@ -15,11 +15,11 @@ public class CommonTest {
 
 	@Test
 	public void uaTest() {
-		String androidUA = "MApi 1.0 com.cop.v1 5.3.0 MotoA953 Android 2.2";
+		String androidUA = "mapi 1.0 peseus 1.0.0 motorola MB526 Android 2.3.5";
 		UserAgent uaAndroid = UserAgentParser.parseUserAgent(androidUA);
 		System.out.println(uaAndroid);
 
-		String iosUA = "MApi 1.0 achilles 1.0.0 IPhone4S IOS 6.0";
+		String iosUA = "MApi 1.0 achilles 1.0.0 IPhone 4S IOS 6.0";
 		UserAgent uaIOS = UserAgentParser.parseUserAgent(iosUA);
 		System.out.println(uaIOS);
 	}

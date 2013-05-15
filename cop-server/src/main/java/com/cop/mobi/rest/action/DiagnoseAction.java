@@ -12,6 +12,8 @@ import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.service.DiagnoseService;
 import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.SpringApplicationContext;
+import com.cop.mobi.rest.core.Token;
+import com.cop.mobi.rest.core.TokenUtil;
 
 /**
  * 
@@ -51,6 +53,13 @@ public class DiagnoseAction extends AbstractAction {
 			@FormParam("codes") String codes) {
 		Result result = null;
 		try {
+			Token tk = TokenUtil.parseToken(token);
+			String[] tmp = codes.split("\\|");
+			if (tk == null || tmp == null || tmp.length == 0) {
+
+			} else {
+				result = diagnoseService.diagnose(tk, tmp);
+			}
 
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "suggest error"), e);

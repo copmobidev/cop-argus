@@ -6,18 +6,21 @@ package com.cop.mobi.common;
  * 
  */
 public class Mobi {
-	private String phoneType;
+	private String menufacturer;
+	private String model;
 	private OS os;
 	private String version;
 
-	public Mobi(String phoneType, OS os, String version) {
-		this.phoneType = phoneType;
+	public Mobi(String menufacturer, String model, OS os, String version) {
+		this.menufacturer = menufacturer;
+		this.model = model;
 		this.os = os;
 		this.version = version;
 	}
 
-	public Mobi(String phoneType, String os, String version) {
-		this.phoneType = phoneType;
+	public Mobi(String menufacturer, String model, String os, String version) {
+		this.menufacturer = menufacturer;
+		this.model = model;
 		if (os == null) {
 			this.os = OS.UNKNOWN;
 		} else if ("android".equals(os.toLowerCase())) {
@@ -30,12 +33,20 @@ public class Mobi {
 		this.version = version;
 	}
 
-	public String getPhoneType() {
-		return phoneType;
+	public String getMenufacturer() {
+		return menufacturer;
 	}
 
-	public void setPhoneType(String phoneType) {
-		this.phoneType = phoneType;
+	public void setMenufacturer(String menufacturer) {
+		this.menufacturer = menufacturer;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
 	}
 
 	public OS getOs() {
@@ -60,6 +71,6 @@ public class Mobi {
 
 	@Override
 	public String toString() {
-		return String.format("%s %s %s", phoneType, os, version);
+		return String.format("%s %s %s %s", menufacturer, model, os, version);
 	}
 }
