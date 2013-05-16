@@ -7,5 +7,6 @@
 		<mapper resource="config/mybatis/mycar.xml" />
 		<mapper resource="config/mybatis/oilbill.xml" />
 		<mapper resource="config/mybatis/diagnose.xml" />
+		<mapper resource="config/mybatis/other.xml" />
 	</mappers>
 </configuration>

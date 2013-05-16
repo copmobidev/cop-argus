@@ -2,8 +2,6 @@ package com.cop.mobi.mycar.util;
 
 import java.text.SimpleDateFormat;
 
-import com.cop.mobi.mycar.entity.RouteBasePiece;
-
 /**
  * 
  * @author chris.liu
@@ -11,7 +9,7 @@ import com.cop.mobi.mycar.entity.RouteBasePiece;
  */
 public class DriveRouteDataDecoder {
 
-	public static RouteBasePiece parseBaseData(String data) throws Exception {
+	public static void parseBaseData(String data) throws Exception {
 		int type = 0;
 		int len = 0;
 		int year = 0;
@@ -108,8 +106,5 @@ public class DriveRouteDataDecoder {
 				break;
 			}
 		}
-		RouteBasePiece basePiece = new RouteBasePiece(type, time, lat, lng,
-				dir1, dir2, ele);
-		return basePiece;
 	}
 }

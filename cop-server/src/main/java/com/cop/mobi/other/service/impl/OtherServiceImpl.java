@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
 
 import com.cop.mobi.common.AbstractService;
 import com.cop.mobi.common.Message;
@@ -22,8 +23,9 @@ import com.cop.mobi.rest.core.Token;
  * @author chris.liu
  * 
  */
+@Service("otherService")
 public class OtherServiceImpl extends AbstractService implements OtherService {
-	private static final String Tag = "MyCarServiceImpl";
+	private static final String Tag = "OtherServiceImpl";
 
 	private static List<NameValuePair> CONFIGS = new ArrayList<NameValuePair>();
 	private static String FORMATED_CONFIG = null;
@@ -33,7 +35,7 @@ public class OtherServiceImpl extends AbstractService implements OtherService {
 		init();
 	}
 
-	public static void init() {
+	private static void init() {
 		try {
 			otherDao = (OtherDao) SpringApplicationContext.getBean("otherDao");
 			CONFIGS = otherDao.getConfig();
@@ -54,7 +56,9 @@ public class OtherServiceImpl extends AbstractService implements OtherService {
 			tmp[i] = String.format("\"%s\":\"%s\"", pair.getKey(),
 					pair.getValue());
 		}
-		FORMATED_CONFIG = String.format("{%s}", StringUtils.join(tmp));
+		if (tmp.length > 0) {
+			FORMATED_CONFIG = String.format("{%s}", StringUtils.join(tmp, ","));
+		}
 	}
 
 	@Override

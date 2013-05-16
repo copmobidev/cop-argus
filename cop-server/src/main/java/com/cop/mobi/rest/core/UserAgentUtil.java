@@ -16,9 +16,9 @@ import com.cop.mobi.common.UserAgent;
  * @author chris.liu
  * 
  */
-public class UserAgentParser {
+public class UserAgentUtil {
 
-	protected static final Logger log = Logger.getLogger(UserAgentParser.class);
+	protected static final Logger log = Logger.getLogger(UserAgentUtil.class);
 
 	private static final Pattern UA_PESEUS_ANDROID_REGEX = Pattern.compile(
 			"mapi\\s*([0-9\\.]+)\\s*\\ peseus ([0-9\\.]+)(.*) (?:.*)",

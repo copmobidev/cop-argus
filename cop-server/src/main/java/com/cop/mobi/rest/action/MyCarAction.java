@@ -1,9 +1,5 @@
 package com.cop.mobi.rest.action;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -11,10 +7,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
-import com.cop.mobi.mycar.entity.DriveRoutePo;
-import com.cop.mobi.mycar.entity.Span;
+import com.cop.mobi.mycar.entity.DateSpan;
 import com.cop.mobi.mycar.service.DiagnoseService;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.AbstractAction;
@@ -63,8 +60,8 @@ public class MyCarAction extends AbstractAction {
 			if (TokenUtil.isValid(token)) {
 				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
 			} else {
-				result = myCarService.getDriveRoutes(token.getMcid(),
-						beginTime, endTime, Span.MONTH);
+				DateSpan dateSpan = new DateSpan(span, beginTime, endTime);
+				result = myCarService.getDriveRoutes(token.getMcid(), dateSpan);
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "status request error"), e);
@@ -76,16 +73,21 @@ public class MyCarAction extends AbstractAction {
 
 	@POST
 	@Path("/upload")
-	public Response uploadDriveRoutes(@FormParam("token") String strToken,
+	public Response uploadDriveRoutes(@FormParam("token") String token,
 			@FormParam("routes") String routes) {
 		Result result = null;
 		try {
-			Token token = TokenUtil.parseToken(strToken);
-			if (TokenUtil.isValid(token)) {
-				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
+			Token tk = TokenUtil.parseToken(token);
+			if (TokenUtil.isValid(tk)) {
+				result = new Result(ResultStatus.RS_EXPIRED, QUERY_LIMIT_MSG);
+			} else if (StringUtils.isNotBlank(routes)) {
+				String[] tmp = routes.split("\\;");
+				if (tmp == null || tmp.length <= 0) {
+					result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
+				}
+				result = myCarService.uploadDriveRoutes(tk.getMcid(), tmp);
 			} else {
-				List<DriveRoutePo> drps = parseDriveRoutes(routes);
-				result = myCarService.uploadDriveRoutes(drps);
+				result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag,
@@ -95,37 +97,25 @@ public class MyCarAction extends AbstractAction {
 		return Response.status(Status.OK).entity(result.toString()).build();
 	}
 
-	private List<DriveRoutePo> parseDriveRoutes(String routes) throws Exception {
-		StringTokenizer st = new StringTokenizer(routes, "|");
-		if (st.countTokens() <= 0) {
-			return null;
-		}
-		List<DriveRoutePo> drps = new ArrayList<DriveRoutePo>();
-		while (st.hasMoreTokens()) {
-			try {
-				StringTokenizer subSt = new StringTokenizer(st.nextToken());
-				String route = subSt.nextToken();
-				long beginTime = Long.parseLong(subSt.nextToken());
-				long endTime = Long.parseLong(subSt.nextToken());
-				DriveRoutePo drp = new DriveRoutePo();
-				drp.setRoute(route);
-				drp.setBeginTime(beginTime);
-				drp.setEndTime(endTime);
-				drps.add(drp);
-			} catch (Exception e) {
-				log.error(String.format("%s:%s", Tag,
-						"parse upload drive routes data error"), e);
-			}
-		}
-		return drps;
-	}
-
 	@POST
 	@Path("/diagnose")
 	public Response suggest(@FormParam("token") String token,
 			@FormParam("codes") String codes) {
 		Result result = null;
 		try {
+			Token tk = TokenUtil.parseToken(token);
+			if (TokenUtil.isValid(tk)) {
+				result = new Result(ResultStatus.RS_EXPIRED, QUERY_LIMIT_MSG);
+			} else if (StringUtils.isNotBlank(codes)) {
+				String[] tmp = codes.split("\\|");
+				if (tmp == null || tmp.length <= 0) {
+					result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
+				} else {
+					result = diagnoseService.diagnose(tk, tmp);
+				}
+			} else {
+				result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
+			}
 
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "suggest error"), e);

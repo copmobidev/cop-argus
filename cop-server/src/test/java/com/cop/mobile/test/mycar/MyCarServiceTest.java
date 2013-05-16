@@ -2,19 +2,20 @@ package com.cop.mobile.test.mycar;
 
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.json.JSONObject;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cop.mobi.common.Result;
-import com.cop.mobi.mycar.entity.Span;
+import com.cop.mobi.mycar.entity.DateSpan;
+import com.cop.mobi.mycar.entity.DateSpan.Span;
 import com.cop.mobi.mycar.service.DiagnoseService;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
+import com.cop.mobi.rest.core.Token;
+import com.cop.mobi.rest.core.TokenUtil;
 import com.cop.mobile.test.BaseTest;
 
 /**
@@ -49,8 +50,9 @@ public class MyCarServiceTest extends BaseTest {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date beginDate = sdf.parse("2013-03-02 00:00:00");
 			Date endDate = sdf.parse("2013-03-06 00:00:00");
-			Result result = myCarService.getDriveRoutes(1, beginDate.getTime(),
-					endDate.getTime(), Span.MONTH);
+			DateSpan ds = new DateSpan(Span.MONTH, beginDate.getTime(),
+					endDate.getTime());
+			Result result = myCarService.getDriveRoutes(1, ds);
 			if (result != null) {
 				JSONObject jo = new JSONObject(result.toString());
 				System.out.println(jo.toString());
@@ -61,14 +63,12 @@ public class MyCarServiceTest extends BaseTest {
 	}
 
 	@Test
-	public void diagnoseServiceTest4getItems() {
-		List<String> codes = new ArrayList<String>();
-		codes.add("P1442");
-		codes.add("P1640");
-		codes.add("P1698");
-		codes.add("U1451");
+	public void diagnoseServiceTest4diagnose() {
+		String tk = "";
+		String[] codes = { "P1442", "P1640", "P1698", "U1451" };
+		Token token = TokenUtil.parseToken(tk);
 
-		Result result = diagnoseService.getDiagnoseItems(codes);
+		Result result = diagnoseService.diagnose(token, codes);
 		try {
 			JSONObject jo = new JSONObject(result.toString());
 			System.out.println(jo.toString());

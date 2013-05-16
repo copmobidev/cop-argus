@@ -58,18 +58,17 @@ public class DiagnoseServiceImpl extends AbstractService implements
 
 	@Override
 	public Result diagnose(Token token, String[] codes) {
-		List<NameValuePair> items = new ArrayList<NameValuePair>();
+		List<String> items = new ArrayList<String>();
 		for (String key : codes) {
 			String val = OBD_CODES.get(key);
 			NameValuePair item = new NameValuePair(key, val);
-			items.add(item);
+			items.add(item.toLCString());
 		}
-
 		if (items.size() == 0) {
 			return new Result(ResultStatus.RS_FAIL, new Message("警告",
 					"未发现相应诊断码"));
 		}
-		
+
 		String tmp = String.format("[%s]", StringUtils.join(items, ","));
 		return new Result(ResultStatus.RS_OK, tmp);
 	}

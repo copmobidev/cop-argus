@@ -5,10 +5,9 @@ import java.util.Map;
 
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.CarBrand;
-import com.cop.mobi.mycar.entity.DriveRoutePo;
+import com.cop.mobi.mycar.entity.DateSpan;
 import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
-import com.cop.mobi.mycar.entity.Span;
 
 /**
  * 
@@ -83,18 +82,14 @@ public interface MyCarService {
 	 * 获取车辆行车记录
 	 * 
 	 * @param mcid
-	 * @param beginTime
-	 *            起始时间
-	 * @param endTime
-	 *            结束时间
 	 * @param span
 	 *            时间跨度
 	 * @return
 	 */
-	Result getDriveRoutes(int mcid, long beginTime, long endTime, Span span);
+	Result getDriveRoutes(int mcid, DateSpan span);
 
 	/**
-	 * 存储客户端行车信息到server并记录数据log
+	 * 存储客户端行车信息到server并记录数据log，并判断是否有新的加油记录
 	 * 
 	 * @param mcid
 	 * @param data
@@ -102,5 +97,5 @@ public interface MyCarService {
 	 * @param endTime
 	 * @return 最近一次行车记录
 	 */
-	Result uploadDriveRoutes(List<DriveRoutePo> driveRoutes);
+	Result uploadDriveRoutes(int mcid, String[] originDatas);
 }

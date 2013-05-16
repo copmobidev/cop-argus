@@ -13,9 +13,6 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cop.mobi.rest.core.Token;
-import com.cop.mobi.rest.core.TokenUtil;
-
 /**
  * 
  * @author chris.liu
@@ -231,20 +228,11 @@ public class CommonUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String strToken = TokenUtil.generateToken(1, 1, 3);
-		System.out.println(strToken);
-		Token token = TokenUtil.parseToken(strToken);
-		System.out.println(token);
 
-		strToken = TokenUtil.generateToken(1, 1, 40);
-		System.out.println(strToken);
-		token = TokenUtil.parseToken(strToken);
-		System.out.println(token);
-		
 		Map<Integer, String> test = new HashMap<Integer, String>();
 		test.put(1, "hello");
 		test.put(2, "world");
-		
+
 		System.out.println(test.get(2));
 	}
 }

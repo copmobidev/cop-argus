@@ -1,10 +1,9 @@
 package com.cop.mobi.common;
 
-
 /**
  * 
  * @author chris.liu
- *
+ * 
  */
 public class Result {
 	private ResultStatus status;
@@ -45,7 +44,7 @@ public class Result {
 	}
 
 	public static enum ResultStatus {
-		RS_OK(200), RS_FAIL(400), RS_ERROR(500);
+		RS_OK(200), RS_FAIL(400), RS_EXPIRED(401), RS_ERROR(500);
 
 		private int status;
 

@@ -13,11 +13,11 @@ import com.cop.mobi.common.Message;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.CarBrand;
-import com.cop.mobi.mycar.entity.DriveRoute;
+import com.cop.mobi.mycar.entity.DateSpan;
+import com.cop.mobi.mycar.entity.DateSpan.Span;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
 import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
-import com.cop.mobi.mycar.entity.Span;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
 import com.cop.mobi.rest.core.SpringApplicationContext;
@@ -199,35 +199,14 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result getDriveRoutes(int mcid, long beginTime, long endTime,
-			Span span) {
+	public Result getDriveRoutes(int mcid, DateSpan dataSpan) {
 		Result result = null;
-		try {
-			List<DriveRoutePo> drps = myCarDao.getDriveRoutes(mcid, beginTime,
-					endTime);
-			List<DriveRoute> drs = new ArrayList<DriveRoute>();
-			for (DriveRoutePo drp : drps) {
-//				drs.add(new DriveRoute(drp));
-			}
-			if (drps != null && drps.size() > 0) {
-				String actions = parseAction(drs, span);
-				String oilcosts = parseOilCost(drs, span);
-				String speeds = parseSpeed(drs, span);
-				String temps = parseTemperature(drs, span);
-				String data = String
-						.format("\"action\":\"%s\",\"oilcost\":\"%s\",\"speed\":\"%s\",\"temp\":\"%s\"",
-								actions, oilcosts, speeds, temps);
-
-				result = new Result(ResultStatus.RS_OK, data);
-			} else {
-				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
-						"未发现该车辆行车信息"));
-			}
-
-		} catch (Exception e) {
-			log.error(String.format("%s:%s", Tag, String.format(
-					"getMyCarStatus(%d, %d, %d)", mcid, beginTime, endTime)), e);
-			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		String data = parseRoute(mcid, dataSpan);
+		if (data != null) {
+			result = new Result(ResultStatus.RS_OK, data);
+		} else {
+			result = new Result(ResultStatus.RS_FAIL, new Message("警告",
+					"未发现该车辆行车信息"));
 		}
 		return result;
 	}
@@ -240,62 +219,37 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	 * @return 
 	 *         break-span0:value0|...|spanN:valueN;acc-span0:value0|...|spanN:valueN
 	 */
-	private String parseAction(List<DriveRoute> routes, Span span) {
-		for (DriveRoute route : routes) {
-			switch (span) {
-			case PIECE:
-				break;
-			case WEEK:
-				break;
-			case MONTH:
-				break;
-			case YEAR:
-				break;
+	private String parseRoute(int mcid, DateSpan dataSpan) {
+		try {
+			List<DriveRoutePo> routePos = myCarDao.getDriveRoutes(mcid,
+					dataSpan.getBeginTime(), dataSpan.getEndTime());
+			if (dataSpan.getSpan() == Span.PIECE) {
+				// 获取单次行程数据
+
+			} else {
+				// 获取行程summary数据
+				switch (dataSpan.getSpan()) {
+				case WEEK:
+					break;
+				case MONTH:
+					break;
+				case YEAR:
+					break;
+				default:
+					break;
+				}
 			}
+		} catch (Exception e) {
+			log.error(String.format("%s:%s", Tag,
+					String.format("getMyCarStatus(%d, %d)", mcid, dataSpan)), e);
 		}
 		return null;
 	}
 
-	/**
-	 * 获取给定时间区域内的平均油耗
-	 * 
-	 * @param routes
-	 * @param span
-	 * @return the string with format span0:value0|span1:value1|...|spanN:valueN
-	 */
-	private String parseOilCost(List<DriveRoute> routes, Span span) {
-
-		return null;
-	}
-
-	/**
-	 * 获取给定时间区域内的平均速度
-	 * 
-	 * @param routes
-	 * @param span
-	 * @return the string with format span0:value0|span1:value1|...|spanN:valueN
-	 */
-	private String parseSpeed(List<DriveRoute> routes, Span span) {
-
-		return null;
-	}
-
-	/**
-	 * 获取给定时间区域内的平均温度
-	 * 
-	 * @param routes
-	 * @param span
-	 * @return the string with format span0:value0|span1:value1|...|spanN:valueN
-	 */
-	private String parseTemperature(List<DriveRoute> routes, Span span) {
-
-		return null;
-	}
-
 	@Override
-	public Result uploadDriveRoutes(List<DriveRoutePo> driveRoutes) {
-		for (DriveRoutePo dr : driveRoutes) {
-			MyCarLog.info(String.format("%d-%s", dr.getMcid(), dr.getRoute()));
+	public Result uploadDriveRoutes(int mcid, String[] orginDatas) {
+		for (String data : orginDatas) {
+			MyCarLog.info(String.format("%d-%s", mcid, data));
 		}
 
 		Result result = null;

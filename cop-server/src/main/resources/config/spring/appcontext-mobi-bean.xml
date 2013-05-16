@@ -14,4 +14,6 @@
 	
 	<bean id="oilBillService" class="com.cop.mobi.mycar.service.impl.OilBillServiceImpl" />
 	
+	<bean id="otherService" class="com.cop.mobi.other.service.impl.OtherServiceImpl" />
+	
 </beans>

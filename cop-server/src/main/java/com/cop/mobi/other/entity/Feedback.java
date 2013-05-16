@@ -10,16 +10,18 @@ public class Feedback {
 	private int mcid;
 	private String ua;
 	private String content;
+	private long addtime;
 
 	public Feedback() {
 
 	}
 
-	public Feedback(int uid, int mcid, String ua, String content) {
+	public Feedback(int uid, int mcid, String ua, String content, long addtime) {
 		this.uid = uid;
 		this.mcid = mcid;
 		this.ua = ua;
 		this.content = content;
+		this.addtime = addtime;
 	}
 
 	public int getUid() {
@@ -53,4 +55,13 @@ public class Feedback {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	public long getAddtime() {
+		return addtime;
+	}
+
+	public void setAddtime(long addtime) {
+		this.addtime = addtime;
+	}
+
 }

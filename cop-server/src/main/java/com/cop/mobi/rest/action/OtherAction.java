@@ -1,5 +1,7 @@
 package com.cop.mobi.rest.action;
 
+import java.util.Date;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -16,7 +18,7 @@ import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.SpringApplicationContext;
 import com.cop.mobi.rest.core.Token;
 import com.cop.mobi.rest.core.TokenUtil;
-import com.cop.mobi.rest.core.UserAgentParser;
+import com.cop.mobi.rest.core.UserAgentUtil;
 
 /**
  * 包括config，feedback在内零散接口
@@ -49,7 +51,7 @@ public class OtherAction extends AbstractAction {
 			@FormParam("token") String token) {
 		Result result = null;
 		try {
-			UserAgent userAgent = UserAgentParser.parseUserAgent(ua);
+			UserAgent userAgent = UserAgentUtil.parseUserAgent(ua);
 			Token tk = TokenUtil.parseToken(token);
 			result = otherService.getConfig(userAgent, tk);
 		} catch (Exception e) {
@@ -68,7 +70,7 @@ public class OtherAction extends AbstractAction {
 		try {
 			Token tk = TokenUtil.parseToken(token);
 			Feedback feedback = new Feedback(tk.getUid(), tk.getMcid(), ua,
-					content);
+					content, new Date().getTime());
 			result = otherService.feedback(feedback);
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "feedback error"), e);
