@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cop.mobi.mycar.service.dao.POIDao">
+	<resultMap id="poiResult" type="com.cop.mobi.mycar.entity.GasStation">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="addr" column="address" />
+		<result property="type" column="type" />
+		<result property="discount" column="discount" />
+		<result property="lat" column="lat" />
+		<result property="lng" column="lng" />
+		<result property="e0" column="e0" />
+		<result property="e90" column="e90" />
+		<result property="e93" column="e93" />
+		<result property="e97" column="e97" />
+	</resultMap>
+
+	<select id="getConfig" resultMap="configResult">
+		SELECT
+		id, name, address, type,
+		discount, lat, lng, e0, e90, e93, e97
+		FROM
+		LC_GasStationPOI
+		WHERE 
+		<![CDATA[ 
+			lat<#{maxLat} && lat>#{minLat} && lng<#{maxLng} && lng>#{minLng}
+		]]>
+	</select>
+
+	<insert id="addFeedback">
+		INSERT INTO LC_Feedback (uid, mcid, ua, content,
+		addtime)
+		VALUES (#{uid}, #{mcid}, #{ua}, #{content}, #{addtime})
+	</insert>
+</mapper>

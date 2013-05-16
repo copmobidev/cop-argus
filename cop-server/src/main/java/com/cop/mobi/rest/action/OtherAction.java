@@ -6,6 +6,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -27,6 +28,7 @@ import com.cop.mobi.rest.core.UserAgentUtil;
  * 
  */
 @Path("/other")
+@Produces("application/json;charset=UTF-8")
 public class OtherAction extends AbstractAction {
 	private static final String Tag = "AccountAction";
 
@@ -53,7 +55,11 @@ public class OtherAction extends AbstractAction {
 		try {
 			UserAgent userAgent = UserAgentUtil.parseUserAgent(ua);
 			Token tk = TokenUtil.parseToken(token);
-			result = otherService.getConfig(userAgent, tk);
+			if (userAgent == null || tk == null) {
+				result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
+			} else {
+				result = otherService.getConfig(userAgent, tk);
+			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "get config error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
@@ -69,9 +75,13 @@ public class OtherAction extends AbstractAction {
 		Result result = null;
 		try {
 			Token tk = TokenUtil.parseToken(token);
-			Feedback feedback = new Feedback(tk.getUid(), tk.getMcid(), ua,
-					content, new Date().getTime());
-			result = otherService.feedback(feedback);
+			if (tk == null) {
+				result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
+			} else {
+				Feedback feedback = new Feedback(tk.getUid(), tk.getMcid(), ua,
+						content, new Date().getTime());
+				result = otherService.feedback(feedback);
+			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "feedback error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);

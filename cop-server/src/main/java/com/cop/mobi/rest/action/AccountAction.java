@@ -114,32 +114,35 @@ public class AccountAction extends AbstractAction {
 			Token tk = TokenUtil.parseToken(token);
 			UserPo userPo = null;
 			MyCarPo myCarPo = null;
-
-			if (StringUtils.isNotBlank(name) || StringUtils.isNotBlank(email)
-					|| StringUtils.isNotBlank(pwd)) {
-				userPo = new UserPo();
-				userPo.setId(tk.getUid());
-				userPo.setEmail(email);
-				userPo.setName(name);
-				userPo.setPwd(pwd);
-			}
-
-			if (StringUtils.isNotEmpty(brand) && StringUtils.isNotBlank(model)
-					&& StringUtils.isNotBlank(engine)) {
-				CarBrand cb = myCarService.getCarBrandMap().get(
-						String.format("%s%s%s", brand, model, engine));
-				if (cb != null) {
-					myCarPo = new MyCarPo();
-					myCarPo.setId(tk.getMcid());
-					myCarPo.setBid(cb.getId());
-				}
-			}
-
-			if (userPo != null || myCarPo != null) {
-				result = accountService.update(userPo, myCarPo);
+			if (tk == null) {
+				result = new Result(ResultStatus.RS_EXPIRED, PARAM_ERROR_MSG);
 			} else {
-				result = new Result(ResultStatus.RS_FAIL, new Message("更新失败",
-						"传入数据错误"));
+				if (StringUtils.isNotBlank(name)
+						|| StringUtils.isNotBlank(email)
+						|| StringUtils.isNotBlank(pwd)) {
+					userPo = new UserPo();
+					userPo.setId(tk.getUid());
+					userPo.setEmail(email);
+					userPo.setName(name);
+					userPo.setPwd(pwd);
+				}
+				if (StringUtils.isNotEmpty(brand)
+						&& StringUtils.isNotBlank(model)
+						&& StringUtils.isNotBlank(engine)) {
+					CarBrand cb = myCarService.getCarBrandMap().get(
+							String.format("%s%s%s", brand, model, engine));
+					if (cb != null) {
+						myCarPo = new MyCarPo();
+						myCarPo.setId(tk.getMcid());
+						myCarPo.setBid(cb.getId());
+					}
+				}
+				if (userPo != null || myCarPo != null) {
+					result = accountService.update(userPo, myCarPo);
+				} else {
+					result = new Result(ResultStatus.RS_FAIL, new Message(
+							"更新失败", "传入数据错误"));
+				}
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "login exception"), e);
@@ -172,11 +175,4 @@ public class AccountAction extends AbstractAction {
 		}
 		return Response.status(Status.OK).entity(result.toString()).build();
 	}
-
-	@POST
-	@Path("/freeze")
-	public Response freeze() {
-		return null;
-	}
-
 }

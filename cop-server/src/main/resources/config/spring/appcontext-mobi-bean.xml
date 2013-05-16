@@ -7,13 +7,12 @@
 	<bean class="com.cop.mobi.rest.core.SpringApplicationContext" />
 
 	<bean id="accountService" class="com.cop.mobi.account.service.impl.AccountServiceImpl" />
-	
+
 	<bean id="myCarService" class="com.cop.mobi.mycar.service.impl.MyCarServiceImpl" />
-	
 	<bean id="diagnoseService" class="com.cop.mobi.mycar.service.impl.DiagnoseServiceImpl" />
-	
+	<bean id="poiService" class="com.cop.mobi.mycar.service.impl.POIServiceImpl" />
 	<bean id="oilBillService" class="com.cop.mobi.mycar.service.impl.OilBillServiceImpl" />
-	
+
 	<bean id="otherService" class="com.cop.mobi.other.service.impl.OtherServiceImpl" />
-	
+
 </beans>
