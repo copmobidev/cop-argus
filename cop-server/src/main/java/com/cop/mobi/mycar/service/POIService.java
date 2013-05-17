@@ -22,5 +22,5 @@ public interface POIService {
 	 *            覆盖范围
 	 * @return
 	 */
-	List<GasStation> getGasStation(double lat, double lng, int range);
+	List<GasStation> getGasStation(double lat, double lng, double range);
 }

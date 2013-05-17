@@ -63,7 +63,6 @@ public class AESZipFileEncrypter {
 		}
 	}
 
-	/** TODO - zipEntry might use extended local header */
 	protected void add(ZipEntry zipEntry, ZipFileEntryInputStream zipData,
 			String password) throws IOException, UnsupportedEncodingException {
 		AESEncrypter aesEncrypter = new AESEncrypterBC(
@@ -153,8 +152,7 @@ public class AESZipFileEncrypter {
 
 	/** test code + usage example */
 	public static void main(String[] args) throws Exception {
-		AESZipFileEncrypter enc = new AESZipFileEncrypter(
-				"tools/data/icon.zip");
+		AESZipFileEncrypter enc = new AESZipFileEncrypter("tools/data/icon.zip");
 		enc.zipAndEcrypt(new File("tools/data/icon.png"), "foo");
 	}
 }

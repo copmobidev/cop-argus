@@ -37,19 +37,18 @@ public class AccountActionTest {
 			System.out.println("resCode = "
 					+ response.getStatusLine().getStatusCode()); // 获取响应码
 			System.out.println("result = "
-					+ URLDecoder.decode(EntityUtils.toString(response.getEntity(), "gbk"), "gbk")); // 获取响应内容
-			
+					+ URLDecoder.decode(
+							EntityUtils.toString(response.getEntity(), "gbk"),
+							"gbk")); // 获取响应内容
+
 			String test = "%7B%22status%22%3A400%2C%22data%22%3A%7B%22title%22%3A%22login+error%22%2C%22content%22%3A%22%3F%3F%3F%3F%3F%22%7D%7D";
 			System.out.println(URLDecoder.decode(test, "gbk"));
 
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

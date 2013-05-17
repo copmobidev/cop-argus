@@ -32,15 +32,15 @@ public class POIServiceImpl extends AbstractAction implements POIService {
 	}
 
 	@Override
-	public List<GasStation> getGasStation(double lat, double lng, int range) {
+	public List<GasStation> getGasStation(double lat, double lng, double range) {
 		try {
-			double maxLat = GeoUtil.format(lat, 3);
-			double minLat = GeoUtil.format(lat, 3) + 0.001;
-			double maxLng = GeoUtil.format(lng, 3);
+			double maxLat = GeoUtil.format(lat, 3) + range / 10000;
+			double minLat = GeoUtil.format(lat, 3);
+			double maxLng = GeoUtil.format(lng, 3) + range / 10000;
 			double minLng = GeoUtil.format(lng, 3);
-			poiDao.getGasStation(maxLat, minLat, maxLng, minLng);
+			return poiDao.getGasStation(maxLat, minLat, maxLng, minLng);
 		} catch (Exception e) {
-			log.error(String.format("%s:getGasStation(%f,%f,%d)", Tag, lat,
+			log.error(String.format("%s:getGasStation(%f,%f,%f)", Tag, lat,
 					lng, range), e);
 		}
 		return null;

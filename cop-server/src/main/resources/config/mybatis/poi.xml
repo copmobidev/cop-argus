@@ -16,7 +16,7 @@
 		<result property="e97" column="e97" />
 	</resultMap>
 
-	<select id="getConfig" resultMap="configResult">
+	<select id="getGasStation" resultMap="poiResult">
 		SELECT
 		id, name, address, type,
 		discount, lat, lng, e0, e90, e93, e97
@@ -24,13 +24,7 @@
 		LC_GasStationPOI
 		WHERE 
 		<![CDATA[ 
-			lat<#{maxLat} && lat>#{minLat} && lng<#{maxLng} && lng>#{minLng}
+			lat<=#{maxLat} && lat>=#{minLat} && lng<=#{maxLng} && lng>=#{minLng}
 		]]>
 	</select>
-
-	<insert id="addFeedback">
-		INSERT INTO LC_Feedback (uid, mcid, ua, content,
-		addtime)
-		VALUES (#{uid}, #{mcid}, #{ua}, #{content}, #{addtime})
-	</insert>
 </mapper>
