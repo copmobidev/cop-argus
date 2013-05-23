@@ -1,4 +1,4 @@
-package com.cop.mobi.mycar.entity;
+package com.cop.entity;
 
 /**
  * 
@@ -6,7 +6,6 @@ package com.cop.mobi.mycar.entity;
  * 
  */
 public class DrivingPiece {
-
 	public long timestamp; // 时间戳
 	public double lat; // 纬度
 	public char dir1; // 方向南北
@@ -43,5 +42,4 @@ public class DrivingPiece {
 						totalFuel, calLoad, coolTemp, avgPadPos, maxPadPos,
 						minPadPos, fuelLV, acc, brk, overSPD, idleSPD, sliding);
 	}
-
 }

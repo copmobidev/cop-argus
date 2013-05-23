@@ -1,4 +1,4 @@
-package com.cop.mobi.common.crypt;
+package com.cop.util.crypt;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,10 +14,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import com.cop.mobi.common.crypt.impl.AESEncrypterBC;
-import com.cop.mobi.common.crypt.impl.ExtZipEntry;
-import com.cop.mobi.common.crypt.impl.ExtZipOutputStream;
-import com.cop.mobi.common.crypt.impl.ZipFileEntryInputStream;
+import com.cop.util.crypt.impl.AESEncrypterBC;
+import com.cop.util.crypt.impl.ExtZipEntry;
+import com.cop.util.crypt.impl.ExtZipOutputStream;
+import com.cop.util.crypt.impl.ZipFileEntryInputStream;
 
 /**
  * 
