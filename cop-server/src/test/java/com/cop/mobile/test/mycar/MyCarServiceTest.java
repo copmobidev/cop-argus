@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.DateSpan;
 import com.cop.mobi.mycar.entity.DateSpan.Span;
+import com.cop.mobi.mycar.entity.DriveSummary;
 import com.cop.mobi.mycar.entity.GasStation;
 import com.cop.mobi.mycar.service.DiagnoseService;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.mycar.service.POIService;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
+import com.cop.mobi.mycar.util.DriveDataParser;
 import com.cop.mobi.rest.core.Token;
 import com.cop.mobi.rest.core.TokenUtil;
 import com.cop.mobile.test.BaseTest;
@@ -97,6 +99,30 @@ public class MyCarServiceTest extends BaseTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 单组行程数据上传
+	 */
+	@Test
+	public void singleDriveDataUploadTest() {
+		try {
+			String data = "";
+			int pieceNum = data.length() / 40 - 1;
+			String summary = data.substring(pieceNum * 40, data.length());
+			DriveSummary ds = DriveDataParser.parseDrivingSummary(summary);
+			myCarDao.uploadDrivingData(1, ds, data);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 多组行程数据上传
+	 */
+	@Test
+	public void multiDriveDataUploadTest() {
+
 	}
 
 	public static void main(String[] args) throws Exception {

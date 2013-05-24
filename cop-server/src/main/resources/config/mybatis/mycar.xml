@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cop.mobi.mycar.service.dao.MyCarDao">
-
-
 	<resultMap id="carBrandResult" type="com.cop.mobi.mycar.entity.CarBrand">
 		<result property="id" column="id" />
 		<result property="manufacturer" column="manufacturer" />
@@ -71,8 +69,8 @@
 	</insert>
 
 	<update id="updateMyCarInfo">
-		UPDATE LC_MyCar 
-		SET 
+		UPDATE LC_MyCar
+		SET
 		bid=#{bid}
 		WHERE id=#{id}
 	</update>
@@ -98,4 +96,7 @@
 		]]>
 	</select>
 
+
+	<insert id="uploadDriveData">
+	</insert>
 </mapper>

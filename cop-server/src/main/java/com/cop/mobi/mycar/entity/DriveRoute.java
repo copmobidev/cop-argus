@@ -8,19 +8,19 @@ import java.util.List;
  * 
  */
 public class DriveRoute {
-	private DrivingSummary summary; // 行程摘要
+	private DriveSummary summary; // 行程摘要
 	private List<DrivingPiece> detail; // 行程具体信息
 
-	public DriveRoute(DrivingSummary summary, List<DrivingPiece> detail) {
+	public DriveRoute(DriveSummary summary, List<DrivingPiece> detail) {
 		this.summary = summary;
 		this.detail = detail;
 	}
 
-	public DrivingSummary getSummary() {
+	public DriveSummary getSummary() {
 		return summary;
 	}
 
-	public void setSummary(DrivingSummary summary) {
+	public void setSummary(DriveSummary summary) {
 		this.summary = summary;
 	}
 

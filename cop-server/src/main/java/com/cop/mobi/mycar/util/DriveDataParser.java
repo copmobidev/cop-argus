@@ -2,9 +2,10 @@ package com.cop.mobi.mycar.util;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
+import com.cop.mobi.mycar.entity.DriveSummary;
 import com.cop.mobi.mycar.entity.DrivingPiece;
-import com.cop.mobi.mycar.entity.DrivingSummary;
 
 /**
  * 
@@ -12,6 +13,12 @@ import com.cop.mobi.mycar.entity.DrivingSummary;
  * 
  */
 public class DriveDataParser {
+
+	public static Map<DriveSummary, DrivingPiece> parseDriveData(String data)
+			throws Exception {
+		
+		return null;
+	}
 
 	public static DrivingPiece parseDrivingPiece(String piece) throws Exception {
 		DrivingPiece drivingPiece = new DrivingPiece();
@@ -152,9 +159,9 @@ public class DriveDataParser {
 		return drivingPiece;
 	}
 
-	public static DrivingSummary parseDrivingSummary(String summary)
+	public static DriveSummary parseDrivingSummary(String summary)
 			throws Exception {
-		DrivingSummary drivingSummary = new DrivingSummary();
+		DriveSummary drivingSummary = new DriveSummary();
 		int year = 0;
 		int month = 0;
 		int day = 0;
@@ -390,7 +397,7 @@ public class DriveDataParser {
 		try {
 			DrivingPiece drivingPiece = parseDrivingPiece(piece1);
 			System.out.println(drivingPiece);
-			DrivingSummary drivingSummary = parseDrivingSummary(summary);
+			DriveSummary drivingSummary = parseDrivingSummary(summary);
 			System.out.println(drivingSummary);
 		} catch (Exception e) {
 			e.printStackTrace();

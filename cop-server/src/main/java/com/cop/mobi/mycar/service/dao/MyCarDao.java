@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
-import com.cop.mobi.mycar.entity.DrivingSummary;
+import com.cop.mobi.mycar.entity.DriveSummary;
 import com.cop.mobi.mycar.entity.MyCarPo;
 
 /**
@@ -35,8 +35,10 @@ public interface MyCarDao {
 	int freezeMyCar(@Param(value = "mcid") int mcid);
 
 	int uploadDrivingData(@Param(value = "mcid") int mcid,
-			@Param(value = "summary") DrivingSummary summary,
+			@Param(value = "summary") DriveSummary summary,
 			@Param(value = "detail") String drivingData);
+
+	int uploadDriveDatas(@Param(value = "data") String data);
 
 	/**
 	 * get my car status by my car id during beginDate and end date

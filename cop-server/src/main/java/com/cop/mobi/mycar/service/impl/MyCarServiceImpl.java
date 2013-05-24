@@ -16,10 +16,12 @@ import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.DateSpan;
 import com.cop.mobi.mycar.entity.DateSpan.Span;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
+import com.cop.mobi.mycar.entity.DriveSummary;
 import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
+import com.cop.mobi.mycar.util.DriveDataParser;
 import com.cop.mobi.rest.core.SpringApplicationContext;
 
 /**
@@ -211,6 +213,28 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 		return result;
 	}
 
+	@Override
+	public Result uploadDriveRoutes(int mcid, String[] orginDatas) {
+		for (String data : orginDatas) {
+			MyCarLog.info(String.format("%d-%s", mcid, data));
+		}
+
+		Result result = null;
+		try {
+			for (int i = 0; i < orginDatas.length; ++i) {
+				int pieceNum = orginDatas[i].length() / 80 - 1;
+				DriveSummary driveSummary = DriveDataParser
+						.parseDrivingSummary(orginDatas[i].substring(
+								pieceNum * 80, orginDatas[i].length()));
+				myCarDao.uploadDrivingData(mcid, driveSummary, orginDatas[i]);
+			}
+		} catch (Exception e) {
+			log.error(String.format("%s:%s:%s", Tag, "uploadDriveRoutes()"), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		}
+		return result;
+	}
+
 	/**
 	 * 获取给定时间区域内的各项指标数据（加速、刹车等）统计
 	 * 
@@ -245,21 +269,4 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 		}
 		return null;
 	}
-
-	@Override
-	public Result uploadDriveRoutes(int mcid, String[] orginDatas) {
-		for (String data : orginDatas) {
-			MyCarLog.info(String.format("%d-%s", mcid, data));
-		}
-
-		Result result = null;
-		try {
-
-		} catch (Exception e) {
-			log.error(String.format("%s:%s:%s", Tag, "uploadDriveRoutes()"), e);
-			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
-		}
-		return result;
-	}
-
 }
