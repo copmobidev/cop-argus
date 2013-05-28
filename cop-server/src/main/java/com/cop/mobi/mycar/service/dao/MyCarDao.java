@@ -32,8 +32,6 @@ public interface MyCarDao {
 
 	int deleteMyCar(@Param(value = "mcid") int mcid);
 
-	int freezeMyCar(@Param(value = "mcid") int mcid);
-
 	int uploadDrivingData(@Param(value = "mcid") int mcid,
 			@Param(value = "summary") DriveSummary summary,
 			@Param(value = "detail") String drivingData);

@@ -441,7 +441,7 @@ public class DataParser {
 				vinArray[i - 16] = tmp[i];
 			} else if (i > 33 && i < 42) {
 				obdArray[i - 33] = tmp[i];
-			} else if (i > 42 && i < 59) {
+			} else if (i > 42 && i < 59) { //
 				cidArray[i - 43] = tmp[i];
 			}
 		}
@@ -461,7 +461,7 @@ public class DataParser {
 		System.out.println(obdConfig);
 		System.out.println(hex2char("00"));
 
-		// parseDrivingData("data/1.dat");
+		parseDrivingData("data/1.dat");
 
 		// try {
 		// AESZipFileDecrypter zipFile = new AESZipFileDecrypter(new File(

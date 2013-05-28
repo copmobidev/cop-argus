@@ -6,10 +6,12 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cop.mobi.account.entity.UserPo;
 import com.cop.mobi.account.service.AccountService;
 import com.cop.mobi.account.service.dao.AccountDao;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.CarBrand;
+import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobile.test.BaseTest;
 
 /**
@@ -48,6 +50,49 @@ public class AccountServiceTest extends BaseTest {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	
+	@Test
+	public void updateUserInfoTest() {
+		String name = "";
+		String email = "test11@gmail.com";
+		String pwd = "123456";
+		
+		UserPo userPo = new UserPo();
+		userPo.setId(36);
+		userPo.setEmail(email);
+		userPo.setName(name);
+		userPo.setPwd(pwd);
+		Result result = accountService.update(userPo, null);
+		if (result != null) {
+			try {
+				JSONObject jo = new JSONObject(result.toString());
+				System.out.println(jo.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.err.println("no result return");
+		}
+	}
+	
+	@Test
+	public void updateMyCarInfoTest() {
+		MyCarPo myCarPo = new MyCarPo();
+		myCarPo.setId(36);
+		myCarPo.setBid(1);
+		Result result = accountService.update(null, myCarPo);
+		if (result != null) {
+			try {
+				JSONObject jo = new JSONObject(result.toString());
+				System.out.println(jo.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.err.println("no result return");
 		}
 	}
 }

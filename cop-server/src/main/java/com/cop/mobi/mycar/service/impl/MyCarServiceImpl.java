@@ -178,7 +178,7 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 
 			MyCarPo updatedMyCarPo = myCarDao.getMyCarById(myCarPo.getId());
 			CarBrand cb = RevCarBrandMap.get(myCarPo.getBid());
-			if (cb != null) {
+			if (cb != null && updatedMyCarPo != null) {
 				myCar = new MyCar(updatedMyCarPo.getId(),
 						updatedMyCarPo.getUid(), updatedMyCarPo.getSid(), cb);
 			}

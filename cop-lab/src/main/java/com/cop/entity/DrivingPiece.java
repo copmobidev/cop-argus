@@ -14,11 +14,9 @@ public class DrivingPiece {
 	public int ele; // 海拔
 	public int maxSPD; // 最高速度
 	public int bstFuel; // 最佳油耗
-	public int distH; // 里程数H
-	public int distL; // 里程数L
+	public int dist; // 里程数
 	public int avgSPD; // 平均速度
-	public int avgRPMH; // 平均转速H
-	public int avgRPML; // 平均装素L
+	public int avgRPM; // 平均转速
 	public int avgFuel; // 平均油耗
 	public int totalFuel; // 总油耗
 	public int calLoad; // 平局负载
@@ -36,10 +34,10 @@ public class DrivingPiece {
 	@Override
 	public String toString() {
 		return String
-				.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+				.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t",
 						timestamp, lat, dir1, lng, dir2, ele, maxSPD, bstFuel,
-						distH, distL, avgSPD, avgRPMH, avgRPML, avgFuel,
-						totalFuel, calLoad, coolTemp, avgPadPos, maxPadPos,
-						minPadPos, fuelLV, acc, brk, overSPD, idleSPD, sliding);
+						dist, avgSPD, avgRPM, avgFuel, totalFuel, calLoad,
+						coolTemp, avgPadPos, maxPadPos, minPadPos, fuelLV, acc,
+						brk, overSPD, idleSPD, sliding);
 	}
 }

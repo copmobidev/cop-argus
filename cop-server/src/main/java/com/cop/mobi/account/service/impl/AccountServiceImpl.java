@@ -127,6 +127,7 @@ public class AccountServiceImpl extends AbstractService implements
 		try {
 			User user = null;
 			MyCar myCar = null;
+			// update user info
 			if (userPo != null) {
 				List<String> values = new ArrayList<String>();
 				if (StringUtils.isNotBlank(userPo.getEmail())) {
@@ -144,7 +145,7 @@ public class AccountServiceImpl extends AbstractService implements
 						updatedUserPo.getEmail(), updatedUserPo.getName(),
 						updatedUserPo.getRegisterTime());
 			}
-
+			// update mycar info
 			if (myCarPo != null) {
 				myCar = myCarService.updateMyCarInfo(myCarPo);
 			}
@@ -155,6 +156,9 @@ public class AccountServiceImpl extends AbstractService implements
 						.format("{\"token\":\"%s\",\"profile\":\"%s\",\"carinfo\":\"%s\"}",
 								token, user.toLCString(), myCar.toLCString());
 				result = new Result(ResultStatus.RS_OK, data);
+			} else {
+				result = new Result(ResultStatus.RS_FAIL,
+						SERVER_INNER_ERROR_MSG);
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:update() error with param:%s & %s",
