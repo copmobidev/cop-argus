@@ -14,21 +14,20 @@
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 
+	<bean id="diagnoseDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.cop.mobi.mycar.service.dao.DiagnoseDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
 	<bean id="oilBillDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface" value="com.cop.mobi.mycar.service.dao.OilBillDao" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 
 	<bean id="poiDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.cop.mobi.mycar.service.dao.POIDao" />
+		<property name="mapperInterface" value="com.cop.mobi.poi.service.dao.POIDao" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-
-	<bean id="diagnoseDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.cop.mobi.mycar.service.dao.DiagnoseDao" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-
 
 	<bean id="otherDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface" value="com.cop.mobi.other.service.dao.OtherDao" />

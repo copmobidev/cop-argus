@@ -32,7 +32,7 @@ public class CharacterEncodingFilter implements Filter {
 		resp.setCharacterEncoding(CHARSET_DEF);
 		// 新增加的代码
 		HttpServletRequest httqReq = (HttpServletRequest) req;
-		String ua = httqReq.getHeader("useragent");
+		String ua = httqReq.getHeader("ua");
 		if (UserAgentUtil.parseUserAgent(ua) == null) {
 			return;
 		}

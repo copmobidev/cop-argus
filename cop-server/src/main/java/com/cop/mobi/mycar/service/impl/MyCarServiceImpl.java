@@ -223,10 +223,11 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 		try {
 			for (int i = 0; i < orginDatas.length; ++i) {
 				int pieceNum = orginDatas[i].length() / 80 - 1;
-				DriveSummary driveSummary = DriveDataParser
-						.parseDrivingSummary(orginDatas[i].substring(
-								pieceNum * 80, orginDatas[i].length()));
-				myCarDao.uploadDrivingData(mcid, driveSummary, orginDatas[i]);
+				// DriveSummary driveSummary = DriveDataParser
+				// .parseDrivingSummary(orginDatas[i].substring(
+				// pieceNum * 80, orginDatas[i].length()));
+				// myCarDao.uploadDrivingData(mcid, driveSummary,
+				// orginDatas[i]);
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s:%s", Tag, "uploadDriveRoutes()"), e);
