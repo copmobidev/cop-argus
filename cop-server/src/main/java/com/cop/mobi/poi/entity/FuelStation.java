@@ -1,11 +1,11 @@
-package com.cop.mobi.mycar.entity;
+package com.cop.mobi.poi.entity;
 
 /**
  * 
  * @author chris.liu
  * 
  */
-public class GasStation {
+public class FuelStation {
 	private int id;
 	private String name;
 	private String addr;
@@ -18,7 +18,7 @@ public class GasStation {
 	private double e93;
 	private double e97;
 
-	public GasStation() {
+	public FuelStation() {
 
 	}
 

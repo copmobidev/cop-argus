@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cop.mobi.mycar.service.dao.POIDao">
-	<resultMap id="poiResult" type="com.cop.mobi.mycar.entity.GasStation">
+<mapper namespace="com.cop.mobi.poi.service.dao.POIDao">
+	<resultMap id="geoAreaResult" type="com.cop.mobi.poi.entity.GeoArea">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="level" column="level" />
+		<result property="parentId" column="parentId" />
+		<result property="centerLat" column="centerLat" />
+		<result property="centerLng" column="centerLng" />
+		<result property="bound" column="bound" />
+	</resultMap>
+
+	<resultMap id="poiResult" type="com.cop.mobi.poi.entity.FuelStation">
 		<result property="id" column="id" />
 		<result property="name" column="name" />
 		<result property="addr" column="address" />
@@ -15,6 +25,24 @@
 		<result property="e93" column="e93" />
 		<result property="e97" column="e97" />
 	</resultMap>
+
+	<select id="getAllGeoArea" resultMap="geoAreaResult">
+		SELECT
+		id, name, level,
+		parentId, centerLat,
+		centerLng, bound
+		FROM LC_GeoArea
+	</select>
+
+	<select id="getGeoArea" resultMap="geoAreaResult">
+		SELECT
+		id, name, level,
+		parentId, centerLat,
+		centerLng, bound
+		FROM LC_GeoArea
+		WHERE
+		parentId=#{parentId}
+	</select>
 
 	<select id="getGasStation" resultMap="poiResult">
 		SELECT

@@ -101,19 +101,19 @@ public class DataParser {
 				drivingPiece.bstFuel = hex2int(hex);
 				break;
 			case 44:
-				drivingPiece.distH = hex2int(hex);
+				drivingPiece.dist = hex2int(hex);
 				break;
 			case 46:
-				drivingPiece.distL += hex2int(hex);
+				drivingPiece.dist += hex2int(hex);
 				break;
 			case 48:
 				drivingPiece.avgSPD += hex2int(hex);
 				break;
 			case 50:
-				drivingPiece.avgRPMH += hex2int(hex);
+				drivingPiece.avgRPM = hex2int(hex);
 				break;
 			case 52:
-				drivingPiece.avgRPML += hex2int(hex);
+				drivingPiece.avgRPM += hex2int(hex);
 				break;
 			case 54:
 				drivingPiece.avgFuel = hex2int(hex);

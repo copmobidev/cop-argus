@@ -2,7 +2,6 @@ package com.cop.mobile.test.mycar;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.json.JSONObject;
 import org.junit.Test;
@@ -11,15 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.DateSpan;
 import com.cop.mobi.mycar.entity.DateSpan.Span;
-import com.cop.mobi.mycar.entity.DriveSummary;
-import com.cop.mobi.mycar.entity.GasStation;
 import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.service.DiagnoseService;
 import com.cop.mobi.mycar.service.MyCarService;
-import com.cop.mobi.mycar.service.POIService;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
-import com.cop.mobi.mycar.util.DriveDataParser;
 import com.cop.mobi.rest.core.Token;
 import com.cop.mobi.rest.core.TokenUtil;
 import com.cop.mobile.test.BaseTest;
@@ -33,9 +28,6 @@ public class MyCarServiceTest extends BaseTest {
 
 	@Autowired
 	private MyCarService myCarService;
-
-	@Autowired
-	private POIService poiService;
 
 	@Autowired
 	private MyCarDao myCarDao;
@@ -87,22 +79,6 @@ public class MyCarServiceTest extends BaseTest {
 	}
 
 	@Test
-	public void poiTest() {
-		try {
-			List<GasStation> pois = poiService.getGasStation(31.746816,
-					120.947143, 500);
-
-			if (pois != null && pois.size() > 0) {
-				for (GasStation poi : pois) {
-					System.out.println(poi);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
 	public void diagnoseTest() {
 		String tk = "";
 		String[] codes = { "P1442", "P1640", "P1698", "U1451" };
@@ -123,11 +99,11 @@ public class MyCarServiceTest extends BaseTest {
 	@Test
 	public void singleDriveDataUploadTest() {
 		try {
-			String data = "";
-			int pieceNum = data.length() / 40 - 1;
-			String summary = data.substring(pieceNum * 40, data.length());
-			DriveSummary ds = DriveDataParser.parseDrivingSummary(summary);
-			myCarDao.uploadDrivingData(1, ds, data);
+//			String data = "";
+//			int pieceNum = data.length() / 40 - 1;
+//			String summary = data.substring(pieceNum * 40, data.length());
+//			DriveSummary ds = DriveDataParser.parseDrivingSummary(summary);
+//			myCarDao.uploadDrivingData(1, ds, data);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

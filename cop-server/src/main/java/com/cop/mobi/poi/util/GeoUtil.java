@@ -1,4 +1,4 @@
-package com.cop.mobi.mycar.util;
+package com.cop.mobi.poi.util;
 
 /**
  * 
