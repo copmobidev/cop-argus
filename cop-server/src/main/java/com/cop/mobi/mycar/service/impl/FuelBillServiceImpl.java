@@ -10,9 +10,9 @@ import com.cop.mobi.common.AbstractService;
 import com.cop.mobi.common.Message;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
-import com.cop.mobi.mycar.entity.OilBill;
-import com.cop.mobi.mycar.service.OilBillService;
-import com.cop.mobi.mycar.service.dao.OilBillDao;
+import com.cop.mobi.mycar.entity.FuelBill;
+import com.cop.mobi.mycar.service.FuelBillService;
+import com.cop.mobi.mycar.service.dao.FuelBillDao;
 import com.cop.mobi.rest.core.SpringApplicationContext;
 
 /**
@@ -20,13 +20,13 @@ import com.cop.mobi.rest.core.SpringApplicationContext;
  * @author chris.liu
  * 
  */
-@Service("oilBillService")
-public class OilBillServiceImpl extends AbstractService implements
-		OilBillService {
+@Service("fuelBillService")
+public class FuelBillServiceImpl extends AbstractService implements
+		FuelBillService {
 
-	private static final String Tag = "OilBillServiceImpl";
+	private static final String Tag = "FuelBillService";
 
-	private static OilBillDao oilBillDao;
+	private static FuelBillDao fuelBillDao;
 
 	static {
 		init();
@@ -34,26 +34,26 @@ public class OilBillServiceImpl extends AbstractService implements
 	
 	private static void init() {
 		try {
-			oilBillDao = (OilBillDao) SpringApplicationContext
-					.getBean("oilBillDao");
+			fuelBillDao = (FuelBillDao) SpringApplicationContext
+					.getBean("fuelBillDao");
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "init error"), e);
 		}
 	}
 
 	@Override
-	public Result addBill(OilBill bill) {
+	public Result addBill(FuelBill bill) {
 		Result result = null;
 		try {
-			OilBill existBill = oilBillDao.getOilBillByAddtime(bill.getUid(),
+			FuelBill existBill = fuelBillDao.getFuelBillByAddtime(bill.getUid(),
 					bill.getAddtime());
 			if (existBill != null) {
 				result = new Result(ResultStatus.RS_FAIL, new Message("错误",
 						"该账单已存在"));
 			} else {
-				int optCode = oilBillDao.addOilBill(bill);
+				int optCode = fuelBillDao.addFuelBill(bill);
 				if ((Integer) optCode == 1) {
-					OilBill addedBill = oilBillDao.getOilBillByAddtime(
+					FuelBill addedBill = fuelBillDao.getFuelBillByAddtime(
 							bill.getUid(), bill.getAddtime());
 					if (addedBill != null) {
 						result = new Result(ResultStatus.RS_OK, addedBill);
@@ -78,7 +78,7 @@ public class OilBillServiceImpl extends AbstractService implements
 	public Result getBills(int uid, long beginTime, long endTime) {
 		Result result = null;
 		try {
-			List<OilBill> bills = oilBillDao.getOilBills(uid, beginTime,
+			List<FuelBill> bills = fuelBillDao.getFuelBills(uid, beginTime,
 					endTime);
 			if (bills == null || bills.size() == 0) {
 				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
@@ -96,23 +96,23 @@ public class OilBillServiceImpl extends AbstractService implements
 	}
 
 	@Override
-	public Result updateBill(OilBill bill) {
+	public Result updateBill(FuelBill bill) {
 		Result result = null;
 		try {
 			List<String> cols = new ArrayList<String>();
-			if (bill.getOil() != null) {
-				cols.add(String.format("oil=%f", bill.getOil()));
+			if (bill.getCharge() != null) {
+				cols.add(String.format("charge=%f", bill.getCharge()));
 			}
 			if (bill.getUnitprice() != null) {
 				cols.add(String.format("unitprice=%f", bill.getUnitprice()));
 			}
 			if (bill.getAddtime() != null) {
-				cols.add(String.format("oil=%d", bill.getAddtime()));
+				cols.add(String.format("charge=%d", bill.getAddtime()));
 			}
 			String updateCols = StringUtils.join(cols, ",");
-			int optCode = oilBillDao.updateOilBill(bill.getId(), updateCols);
+			int optCode = fuelBillDao.updateFuelBill(bill.getId(), updateCols);
 			if ((Integer) optCode == 1) {
-				OilBill updatedBill = oilBillDao.getOilBillById(bill.getId());
+				FuelBill updatedBill = fuelBillDao.getFuelBillById(bill.getId());
 				if (updatedBill != null) {
 					result = new Result(ResultStatus.RS_OK, updatedBill);
 				} else {
@@ -137,7 +137,7 @@ public class OilBillServiceImpl extends AbstractService implements
 	public Result deleteBill(int bid) {
 		Result result = null;
 		try {
-			int optCode = oilBillDao.deleteOilBill(bid);
+			int optCode = fuelBillDao.deleteFuelBill(bid);
 			if (optCode == 1) {
 				result = new Result(ResultStatus.RS_OK, new Message("帳單提示",
 						"成功删除该账单"));

@@ -10,7 +10,7 @@
 
 	<bean id="myCarService" class="com.cop.mobi.mycar.service.impl.MyCarServiceImpl" />
 	<bean id="diagnoseService" class="com.cop.mobi.mycar.service.impl.DiagnoseServiceImpl" />
-	<bean id="oilBillService" class="com.cop.mobi.mycar.service.impl.OilBillServiceImpl" />
+	<bean id="fuelBillService" class="com.cop.mobi.mycar.service.impl.FuelBillServiceImpl" />
 
 	<bean id="poiService" class="com.cop.mobi.poi.service.impl.POIServiceImpl" />
 

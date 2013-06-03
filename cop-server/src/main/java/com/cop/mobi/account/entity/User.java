@@ -72,6 +72,6 @@ public class User {
 	}
 
 	public String toLCString() {
-		return String.format("%s|%s|%s|%d", obd, email, name, registerTime);
+		return String.format("%s|%s|%s|%s", obd, email, name, registerTime);
 	}
 }

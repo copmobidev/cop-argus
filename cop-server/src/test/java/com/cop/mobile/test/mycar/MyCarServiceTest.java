@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.DateSpan;
 import com.cop.mobi.mycar.entity.DateSpan.Span;
-import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.service.DiagnoseService;
 import com.cop.mobi.mycar.service.MyCarService;
@@ -47,28 +46,35 @@ public class MyCarServiceTest extends BaseTest {
 
 	@Test
 	public void updateMyCarInfoTest() {
-		try {
-			MyCarPo myCarPo = new MyCarPo();
-			myCarPo.setId(24);
-			myCarPo.setBid(1);
-			MyCar myCar = myCarService.updateMyCarInfo(myCarPo);
-			if (myCar != null) {
-				System.out.println(myCar);
+		String token = "5cfd9bcf47cc6e20173534914b8e08346079bd04850dcbe99ece7ee2fa3da64d";
+		Token tk = TokenUtil.parseToken(token);
+		MyCarPo myCarPo = new MyCarPo();
+		myCarPo.setId(tk.getUid());
+		myCarPo.setBid(1);
+		Result result = myCarService.updateMyCarInfo(tk, myCarPo);
+		if (result != null) {
+			try {
+				JSONObject jo = new JSONObject(result.toString());
+				System.out.println(jo.toString());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			System.err.println("no result return");
 		}
 	}
 
 	@Test
 	public void getDriveRouteTest() {
 		try {
+			String token = "5cfd9bcf47cc6e20173534914b8e08346079bd04850dcbe99ece7ee2fa3da64d";
+			Token tk = TokenUtil.parseToken(token);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date beginDate = sdf.parse("2013-03-02 00:00:00");
 			Date endDate = sdf.parse("2013-03-06 00:00:00");
 			DateSpan ds = new DateSpan(Span.MONTH, beginDate.getTime(),
 					endDate.getTime());
-			Result result = myCarService.getDriveRoutes(1, ds);
+			Result result = myCarService.getDriveRoutes(tk, ds);
 			if (result != null) {
 				JSONObject jo = new JSONObject(result.toString());
 				System.out.println(jo.toString());
@@ -99,11 +105,11 @@ public class MyCarServiceTest extends BaseTest {
 	@Test
 	public void singleDriveDataUploadTest() {
 		try {
-//			String data = "";
-//			int pieceNum = data.length() / 40 - 1;
-//			String summary = data.substring(pieceNum * 40, data.length());
-//			DriveSummary ds = DriveDataParser.parseDrivingSummary(summary);
-//			myCarDao.uploadDrivingData(1, ds, data);
+			// String data = "";
+			// int pieceNum = data.length() / 40 - 1;
+			// String summary = data.substring(pieceNum * 40, data.length());
+			// DriveSummary ds = DriveDataParser.parseDrivingSummary(summary);
+			// myCarDao.uploadDrivingData(1, ds, data);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

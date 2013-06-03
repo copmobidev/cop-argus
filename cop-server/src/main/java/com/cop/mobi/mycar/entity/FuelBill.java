@@ -5,27 +5,27 @@ package com.cop.mobi.mycar.entity;
  * @author chris.liu
  * 
  */
-public class OilBill {
+public class FuelBill {
 	private Integer id;
 	private Integer uid;
 	private Integer mcid;
-	private int oilType;
-	private Double oil;
+	private int fuelType;
+	private Double charge;
 	private Double unitprice;
 	private Double lat;
 	private Double lng;
 	private Long addtime;
 
-	public OilBill() {
+	public FuelBill() {
 
 	}
 
-	public OilBill(int uid, int mcid, int oilType, double oil,
+	public FuelBill(int uid, int mcid, int fuelType, double charge,
 			double unitprice, double lat, double lng, long addtime) {
 		this.uid = uid;
 		this.mcid = mcid;
-		this.oilType = oilType;
-		this.oil = oil;
+		this.fuelType = fuelType;
+		this.charge = charge;
 		this.unitprice = unitprice;
 		this.lat = lat;
 		this.lng = lng;
@@ -56,20 +56,20 @@ public class OilBill {
 		this.mcid = mcid;
 	}
 
-	public int getOilType() {
-		return oilType;
+	public int getFuelType() {
+		return fuelType;
 	}
 
-	public void setOilType(int oilType) {
-		this.oilType = oilType;
+	public void setFuelType(int fuelType) {
+		this.fuelType = fuelType;
 	}
 
-	public Double getOil() {
-		return oil;
+	public Double getCharge() {
+		return charge;
 	}
 
-	public void setOil(Double oil) {
-		this.oil = oil;
+	public void setCharge(Double charge) {
+		this.charge = charge;
 	}
 
 	public Double getUnitprice() {
@@ -107,12 +107,12 @@ public class OilBill {
 	@Override
 	public String toString() {
 		return String
-				.format("{\"id\":%d,\"uid\":%d,\"oilType\":%d,\"oil\":%f,\"unitprice\":%f,\"lat\":%f,\"lng\":%f,\"addtime\":%d}",
-						id, uid, oilType, oil, unitprice, lat, lng, addtime);
+				.format("{\"id\":%d,\"uid\":%d,\"fuelType\":%d,\"charge\":%f,\"unitprice\":%f,\"lat\":%f,\"lng\":%f,\"addtime\":%d}",
+						id, uid, fuelType, charge, unitprice, lat, lng, addtime);
 	}
 
 	public String toLCString() {
-		return String.format("%d|%d|%d|%d|%f|%f|%d", id, oilType, oil,
+		return String.format("%d|%d|%d|%d|%f|%f|%d", id, fuelType, charge,
 				unitprice, lat, lng, addtime);
 	}
 }

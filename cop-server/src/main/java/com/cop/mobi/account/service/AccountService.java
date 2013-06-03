@@ -3,7 +3,7 @@ package com.cop.mobi.account.service;
 import com.cop.mobi.account.entity.UserPo;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.CarBrand;
-import com.cop.mobi.mycar.entity.MyCarPo;
+import com.cop.mobi.rest.core.Token;
 
 /**
  * 
@@ -31,14 +31,14 @@ public interface AccountService {
 	Result login(UserPo userPo);
 
 	/**
-	 * 更新用户、车辆信息
+	 * 更新用户信息
 	 * 
 	 * @param userPo
 	 * @param myCarPo
 	 * @param carBrand
 	 * @return
 	 */
-	Result update(UserPo userPo, MyCarPo myCarPo);
+	Result updateUserInfo(Token token, UserPo userPo);
 
 	/**
 	 * 上传用户头像

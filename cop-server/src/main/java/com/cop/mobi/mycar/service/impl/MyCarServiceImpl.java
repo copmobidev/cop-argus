@@ -16,13 +16,13 @@ import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.DateSpan;
 import com.cop.mobi.mycar.entity.DateSpan.Span;
 import com.cop.mobi.mycar.entity.DriveRoutePo;
-import com.cop.mobi.mycar.entity.DriveSummary;
 import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.mycar.service.dao.MyCarDao;
-import com.cop.mobi.mycar.util.DriveDataParser;
 import com.cop.mobi.rest.core.SpringApplicationContext;
+import com.cop.mobi.rest.core.Token;
+import com.cop.mobi.rest.core.TokenUtil;
 
 /**
  * 
@@ -171,23 +171,32 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public MyCar updateMyCarInfo(MyCarPo myCarPo) {
-		MyCar myCar = null;
+	public Result updateMyCarInfo(Token token, MyCarPo myCarPo) {
+		Result result = null;
 		try {
+			MyCar myCar = null;
 			myCarDao.updateMyCarInfo(myCarPo.getId(), myCarPo.getBid());
-
 			MyCarPo updatedMyCarPo = myCarDao.getMyCarById(myCarPo.getId());
 			CarBrand cb = RevCarBrandMap.get(myCarPo.getBid());
 			if (cb != null && updatedMyCarPo != null) {
 				myCar = new MyCar(updatedMyCarPo.getId(),
 						updatedMyCarPo.getUid(), updatedMyCarPo.getSid(), cb);
+				String tk = TokenUtil.generateToken(token.getUid(),
+						token.getMcid(), 1);
+				String tmp = String.format(
+						"{\"token\":\"%s\",\"mycar\":\"%s\"}", tk,
+						myCar.toLCString());
+				result = new Result(ResultStatus.RS_OK, tmp);
+			} else {
+				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
+						"车辆信息更新失败"));
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:updateMyCarInfo() error with param:%s",
 					Tag, myCarPo.getId()), e);
-			myCar = null;
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
-		return myCar;
+		return result;
 	}
 
 	@Override
@@ -201,9 +210,9 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result getDriveRoutes(int mcid, DateSpan dataSpan) {
+	public Result getDriveRoutes(Token token, DateSpan dataSpan) {
 		Result result = null;
-		String data = parseRoute(mcid, dataSpan);
+		String data = parseRoute(token.getMcid(), dataSpan);
 		if (data != null) {
 			result = new Result(ResultStatus.RS_OK, data);
 		} else {
@@ -214,9 +223,9 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public Result uploadDriveRoutes(int mcid, String[] orginDatas) {
+	public Result uploadDriveRoutes(Token token, String[] orginDatas) {
 		for (String data : orginDatas) {
-			MyCarLog.info(String.format("%d-%s", mcid, data));
+			MyCarLog.info(String.format("%d-%s", token.getMcid(), data));
 		}
 
 		Result result = null;

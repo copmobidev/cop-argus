@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.cop.mobi.common.AbstractService;
 import com.cop.mobi.common.Message;
-import com.cop.mobi.common.NameValuePair;
+import com.cop.mobi.common.Mobi.OS;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.common.UserAgent;
+import com.cop.mobi.other.entity.ConfigItem;
 import com.cop.mobi.other.entity.Feedback;
 import com.cop.mobi.other.service.OtherService;
 import com.cop.mobi.other.service.dao.OtherDao;
@@ -27,8 +28,9 @@ import com.cop.mobi.rest.core.Token;
 public class OtherServiceImpl extends AbstractService implements OtherService {
 	private static final String Tag = "OtherServiceImpl";
 
-	private static List<NameValuePair> CONFIGS = new ArrayList<NameValuePair>();
-	private static String FORMATED_CONFIG = null;
+	private static List<ConfigItem> CONFIGS = new ArrayList<ConfigItem>();
+	private static String ANDROID_CONFIG = null;
+	private static String IOS_CONFIG = null;
 	private static OtherDao otherDao;
 
 	static {
@@ -50,23 +52,33 @@ public class OtherServiceImpl extends AbstractService implements OtherService {
 	}
 
 	private static void formatConfig() {
-		String[] tmp = new String[CONFIGS.size()];
+		String[] tmpIOS = new String[CONFIGS.size() / 2];
+		String[] tmpAndroid = new String[CONFIGS.size() / 2];
 		for (int i = 0; i < CONFIGS.size(); ++i) {
-			NameValuePair pair = CONFIGS.get(i);
-			tmp[i] = String.format("\"%s\":\"%s\"", pair.getKey(),
-					pair.getValue());
+			if (CONFIGS.get(i).getPlatform() == 0) {
+				tmpIOS[i] = String.format("\"%s\":\"%s\"", CONFIGS.get(i)
+						.getKey(), CONFIGS.get(i).getValue());
+			} else if (CONFIGS.get(i).getPlatform() == 1) {
+				tmpAndroid[i] = String.format("\"%s\":\"%s\"", CONFIGS.get(i)
+						.getKey(), CONFIGS.get(i).getValue());
+			}
 		}
-		if (tmp.length > 0) {
-			FORMATED_CONFIG = String.format("{%s}", StringUtils.join(tmp, ","));
-		}
+
+		ANDROID_CONFIG = String.format("{%s}",
+				StringUtils.join(tmpAndroid, ","));
+		IOS_CONFIG = String.format("{%s}", StringUtils.join(tmpIOS, ","));
 	}
 
 	@Override
 	public Result getConfig(UserAgent ua, Token token) {
 		Result result = null;
 		try {
-			if (FORMATED_CONFIG != null) {
-				result = new Result(ResultStatus.RS_OK, FORMATED_CONFIG);
+			if (ua.getMobiClient().getMobi().getOs() == OS.ANDROID
+					&& ANDROID_CONFIG != null) {
+				result = new Result(ResultStatus.RS_OK, ANDROID_CONFIG);
+			} else if (ua.getMobiClient().getMobi().getOs() == OS.IOS
+					&& IOS_CONFIG != null) {
+				result = new Result(ResultStatus.RS_OK, IOS_CONFIG);
 			} else {
 				result = new Result(ResultStatus.RS_FAIL, new Message("配置",
 						"无相关配置"));

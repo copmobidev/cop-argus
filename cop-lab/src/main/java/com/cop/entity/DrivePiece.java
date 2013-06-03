@@ -5,7 +5,7 @@ package com.cop.entity;
  * @author chris.liu
  * 
  */
-public class DrivingPiece {
+public class DrivePiece {
 	public long timestamp; // 时间戳
 	public double lat; // 纬度
 	public char dir1; // 方向南北
