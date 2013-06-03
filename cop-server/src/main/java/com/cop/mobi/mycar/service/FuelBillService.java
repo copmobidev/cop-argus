@@ -1,14 +1,14 @@
 package com.cop.mobi.mycar.service;
 
 import com.cop.mobi.common.Result;
-import com.cop.mobi.mycar.entity.OilBill;
+import com.cop.mobi.mycar.entity.FuelBill;
 
 /**
  * 
  * @author chris.liu
  * 
  */
-public interface OilBillService {
+public interface FuelBillService {
 
 	/**
 	 * 新增账单
@@ -16,7 +16,7 @@ public interface OilBillService {
 	 * @param bill
 	 * @return
 	 */
-	Result addBill(OilBill bill);
+	Result addBill(FuelBill bill);
 
 	/**
 	 * 获取用户某段时间之间的油单
@@ -34,7 +34,7 @@ public interface OilBillService {
 	 * @param bill
 	 * @return
 	 */
-	Result updateBill(OilBill bill);
+	Result updateBill(FuelBill bill);
 
 	/**
 	 * 根据账单号删除某一份账单

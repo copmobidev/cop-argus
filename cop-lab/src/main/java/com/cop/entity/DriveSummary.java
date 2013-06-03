@@ -5,7 +5,7 @@ package com.cop.entity;
  * @author chris.liu
  * 
  */
-public class DrivingSummary {
+public class DriveSummary {
 	public long timestamp; // 行程时间戳
 	public long startTime; // 起始时间
 	public double startLat; // 起始纬度

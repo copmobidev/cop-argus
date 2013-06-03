@@ -9,8 +9,8 @@ import javax.ws.rs.core.Response.Status;
 
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
-import com.cop.mobi.mycar.entity.OilBill;
-import com.cop.mobi.mycar.service.OilBillService;
+import com.cop.mobi.mycar.entity.FuelBill;
+import com.cop.mobi.mycar.service.FuelBillService;
 import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.SpringApplicationContext;
 import com.cop.mobi.rest.core.Token;
@@ -23,11 +23,11 @@ import com.cop.mobi.rest.core.TokenUtil;
  */
 @Path("/oilbill")
 @Produces("application/json;charset=UTF-8")
-public class OilBillAction extends AbstractAction {
+public class FuelBillAction extends AbstractAction {
 
-	private static final String Tag = "OilBillAction";
+	private static final String Tag = "FuelBillAction";
 
-	private static OilBillService oilBillService;
+	private static FuelBillService fuelBillService;
 
 	static {
 		init();
@@ -38,7 +38,7 @@ public class OilBillAction extends AbstractAction {
 	 */
 	protected static void init() {
 		try {
-			oilBillService = (OilBillService) SpringApplicationContext
+			fuelBillService = (FuelBillService) SpringApplicationContext
 					.getBean("oilBillService");
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "init error"), e);
@@ -48,14 +48,14 @@ public class OilBillAction extends AbstractAction {
 	@POST
 	@Path("/add")
 	public Response add(@FormParam("token") String token,
-			@FormParam("oil_type") Integer oil_type,
-			@FormParam("oil") Double oil,
+			@FormParam("fuel_type") Integer fuel_type,
+			@FormParam("charge") Double charge,
 			@FormParam("unitprice") Double unitprice,
 			@FormParam("lat") Double lat, @FormParam("lng") Double lng,
 			@FormParam("addtime") Long addtime) {
 		Result result = null;
 
-		if (token == null || oil == null || unitprice == null
+		if (token == null || charge == null || unitprice == null
 				|| addtime == null) {
 			result = new Result(ResultStatus.RS_ERROR, PARAM_ERROR_MSG);
 			return Response.status(Status.OK).entity(result.toString()).build();
@@ -68,13 +68,13 @@ public class OilBillAction extends AbstractAction {
 		}
 
 		try {
-			OilBill bill = new OilBill();
+			FuelBill bill = new FuelBill();
 			bill.setUid(tk.getUid());
 			bill.setMcid(tk.getMcid());
-			bill.setOil(oil);
+			bill.setCharge(charge);
 			bill.setUnitprice(unitprice);
 			bill.setAddtime(addtime);
-			result = oilBillService.addBill(bill);
+			result = fuelBillService.addBill(bill);
 			return Response.status(Status.OK).entity(result.toString()).build();
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "add bill error"), e);
@@ -96,7 +96,7 @@ public class OilBillAction extends AbstractAction {
 		}
 
 		try {
-			result = oilBillService.getBills(uid, beginTime, endTime);
+			result = fuelBillService.getBills(uid, beginTime, endTime);
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "get bill error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
@@ -119,12 +119,12 @@ public class OilBillAction extends AbstractAction {
 		}
 
 		try {
-			OilBill bill = new OilBill();
+			FuelBill bill = new FuelBill();
 			bill.setId(bid);
-			bill.setOil(oil);
+			bill.setCharge(oil);
 			bill.setUnitprice(unitprice);
 			bill.setAddtime(addtime);
-			result = oilBillService.updateBill(bill);
+			result = fuelBillService.updateBill(bill);
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "delete bill error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
@@ -137,7 +137,7 @@ public class OilBillAction extends AbstractAction {
 	public Response delete(@FormParam("bid") Integer bid) {
 		Result result = null;
 		try {
-			result = oilBillService.deleteBill(bid);
+			result = fuelBillService.deleteBill(bid);
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "delete bill error"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);

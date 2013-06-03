@@ -8,6 +8,7 @@ import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.DateSpan;
 import com.cop.mobi.mycar.entity.MyCar;
 import com.cop.mobi.mycar.entity.MyCarPo;
+import com.cop.mobi.rest.core.Token;
 
 /**
  * 
@@ -68,7 +69,7 @@ public interface MyCarService {
 	 * @param myCarPo
 	 * @return
 	 */
-	MyCar updateMyCarInfo(MyCarPo myCarPo);
+	Result updateMyCarInfo(Token token, MyCarPo myCarPo);
 
 	/**
 	 * 根据车辆id删除车辆
@@ -86,7 +87,7 @@ public interface MyCarService {
 	 *            时间跨度
 	 * @return
 	 */
-	Result getDriveRoutes(int mcid, DateSpan span);
+	Result getDriveRoutes(Token token, DateSpan span);
 
 	/**
 	 * 存储客户端行车信息到server并记录数据log，并判断是否有新的加油记录
@@ -97,5 +98,5 @@ public interface MyCarService {
 	 * @param endTime
 	 * @return 最近一次行车记录
 	 */
-	Result uploadDriveRoutes(int mcid, String[] originDatas);
+	Result uploadDriveRoutes(Token token, String[] originDatas);
 }

@@ -33,7 +33,8 @@ public interface AccountDao {
 	 *            数据格式为col1=val1,...,coln=valn
 	 * @return
 	 */
-	int updateUserInfo(@Param(value = "value") String value);
+	int updateUserInfo(@Param(value = "id") int id,
+			@Param(value = "values") String values);
 
 	int updateUserProfile(@Param(value = "id") int id,
 			@Param(value = "profile") String profile);

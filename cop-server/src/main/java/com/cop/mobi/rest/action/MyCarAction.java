@@ -11,7 +11,9 @@ import org.apache.commons.lang.StringUtils;
 
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
+import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.DateSpan;
+import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.service.DiagnoseService;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.AbstractAction;
@@ -50,18 +52,48 @@ public class MyCarAction extends AbstractAction {
 	}
 
 	@POST
+	@Path("/update")
+	public Response updateMyCarInfo(@FormParam("token") String token,
+			@FormParam("manufacturer") String manufacturer,
+			@FormParam("brand") String brand, @FormParam("model") String model,
+			@FormParam("engine") String engine) {
+		Result result = null;
+		try {
+			Token tk = TokenUtil.parseToken(token);
+			if (TokenUtil.isValid(tk)) {
+				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
+			} else {
+				CarBrand cb = myCarService.getCarBrandMap().get(
+						String.format("%s%s%s", brand, model, engine));
+				if (cb != null) {
+					MyCarPo myCarPo = new MyCarPo();
+					myCarPo.setId(tk.getMcid());
+					myCarPo.setBid(cb.getId());
+					result = myCarService.updateMyCarInfo(tk, myCarPo);
+				} else {
+					result = new Result(ResultStatus.RS_ERROR, PARAM_ERROR_MSG);
+				}
+			}
+		} catch (Exception e) {
+			log.error(String.format("%s:%s", Tag, "status request error"), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		}
+		return Response.status(Status.OK).entity(result.toString()).build();
+	}
+
+	@POST
 	@Path("/get")
-	public Response driveRoutes(@FormParam("token") String strToken,
+	public Response driveRoutes(@FormParam("token") String token,
 			@FormParam("begin_time") Long beginTime,
 			@FormParam("end_time") Long endTime, @FormParam("span") Integer span) {
 		Result result = null;
 		try {
-			Token token = TokenUtil.parseToken(strToken);
-			if (TokenUtil.isValid(token)) {
+			Token tk = TokenUtil.parseToken(token);
+			if (TokenUtil.isValid(tk)) {
 				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
 			} else {
 				DateSpan dateSpan = new DateSpan(span, beginTime, endTime);
-				result = myCarService.getDriveRoutes(token.getMcid(), dateSpan);
+				result = myCarService.getDriveRoutes(tk, dateSpan);
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "status request error"), e);
@@ -85,7 +117,7 @@ public class MyCarAction extends AbstractAction {
 				if (tmp == null || tmp.length <= 0) {
 					result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
 				}
-				result = myCarService.uploadDriveRoutes(tk.getMcid(), tmp);
+				result = myCarService.uploadDriveRoutes(tk, tmp);
 			} else {
 				result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
 			}

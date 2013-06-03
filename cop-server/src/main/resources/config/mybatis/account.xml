@@ -20,7 +20,7 @@
 		FROM
 		LC_User
 		WHERE
-		id=#{uid}
+		id=#{id}
 	</select>
 
 	<select id="getUserByOBD" resultMap="userResult">
@@ -60,7 +60,7 @@
 		FROM
 		LC_User
 		WHERE
-		id IN (${uids})
+		id IN (${ids})
 	</select>
 
 	<insert id="addUser">
@@ -72,21 +72,21 @@
 		#{registerTime})
 	</insert>
 
-	<update id="updateUser">
+	<update id="updateUserInfo">
 		UPDATE LC_User SET
-		${update}
+		${values}
 		WHERE
-		id=#{uid}
+		id=#{id}
 	</update>
 
 	<update id="updateUserProfile">
 		UPDATE LC_User SET
 		profile=#{profile}
-		WHERE id=#{uid}
+		WHERE id=#{id}
 	</update>
 
 	<delete id="deleteUser" parameterType="int">
 		DELETE FROM LC_User WHERE
-		id=#{uid}
+		id=#{id}
 	</delete>
 </mapper>

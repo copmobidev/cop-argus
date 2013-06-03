@@ -21,9 +21,9 @@ import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.CarBrand;
 import com.cop.mobi.mycar.entity.MyCar;
-import com.cop.mobi.mycar.entity.MyCarPo;
 import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.SpringApplicationContext;
+import com.cop.mobi.rest.core.Token;
 import com.cop.mobi.rest.core.TokenUtil;
 
 /**
@@ -122,47 +122,46 @@ public class AccountServiceImpl extends AbstractService implements
 	}
 
 	@Override
-	public Result update(UserPo userPo, MyCarPo myCarPo) {
+	public Result updateUserInfo(Token token, UserPo userPo) {
 		Result result = null;
 		try {
 			User user = null;
-			MyCar myCar = null;
 			// update user info
 			if (userPo != null) {
 				List<String> values = new ArrayList<String>();
 				if (StringUtils.isNotBlank(userPo.getEmail())) {
-					values.add(String.format("email=%s", userPo.getEmail()));
+					values.add(String.format("email='%s'", userPo.getEmail()));
 				}
 				if (StringUtils.isNotBlank(userPo.getName())) {
-					values.add(String.format("name=%s", userPo.getName()));
+					values.add(String.format("name='%s'", userPo.getName()));
 				}
 				if (StringUtils.isNotBlank(userPo.getPwd())) {
-					values.add(String.format("pwd=%s", userPo.getPwd()));
+					values.add(String.format("pwd='%s'", userPo.getPwd()));
 				}
-				accountDao.updateUserInfo(StringUtils.join(values, ","));
+				accountDao.updateUserInfo(userPo.getId(),
+						StringUtils.join(values, ","));
 				UserPo updatedUserPo = accountDao.getUserById(userPo.getId());
-				user = new User(updatedUserPo.getId(), updatedUserPo.getObd(),
-						updatedUserPo.getEmail(), updatedUserPo.getName(),
-						updatedUserPo.getRegisterTime());
+				if (updatedUserPo != null) {
+					user = new User(updatedUserPo.getId(),
+							updatedUserPo.getObd(), updatedUserPo.getEmail(),
+							updatedUserPo.getName(),
+							updatedUserPo.getRegisterTime());
+				}
 			}
-			// update mycar info
-			if (myCarPo != null) {
-				myCar = myCarService.updateMyCarInfo(myCarPo);
-			}
-			if (user != null && myCar != null) {
-				String token = TokenUtil.generateToken(user.getId(),
-						myCar.getId(), 1);
-				String data = String
-						.format("{\"token\":\"%s\",\"profile\":\"%s\",\"carinfo\":\"%s\"}",
-								token, user.toLCString(), myCar.toLCString());
+			if (user != null) {
+				String tk = TokenUtil.generateToken(token.getUid(),
+						token.getMcid(), 1);
+				String data = String.format(
+						"{\"token\":\"%s\",\"profile\":\"%s\"}", tk,
+						user.toLCString());
 				result = new Result(ResultStatus.RS_OK, data);
 			} else {
 				result = new Result(ResultStatus.RS_FAIL,
 						SERVER_INNER_ERROR_MSG);
 			}
 		} catch (Exception e) {
-			log.error(String.format("%s:update() error with param:%s & %s",
-					Tag, userPo.getId(), myCarPo.getId()), e);
+			log.error(String.format("%s:update() error with param:%s", Tag,
+					userPo.getId()), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return result;

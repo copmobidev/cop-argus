@@ -33,7 +33,7 @@ public class CommonTest {
 		Token token = TokenUtil.parseToken(strToken);
 		System.out.println(token);
 
-		strToken = TokenUtil.generateToken(1, 1, 40);
+		strToken = TokenUtil.generateToken(36, 24, 40);
 		System.out.println(strToken);
 		token = TokenUtil.parseToken(strToken);
 		System.out.println(token);

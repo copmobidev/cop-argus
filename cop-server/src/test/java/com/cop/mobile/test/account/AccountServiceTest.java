@@ -11,7 +11,8 @@ import com.cop.mobi.account.service.AccountService;
 import com.cop.mobi.account.service.dao.AccountDao;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.CarBrand;
-import com.cop.mobi.mycar.entity.MyCarPo;
+import com.cop.mobi.rest.core.Token;
+import com.cop.mobi.rest.core.TokenUtil;
 import com.cop.mobile.test.BaseTest;
 
 /**
@@ -52,38 +53,20 @@ public class AccountServiceTest extends BaseTest {
 			}
 		}
 	}
-	
-	
+
 	@Test
 	public void updateUserInfoTest() {
+		String token = "5cfd9bcf47cc6e20173534914b8e08346079bd04850dcbe99ece7ee2fa3da64d";
 		String name = "";
 		String email = "test11@gmail.com";
 		String pwd = "123456";
-		
+		Token tk = TokenUtil.parseToken(token);
 		UserPo userPo = new UserPo();
-		userPo.setId(36);
+		userPo.setId(tk.getUid());
 		userPo.setEmail(email);
 		userPo.setName(name);
 		userPo.setPwd(pwd);
-		Result result = accountService.update(userPo, null);
-		if (result != null) {
-			try {
-				JSONObject jo = new JSONObject(result.toString());
-				System.out.println(jo.toString());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			System.err.println("no result return");
-		}
-	}
-	
-	@Test
-	public void updateMyCarInfoTest() {
-		MyCarPo myCarPo = new MyCarPo();
-		myCarPo.setId(36);
-		myCarPo.setBid(1);
-		Result result = accountService.update(null, myCarPo);
+		Result result = accountService.updateUserInfo(tk, userPo);
 		if (result != null) {
 			try {
 				JSONObject jo = new JSONObject(result.toString());

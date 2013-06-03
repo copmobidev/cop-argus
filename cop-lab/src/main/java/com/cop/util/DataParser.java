@@ -6,11 +6,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.cop.entity.DrivingPiece;
-import com.cop.entity.DrivingSummary;
+import com.cop.entity.DriveData;
+import com.cop.entity.DrivePiece;
+import com.cop.entity.DriveSummary;
 import com.cop.entity.OBDConfig;
 
 /**
@@ -19,9 +22,92 @@ import com.cop.entity.OBDConfig;
  * 
  */
 public class DataParser {
+	public static DriveData parseDriveData(String data) throws Exception {
+		DriveData driveData = null;
+		try {
+			List<DrivePiece> drivePieces = new ArrayList<DrivePiece>();
+			int pieceNum = data.length() / 80 - 1;
+			for (int i = 0; i < pieceNum; ++i) {
+				String piece = data.substring(i * 80, (i + 1) * 80);
+				DrivePiece drivePiece = parseDrivePiece(piece);
+				drivePieces.add(drivePiece);
+			}
+			String summary = data.substring(pieceNum * 80, data.length());
+			DriveSummary driveSummary = parseDriveSummary(summary);
+			driveData = new DriveData();
+			driveData.setPieces(drivePieces);
+			driveData.setSummary(driveSummary);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-	public static DrivingPiece parseDrivingPiece(String data) throws Exception {
-		DrivingPiece drivingPiece = new DrivingPiece();
+	public static void parseDrivingDataFromFile(String fileName)
+			throws Exception {
+		File file = new File(fileName);
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String line = null;
+			// 一次读入一行，直到读入null为文件结束
+			while ((line = reader.readLine()) != null) {
+				// 显示行号
+				System.out.println(line.length());
+				int pieceNum = line.length() / 80 - 1;
+				System.out.println(pieceNum);
+				for (int i = 0; i < pieceNum; ++i) {
+					String piece = line.substring(i * 80, (i + 1) * 80);
+					DrivePiece drivingPiece = parseDrivePiece(piece);
+					System.out.println(drivingPiece);
+				}
+				String summary = line.substring(pieceNum * 80, line.length());
+				DriveSummary drivingSummary = parseDriveSummary(summary);
+				System.out.println(drivingSummary);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e1) {
+				}
+			}
+		}
+	}
+
+	public static OBDConfig parseOBDConfig(String data) throws Exception {
+		OBDConfig obdConfig = new OBDConfig();
+		char[] tmp = new char[data.length() / 2];
+		for (int i = 0; i < data.length(); i += 2) {
+			tmp[i / 2] = hex2char(data.substring(i, i + 2));
+		}
+		Object[] obdProtocolArray = new Object[16];
+		Object[] obdArray = new Object[10];
+		Object[] vinArray = new Object[17];
+		Object[] cidArray = new Object[16];
+		for (int i = 0; i < tmp.length; ++i) {
+			if (i < 16) {
+				obdProtocolArray[i] = tmp[i];
+			} else if (i < 33) {
+				vinArray[i - 16] = tmp[i];
+			} else if (i > 33 && i < 42) {
+				obdArray[i - 33] = tmp[i];
+			} else if (i > 42 && i < 59) { //
+				cidArray[i - 43] = tmp[i];
+			}
+		}
+		obdConfig.cid = StringUtils.join(cidArray);
+		obdConfig.obdProtocol = StringUtils.join(obdProtocolArray);
+		obdConfig.obdSerialId = StringUtils.join(obdArray);
+		obdConfig.vin = StringUtils.join(vinArray);
+		return obdConfig;
+	}
+
+	private static DrivePiece parseDrivePiece(String data) throws Exception {
+		DrivePiece drivingPiece = new DrivePiece();
 		int year = 0;
 		int month = 0;
 		int day = 0;
@@ -159,9 +245,8 @@ public class DataParser {
 		return drivingPiece;
 	}
 
-	public static DrivingSummary parseDrivingSummary(String data)
-			throws Exception {
-		DrivingSummary drivingSummary = new DrivingSummary();
+	private static DriveSummary parseDriveSummary(String data) throws Exception {
+		DriveSummary drivingSummary = new DriveSummary();
 		int year = 0;
 		int month = 0;
 		int day = 0;
@@ -385,72 +470,10 @@ public class DataParser {
 		return new String(baKeyword, "utf-8").charAt(0);
 	}
 
-	public static double format(double in, int n) {
+	private static double format(double in, int n) {
 		double p = Math.pow(10, n);
 		return Math.round(in * p) / p;
 	} // format
-
-	public static void parseDrivingData(String fileName) throws Exception {
-		File file = new File(fileName);
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			String line = null;
-			// 一次读入一行，直到读入null为文件结束
-			while ((line = reader.readLine()) != null) {
-				// 显示行号
-				System.out.println(line.length());
-				int pieceNum = line.length() / 80 - 1;
-				System.out.println(pieceNum);
-				for (int i = 0; i < pieceNum; ++i) {
-					String piece = line.substring(i * 80, (i + 1) * 80);
-					DrivingPiece drivingPiece = parseDrivingPiece(piece);
-					System.out.println(drivingPiece);
-				}
-				String summary = line.substring(pieceNum * 80, line.length());
-				DrivingSummary drivingSummary = parseDrivingSummary(summary);
-				System.out.println(drivingSummary);
-			}
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e1) {
-				}
-			}
-		}
-	}
-
-	public static OBDConfig parseOBDConfig(String data) throws Exception {
-		OBDConfig obdConfig = new OBDConfig();
-		char[] tmp = new char[data.length() / 2];
-		for (int i = 0; i < data.length(); i += 2) {
-			tmp[i / 2] = hex2char(data.substring(i, i + 2));
-		}
-		Object[] obdProtocolArray = new Object[16];
-		Object[] obdArray = new Object[10];
-		Object[] vinArray = new Object[17];
-		Object[] cidArray = new Object[16];
-		for (int i = 0; i < tmp.length; ++i) {
-			if (i < 16) {
-				obdProtocolArray[i] = tmp[i];
-			} else if (i < 33) {
-				vinArray[i - 16] = tmp[i];
-			} else if (i > 33 && i < 42) {
-				obdArray[i - 33] = tmp[i];
-			} else if (i > 42 && i < 59) { //
-				cidArray[i - 43] = tmp[i];
-			}
-		}
-		obdConfig.cid = StringUtils.join(cidArray);
-		obdConfig.obdProtocol = StringUtils.join(obdProtocolArray);
-		obdConfig.obdSerialId = StringUtils.join(obdArray);
-		obdConfig.vin = StringUtils.join(vinArray);
-		return obdConfig;
-	}
 
 	public static void main(String[] args) throws Exception {
 		// obd 4A53435330303031
@@ -461,7 +484,7 @@ public class DataParser {
 		System.out.println(obdConfig);
 		System.out.println(hex2char("00"));
 
-		parseDrivingData("data/1.dat");
+		parseDriveData("data/1.dat");
 
 		// try {
 		// AESZipFileDecrypter zipFile = new AESZipFileDecrypter(new File(
