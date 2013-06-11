@@ -1,6 +1,5 @@
 package com.cop.mobi.mycar.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,12 +83,29 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 						myCarPo.getSid(), carBrand);
 			}
 		} catch (Exception e) {
-			log.error(
-					String.format("%s:%s", Tag,
-							String.format("getMyCarByID(%d)", id)), e);
-			myCar = null;
+			log.error(String.format("%s:getMyCarByID(%s)", Tag, id), e);
 		}
 		return myCar;
+	}
+
+	@Override
+	public MyCar getMyCarByUid(int uid) {
+		try {
+			List<MyCarPo> myCarPos = myCarDao.getMyCarsByUid(uid);
+			for (MyCarPo myCarPo : myCarPos) {
+				if (myCarPo.getIsBound() == 1) {
+					CarBrand carBrand = RevCarBrandMap.get(myCarPo.getBid());
+					if (carBrand != null) {
+						MyCar myCar = new MyCar(myCarPo.getId(),
+								myCarPo.getUid(), myCarPo.getSid(), carBrand);
+						return myCar;
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error(String.format("%s:getMyCarByUid(%s) error", Tag, uid), e);
+		}
+		return null;
 	}
 
 	@Override
@@ -112,29 +128,6 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 			myCar = null;
 		}
 		return myCar;
-	}
-
-	@Override
-	public List<MyCar> getMyCars(int uid) {
-		List<MyCar> myCars = null;
-		try {
-			List<MyCarPo> myCarPos = myCarDao.getMyCarsByUid(uid);
-			if (myCarPos != null && myCarPos.size() > 0) {
-				myCars = new ArrayList<MyCar>();
-				for (MyCarPo myCarPo : myCarPos) {
-					CarBrand carBrand = RevCarBrandMap.get(myCarPo.getBid());
-					MyCar myCar = new MyCar(myCarPo.getId(), myCarPo.getUid(),
-							myCarPo.getSid(), carBrand);
-					myCars.add(myCar);
-				}
-			}
-		} catch (Exception e) {
-			log.error(
-					String.format("%s:%s", Tag,
-							String.format("getMyCarByUid(%d)", uid)), e);
-			myCars = null;
-		}
-		return myCars;
 	}
 
 	@Override
@@ -200,13 +193,13 @@ public class MyCarServiceImpl extends AbstractService implements MyCarService {
 	}
 
 	@Override
-	public int deleteMyCar(int mcid) {
+	public int deleteMyCar(int id) {
 		try {
-			return myCarDao.deleteMyCar(mcid);
+			return myCarDao.deleteMyCar(id);
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "deleteMyCar() error"), e);
 		}
-		return 0;
+		return -1;
 	}
 
 	@Override

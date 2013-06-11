@@ -27,6 +27,6 @@ public interface OtherService {
 	 * @param feedback
 	 * @return
 	 */
-	Result feedback(Feedback feedback);
+	Result feedback(Token token, Feedback feedback);
 
 }

@@ -46,10 +46,11 @@ public class MyCarServiceTest extends BaseTest {
 
 	@Test
 	public void updateMyCarInfoTest() {
-		String token = "5cfd9bcf47cc6e20173534914b8e08346079bd04850dcbe99ece7ee2fa3da64d";
+		String token = "3cb421fabe8579030b95e85011d863a33aba95b660f9446e9909982160c5db4a";
 		Token tk = TokenUtil.parseToken(token);
 		MyCarPo myCarPo = new MyCarPo();
-		myCarPo.setId(tk.getUid());
+		Integer id = new Integer(1);
+		myCarPo.setId(id);
 		myCarPo.setBid(1);
 		Result result = myCarService.updateMyCarInfo(tk, myCarPo);
 		if (result != null) {
@@ -67,7 +68,7 @@ public class MyCarServiceTest extends BaseTest {
 	@Test
 	public void getDriveRouteTest() {
 		try {
-			String token = "5cfd9bcf47cc6e20173534914b8e08346079bd04850dcbe99ece7ee2fa3da64d";
+			String token = "3cb421fabe8579030b95e85011d863a33aba95b660f9446e9909982160c5db4a";
 			Token tk = TokenUtil.parseToken(token);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date beginDate = sdf.parse("2013-03-02 00:00:00");
@@ -86,11 +87,12 @@ public class MyCarServiceTest extends BaseTest {
 
 	@Test
 	public void diagnoseTest() {
-		String tk = "";
-		String[] codes = { "P1442", "P1640", "P1698", "U1451" };
+		String tk = "3cb421fabe8579030b95e85011d863a33aba95b660f9446e9909982160c5db4a";
+		String codes = "P1442|P1640|P1698|U1451";
+		String[] tmp = codes.split("\\|");
 		Token token = TokenUtil.parseToken(tk);
 
-		Result result = diagnoseService.diagnose(token, codes);
+		Result result = diagnoseService.diagnose(token, tmp);
 		try {
 			JSONObject jo = new JSONObject(result.toString());
 			System.out.println(jo.toString());

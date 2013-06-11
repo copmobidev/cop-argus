@@ -89,7 +89,7 @@ public class AccountServiceImpl extends AbstractService implements
 					String token = TokenUtil.generateToken(user.getId(),
 							newCar.getId(), 1);
 					String data = String
-							.format("{\"token\":\"%s\",\"profile\":\"%s\",\"carinfo\":\"%s\"}",
+							.format("{\"token\":\"%s\",\"userinfo\":\"%s\",\"carinfo\":\"%s\"}",
 									token, user.toLCString(),
 									newCar.toLCString());
 					result = new Result(ResultStatus.RS_OK, data);
@@ -152,7 +152,7 @@ public class AccountServiceImpl extends AbstractService implements
 				String tk = TokenUtil.generateToken(token.getUid(),
 						token.getMcid(), 1);
 				String data = String.format(
-						"{\"token\":\"%s\",\"profile\":\"%s\"}", tk,
+						"{\"token\":\"%s\",\"userinfo\":\"%s\"}", tk,
 						user.toLCString());
 				result = new Result(ResultStatus.RS_OK, data);
 			} else {
@@ -175,9 +175,24 @@ public class AccountServiceImpl extends AbstractService implements
 			String fullPath = String.format("%s/%s", PROFILE_UPLOADED_PATH,
 					filename);
 			writeFile(fullPath, content);
-
 		} catch (Exception e) {
 			log.error(String.format("%s:uploadProfile() error", Tag), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		}
+		return result;
+	}
+
+	@Override
+	public Result rebound(String obd) {
+		Result result = null;
+		try {
+			UserPo userPo = accountDao.getUserByOBD(obd);
+			MyCar myCar = myCarService.getMyCarByUid(userPo.getId());
+			String token = TokenUtil.generateToken(userPo.getId(),
+					myCar.getId(), 0);
+			result = new Result(ResultStatus.RS_OK, token);
+		} catch (Exception e) {
+			log.error(String.format("%s:rebound() error", Tag), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return result;

@@ -55,7 +55,7 @@ public class OtherAction extends AbstractAction {
 		try {
 			UserAgent userAgent = UserAgentUtil.parseUserAgent(ua);
 			Token tk = TokenUtil.parseToken(token);
-			if (userAgent == null || tk == null) {
+			if (userAgent == null || !TokenUtil.isValid(tk)) {
 				result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
 			} else {
 				result = otherService.getConfig(userAgent, tk);
@@ -75,12 +75,12 @@ public class OtherAction extends AbstractAction {
 		Result result = null;
 		try {
 			Token tk = TokenUtil.parseToken(token);
-			if (tk == null) {
-				result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
-			} else {
+			if (TokenUtil.isValid(tk)) {
 				Feedback feedback = new Feedback(tk.getUid(), tk.getMcid(), ua,
 						content, new Date().getTime());
-				result = otherService.feedback(feedback);
+				result = otherService.feedback(tk, feedback);
+			} else {
+				result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "feedback error"), e);

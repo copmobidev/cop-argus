@@ -60,7 +60,7 @@ public class MyCarAction extends AbstractAction {
 		Result result = null;
 		try {
 			Token tk = TokenUtil.parseToken(token);
-			if (TokenUtil.isValid(tk)) {
+			if (!TokenUtil.isValid(tk)) {
 				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
 			} else {
 				CarBrand cb = myCarService.getCarBrandMap().get(
@@ -89,7 +89,7 @@ public class MyCarAction extends AbstractAction {
 		Result result = null;
 		try {
 			Token tk = TokenUtil.parseToken(token);
-			if (TokenUtil.isValid(tk)) {
+			if (!TokenUtil.isValid(tk)) {
 				result = new Result(ResultStatus.RS_ERROR, QUERY_LIMIT_MSG);
 			} else {
 				DateSpan dateSpan = new DateSpan(span, beginTime, endTime);
@@ -110,7 +110,7 @@ public class MyCarAction extends AbstractAction {
 		Result result = null;
 		try {
 			Token tk = TokenUtil.parseToken(token);
-			if (TokenUtil.isValid(tk)) {
+			if (!TokenUtil.isValid(tk)) {
 				result = new Result(ResultStatus.RS_EXPIRED, QUERY_LIMIT_MSG);
 			} else if (StringUtils.isNotBlank(routes)) {
 				String[] tmp = routes.split("\\;");
@@ -136,15 +136,9 @@ public class MyCarAction extends AbstractAction {
 		Result result = null;
 		try {
 			Token tk = TokenUtil.parseToken(token);
-			if (TokenUtil.isValid(tk)) {
-				result = new Result(ResultStatus.RS_EXPIRED, QUERY_LIMIT_MSG);
-			} else if (StringUtils.isNotBlank(codes)) {
-				String[] tmp = codes.split("\\|");
-				if (tmp == null || tmp.length <= 0) {
-					result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
-				} else {
-					result = diagnoseService.diagnose(tk, tmp);
-				}
+			String[] tmp = codes.split("\\|");
+			if (TokenUtil.isValid(tk) && tmp != null && tmp.length > 0) {
+				result = diagnoseService.diagnose(tk, tmp);
 			} else {
 				result = new Result(ResultStatus.RS_FAIL, PARAM_ERROR_MSG);
 			}

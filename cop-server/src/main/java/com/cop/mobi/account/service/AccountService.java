@@ -49,4 +49,11 @@ public interface AccountService {
 	 */
 	Result uploadProfile(Integer uid, String filename, byte[] content);
 
+	/**
+	 * 根据OBD序列号重新绑定用户生成token
+	 * 
+	 * @param obd
+	 * @return
+	 */
+	Result rebound(String obd);
 }

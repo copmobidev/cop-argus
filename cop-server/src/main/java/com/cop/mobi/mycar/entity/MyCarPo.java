@@ -10,12 +10,13 @@ public class MyCarPo {
 	private String sid; // 车辆序列号
 	private Integer uid; // 用户ID
 	private Integer bid; // CarBrand ID
+	private Integer isBound; // 是否为当前绑定车辆
 
 	public MyCarPo() {
 
 	}
 
-	public MyCarPo(String sid, int uid, int bid) {
+	public MyCarPo(String sid, int uid, int bid, int isBound) {
 		this.sid = sid;
 		this.uid = uid;
 		this.bid = bid;
@@ -53,4 +54,11 @@ public class MyCarPo {
 		this.bid = bid;
 	}
 
+	public Integer getIsBound() {
+		return isBound;
+	}
+
+	public void setIsBound(Integer isBound) {
+		this.isBound = isBound;
+	}
 }
