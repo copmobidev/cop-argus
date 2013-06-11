@@ -15,6 +15,7 @@
 		<result property="uid" column="uid" />
 		<result property="sid" column="sid" />
 		<result property="bid" column="bid" />
+		<result property="isBound" column="isBound" />
 	</resultMap>
 
 	<resultMap id="routeResult" type="com.cop.mobi.mycar.entity.DriveRoutePo">
@@ -38,7 +39,7 @@
 
 	<select id="getMyCarById" resultMap="myCarResult">
 		SELECT
-		id, uid, sid, bid
+		id, uid, sid, bid, isBound
 		FROM
 		LC_MyCar
 		WHERE id=#{id}
@@ -46,7 +47,7 @@
 
 	<select id="getMyCarBySid" resultMap="myCarResult">
 		SELECT
-		id, uid, sid, bid
+		id, uid, sid, bid, isBound
 		FROM
 		LC_MyCar
 		WHERE sid=#{sid}
@@ -54,7 +55,7 @@
 
 	<select id="getMyCarsByUid" resultMap="myCarResult">
 		SELECT
-		id, uid, sid, bid
+		id, uid, sid, bid, isBound
 		FROM
 		LC_MyCar
 		WHERE uid=#{uid}

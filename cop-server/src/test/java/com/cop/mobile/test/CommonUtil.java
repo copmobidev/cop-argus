@@ -10,8 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 
@@ -228,11 +226,24 @@ public class CommonUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
+		A a = new A();
+		a.setId(200);
+		System.out.println(a.getId());
+	}
 
-		Map<Integer, String> test = new HashMap<Integer, String>();
-		test.put(1, "hello");
-		test.put(2, "world");
+	public static class A {
+		private Integer id;
 
-		System.out.println(test.get(2));
+		public A() {
+			id = 1;
+		}
+
+		public Integer getId() {
+			return id;
+		}
+
+		public void setId(Integer id) {
+			this.id = id;
+		}
 	}
 }

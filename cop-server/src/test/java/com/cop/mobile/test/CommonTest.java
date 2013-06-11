@@ -28,7 +28,7 @@ public class CommonTest {
 
 	@Test
 	public void tokenTest() {
-		String strToken = TokenUtil.generateToken(1, 1, 3);
+		String strToken = TokenUtil.generateToken(1, 1, 0);
 		System.out.println(strToken);
 		Token token = TokenUtil.parseToken(strToken);
 		System.out.println(token);

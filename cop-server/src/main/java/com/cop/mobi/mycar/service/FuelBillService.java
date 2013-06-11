@@ -2,6 +2,7 @@ package com.cop.mobi.mycar.service;
 
 import com.cop.mobi.common.Result;
 import com.cop.mobi.mycar.entity.FuelBill;
+import com.cop.mobi.rest.core.Token;
 
 /**
  * 
@@ -16,7 +17,7 @@ public interface FuelBillService {
 	 * @param bill
 	 * @return
 	 */
-	Result addBill(FuelBill bill);
+	Result addBill(Token token, FuelBill bill);
 
 	/**
 	 * 获取用户某段时间之间的油单
@@ -26,7 +27,7 @@ public interface FuelBillService {
 	 * @param endTime
 	 * @return
 	 */
-	Result getBills(int uid, long beginTime, long endTime);
+	Result getBills(Token token, long beginTime, long endTime);
 
 	/**
 	 * 更新账单
@@ -34,7 +35,7 @@ public interface FuelBillService {
 	 * @param bill
 	 * @return
 	 */
-	Result updateBill(FuelBill bill);
+	Result updateBill(Token token, FuelBill bill);
 
 	/**
 	 * 根据账单号删除某一份账单
@@ -42,5 +43,5 @@ public interface FuelBillService {
 	 * @param bill
 	 * @return
 	 */
-	Result deleteBill(int bid);
+	Result deleteBill(Token token, int bid);
 }

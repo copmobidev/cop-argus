@@ -1,6 +1,5 @@
 package com.cop.mobi.mycar.service;
 
-import java.util.List;
 import java.util.Map;
 
 import com.cop.mobi.common.Result;
@@ -40,20 +39,20 @@ public interface MyCarService {
 	MyCar getMyCarById(int id);
 
 	/**
+	 * 根据用户id获取车辆信息
+	 * 
+	 * @param uid
+	 * @return
+	 */
+	MyCar getMyCarByUid(int uid);
+
+	/**
 	 * 根据OBD设备id获取车辆信息
 	 * 
 	 * @param obd
 	 * @return
 	 */
 	MyCar getMyCarBySid(String sid);
-
-	/**
-	 * 获取用户所有车辆
-	 * 
-	 * @param uid
-	 * @return
-	 */
-	List<MyCar> getMyCars(int uid);
 
 	/**
 	 * 注册车辆信息
@@ -77,7 +76,7 @@ public interface MyCarService {
 	 * @param mcid
 	 * @return
 	 */
-	int deleteMyCar(int mcid);
+	int deleteMyCar(int id);
 
 	/**
 	 * 获取车辆行车记录

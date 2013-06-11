@@ -112,7 +112,7 @@ public class FuelBill {
 	}
 
 	public String toLCString() {
-		return String.format("%d|%d|%d|%d|%f|%f|%d", id, fuelType, charge,
+		return String.format("%s|%s|%s|%s|%s|%s|%s", id, fuelType, charge,
 				unitprice, lat, lng, addtime);
 	}
 }

@@ -14,6 +14,7 @@ import com.cop.mobi.mycar.entity.FuelBill;
 import com.cop.mobi.mycar.service.FuelBillService;
 import com.cop.mobi.mycar.service.dao.FuelBillDao;
 import com.cop.mobi.rest.core.SpringApplicationContext;
+import com.cop.mobi.rest.core.Token;
 
 /**
  * 
@@ -31,7 +32,7 @@ public class FuelBillServiceImpl extends AbstractService implements
 	static {
 		init();
 	}
-	
+
 	private static void init() {
 		try {
 			fuelBillDao = (FuelBillDao) SpringApplicationContext
@@ -42,11 +43,11 @@ public class FuelBillServiceImpl extends AbstractService implements
 	}
 
 	@Override
-	public Result addBill(FuelBill bill) {
+	public Result addBill(Token token, FuelBill bill) {
 		Result result = null;
 		try {
-			FuelBill existBill = fuelBillDao.getFuelBillByAddtime(bill.getUid(),
-					bill.getAddtime());
+			FuelBill existBill = fuelBillDao.getFuelBillByAddtime(
+					bill.getUid(), bill.getAddtime());
 			if (existBill != null) {
 				result = new Result(ResultStatus.RS_FAIL, new Message("错误",
 						"该账单已存在"));
@@ -75,11 +76,11 @@ public class FuelBillServiceImpl extends AbstractService implements
 	}
 
 	@Override
-	public Result getBills(int uid, long beginTime, long endTime) {
+	public Result getBills(Token token, long beginTime, long endTime) {
 		Result result = null;
 		try {
-			List<FuelBill> bills = fuelBillDao.getFuelBills(uid, beginTime,
-					endTime);
+			List<FuelBill> bills = fuelBillDao.getFuelBills(token.getUid(),
+					beginTime, endTime);
 			if (bills == null || bills.size() == 0) {
 				result = new Result(ResultStatus.RS_FAIL, new Message("警告",
 						"未发现相应账单"));
@@ -89,14 +90,15 @@ public class FuelBillServiceImpl extends AbstractService implements
 			result = new Result(ResultStatus.RS_OK, tmp);
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, String.format(
-					"getBills(%d,%d,%d)", uid, beginTime, endTime)), e);
+					"getBills(%d,%d,%d)", token.getUid(), beginTime, endTime)),
+					e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}
 		return result;
 	}
 
 	@Override
-	public Result updateBill(FuelBill bill) {
+	public Result updateBill(Token token, FuelBill bill) {
 		Result result = null;
 		try {
 			List<String> cols = new ArrayList<String>();
@@ -107,14 +109,16 @@ public class FuelBillServiceImpl extends AbstractService implements
 				cols.add(String.format("unitprice=%f", bill.getUnitprice()));
 			}
 			if (bill.getAddtime() != null) {
-				cols.add(String.format("charge=%d", bill.getAddtime()));
+				cols.add(String.format("addtime=%d", bill.getAddtime()));
 			}
 			String updateCols = StringUtils.join(cols, ",");
 			int optCode = fuelBillDao.updateFuelBill(bill.getId(), updateCols);
 			if ((Integer) optCode == 1) {
-				FuelBill updatedBill = fuelBillDao.getFuelBillById(bill.getId());
+				FuelBill updatedBill = fuelBillDao
+						.getFuelBillById(bill.getId());
 				if (updatedBill != null) {
-					result = new Result(ResultStatus.RS_OK, updatedBill);
+					result = new Result(ResultStatus.RS_OK,
+							updatedBill.toLCString());
 				} else {
 					result = new Result(ResultStatus.RS_FAIL, new Message("错误",
 							"更新账单失败"));
@@ -134,7 +138,7 @@ public class FuelBillServiceImpl extends AbstractService implements
 	}
 
 	@Override
-	public Result deleteBill(int bid) {
+	public Result deleteBill(Token token, int bid) {
 		Result result = null;
 		try {
 			int optCode = fuelBillDao.deleteFuelBill(bid);

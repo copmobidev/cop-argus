@@ -17,6 +17,7 @@ import com.cop.mobi.mycar.service.DiagnoseService;
 import com.cop.mobi.mycar.service.dao.DiagnoseDao;
 import com.cop.mobi.rest.core.SpringApplicationContext;
 import com.cop.mobi.rest.core.Token;
+import com.cop.mobi.rest.core.TokenUtil;
 
 /**
  * 
@@ -62,14 +63,17 @@ public class DiagnoseServiceImpl extends AbstractService implements
 		for (String key : codes) {
 			String val = OBD_CODES.get(key);
 			NameValuePair item = new NameValuePair(key, val);
-			items.add(item.toLCString());
+			items.add(String.format("{\"code\":\"%s\",\"desc\":\"%s\"}",
+					item.getKey(), item.getValue()));
 		}
 		if (items.size() == 0) {
 			return new Result(ResultStatus.RS_FAIL, new Message("警告",
 					"未发现相应诊断码"));
 		}
-
-		String tmp = String.format("[%s]", StringUtils.join(items, ","));
+		String strTk = TokenUtil.generateToken(token.getUid(), token.getMcid(),
+				0);
+		String tmp = String.format("{\"token\":\"%s\",\"codes\":[%s]}", strTk,
+				StringUtils.join(items, ","));
 		return new Result(ResultStatus.RS_OK, tmp);
 	}
 }

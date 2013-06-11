@@ -2,6 +2,7 @@ package com.cop.mobi.rest.action;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,6 @@ import com.cop.mobi.account.service.AccountService;
 import com.cop.mobi.common.Result;
 import com.cop.mobi.common.Result.ResultStatus;
 import com.cop.mobi.mycar.entity.CarBrand;
-import com.cop.mobi.mycar.service.MyCarService;
 import com.cop.mobi.rest.core.AbstractAction;
 import com.cop.mobi.rest.core.MD5Util;
 import com.cop.mobi.rest.core.SpringApplicationContext;
@@ -42,7 +42,6 @@ public class AccountAction extends AbstractAction {
 	private static final String Tag = "AccountAction";
 
 	private static AccountService accountService;
-	private static MyCarService myCarService;
 
 	static {
 		init();
@@ -52,8 +51,6 @@ public class AccountAction extends AbstractAction {
 		try {
 			accountService = (AccountService) SpringApplicationContext
 					.getBean("accountService");
-			myCarService = (MyCarService) SpringApplicationContext
-					.getBean("myCarService");
 		} catch (Exception e) {
 			log.error(
 					String.format("%s:%s", Tag, "account service init error"),
@@ -67,12 +64,12 @@ public class AccountAction extends AbstractAction {
 			@FormParam("obd") String obd, @FormParam("sid") String sid,
 			@FormParam("manufacturer") String manufacturer,
 			@FormParam("brand") String brand, @FormParam("model") String model,
-			@FormParam("engine") String engine,
-			@FormParam("timestamp") Long timestamp) {
+			@FormParam("engine") String engine) {
 		Result result = null;
 		try {
 			CarBrand carBrand = new CarBrand(manufacturer, brand, model, engine);
-			result = accountService.register(obd, sid, carBrand, timestamp);
+			result = accountService.register(obd, sid, carBrand,
+					new Date().getTime());
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "register exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
@@ -107,20 +104,20 @@ public class AccountAction extends AbstractAction {
 		Result result = null;
 		try {
 			Token tk = TokenUtil.parseToken(token);
-			UserPo userPo = null;
-			if (TokenUtil.isValid(tk)) {
-				result = new Result(ResultStatus.RS_EXPIRED, PARAM_ERROR_MSG);
+
+			if (TokenUtil.isValid(tk)
+					&& (StringUtils.isNotBlank(name)
+							|| StringUtils.isNotBlank(email) || StringUtils
+								.isNotBlank(pwd))) {
+				UserPo userPo = new UserPo();
+				userPo.setId(tk.getUid());
+				userPo.setEmail(email);
+				userPo.setName(name);
+				userPo.setPwd(pwd);
+				result = accountService.updateUserInfo(tk, userPo);
 			} else {
-				if (StringUtils.isNotBlank(name)
-						|| StringUtils.isNotBlank(email)
-						|| StringUtils.isNotBlank(pwd)) {
-					userPo = new UserPo();
-					userPo.setId(tk.getUid());
-					userPo.setEmail(email);
-					userPo.setName(name);
-					userPo.setPwd(pwd);
-				}
-				accountService.updateUserInfo(tk, userPo);
+
+				result = new Result(ResultStatus.RS_EXPIRED, PARAM_ERROR_MSG);
 			}
 		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "login exception"), e);
@@ -148,6 +145,19 @@ public class AccountAction extends AbstractAction {
 			result = accountService.uploadProfile(token.getUid(), filename,
 					data);
 		} catch (IOException e) {
+			log.error(String.format("%s:%s", Tag, "uploadprofile exception"), e);
+			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
+		}
+		return Response.status(Status.OK).entity(result.toString()).build();
+	}
+
+	@POST
+	@Path("rebound")
+	public Response rebound(@FormParam("obd") String obd) {
+		Result result = null;
+		try {
+			result = accountService.rebound(obd);
+		} catch (Exception e) {
 			log.error(String.format("%s:%s", Tag, "uploadprofile exception"), e);
 			result = new Result(ResultStatus.RS_ERROR, SERVER_INNER_ERROR_MSG);
 		}

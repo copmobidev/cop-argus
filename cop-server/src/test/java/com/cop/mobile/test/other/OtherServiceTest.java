@@ -27,20 +27,20 @@ public class OtherServiceTest extends BaseTest {
 
 	@Test
 	public void configTest() {
-		String userAgent = "";
+		String userAgent = "mapi 1.0 peseus 1.0.0 motorola MB525 Android 2.3.5";
 		UserAgent ua = UserAgentUtil.parseUserAgent(userAgent);
-		String token = "";
+		String token = "64ac15fa75ccaa3483bf5d04fe2875dae4c4b5f50e19d1db5e193c1534986d7b";
 		Token tk = TokenUtil.parseToken(token);
 		Result result = otherService.getConfig(ua, tk);
-
 		if (result != null) {
 			try {
-				System.out.println(result.toString());
 				JSONObject jo = new JSONObject(result.toString());
 				System.out.println(jo.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else {
+			System.out.println("result is null");
 		}
 	}
 
@@ -53,7 +53,7 @@ public class OtherServiceTest extends BaseTest {
 		long addtime = new Date().getTime();
 		Feedback feedback = new Feedback(tk.getUid(), tk.getMcid(), userAgent,
 				content, addtime);
-		Result result = otherService.feedback(feedback);
+		Result result = otherService.feedback(tk, feedback);
 
 		if (result != null) {
 			try {
@@ -62,6 +62,8 @@ public class OtherServiceTest extends BaseTest {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else {
+			System.out.println("result is null");
 		}
 	}
 }

@@ -140,16 +140,9 @@ public class TokenUtil {
 	}
 
 	public static boolean isValid(Token token) {
-		if (token == null || token.getUid() == 0 || token.getMcid() == 0
-				|| token.getExpiredTime() == 0 || token.getCount() == 0) {
+		if (token == null || token.getUid() == 0 || token.getMcid() == 0) {
 			return false;
 		}
-
-		if (token.getCount() > 100
-				&& new Date().getTime() - token.getExpiredTime() > 36000) {
-			return false;
-		}
-
 		return true;
 	}
 }

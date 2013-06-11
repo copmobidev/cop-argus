@@ -18,6 +18,7 @@ import com.cop.mobi.other.service.OtherService;
 import com.cop.mobi.other.service.dao.OtherDao;
 import com.cop.mobi.rest.core.SpringApplicationContext;
 import com.cop.mobi.rest.core.Token;
+import com.cop.mobi.rest.core.TokenUtil;
 
 /**
  * 
@@ -54,13 +55,17 @@ public class OtherServiceImpl extends AbstractService implements OtherService {
 	private static void formatConfig() {
 		String[] tmpIOS = new String[CONFIGS.size() / 2];
 		String[] tmpAndroid = new String[CONFIGS.size() / 2];
-		for (int i = 0; i < CONFIGS.size(); ++i) {
+
+		int i = 0, j = 0, k = 0;
+		for (i = 0; i < CONFIGS.size(); ++i) {
 			if (CONFIGS.get(i).getPlatform() == 0) {
-				tmpIOS[i] = String.format("\"%s\":\"%s\"", CONFIGS.get(i)
+				tmpIOS[j] = String.format("\"%s\":\"%s\"", CONFIGS.get(i)
 						.getKey(), CONFIGS.get(i).getValue());
+				j++;
 			} else if (CONFIGS.get(i).getPlatform() == 1) {
-				tmpAndroid[i] = String.format("\"%s\":\"%s\"", CONFIGS.get(i)
+				tmpAndroid[k] = String.format("\"%s\":\"%s\"", CONFIGS.get(i)
 						.getKey(), CONFIGS.get(i).getValue());
+				k++;
 			}
 		}
 
@@ -73,15 +78,27 @@ public class OtherServiceImpl extends AbstractService implements OtherService {
 	public Result getConfig(UserAgent ua, Token token) {
 		Result result = null;
 		try {
+			String tmp = null;
 			if (ua.getMobiClient().getMobi().getOs() == OS.ANDROID
 					&& ANDROID_CONFIG != null) {
-				result = new Result(ResultStatus.RS_OK, ANDROID_CONFIG);
+				String tk = TokenUtil.generateToken(token.getUid(),
+						token.getMcid(), 0);
+				tmp = String.format("{\"token\":\"%s\",\"config\":%s}", tk,
+						ANDROID_CONFIG);
+				result = new Result(ResultStatus.RS_OK, tmp);
 			} else if (ua.getMobiClient().getMobi().getOs() == OS.IOS
 					&& IOS_CONFIG != null) {
-				result = new Result(ResultStatus.RS_OK, IOS_CONFIG);
+				String tk = TokenUtil.generateToken(token.getUid(),
+						token.getMcid(), 0);
+				tmp = String.format("{\"token\":\"%s\",\"config\":%s}", tk,
+						IOS_CONFIG);
+				result = new Result(ResultStatus.RS_OK, tmp);
 			} else {
-				result = new Result(ResultStatus.RS_FAIL, new Message("配置",
-						"无相关配置"));
+				String tk = TokenUtil.generateToken(token.getUid(),
+						token.getMcid(), 0);
+				tmp = String.format("{\"token\":\"%s\",\"message\":%s}", tk,
+						new Message("配置", "无相关配置").toString());
+				result = new Result(ResultStatus.RS_FAIL, tmp);
 			}
 		} catch (Exception e) {
 			log.error("getConfig() error", e);
@@ -91,16 +108,20 @@ public class OtherServiceImpl extends AbstractService implements OtherService {
 	}
 
 	@Override
-	public Result feedback(Feedback feedback) {
+	public Result feedback(Token token, Feedback feedback) {
 		Result result = null;
 		try {
 			int optCode = otherDao.addFeedback(feedback);
+			String tk = TokenUtil.generateToken(token.getUid(),
+					token.getMcid(), 0);
 			if (optCode == 1) {
-				result = new Result(ResultStatus.RS_OK, new Message("反馈",
-						"反馈成功"));
+				String tmp = String.format("{\"token\":\"%s\",\"message\":%s}", tk,
+						new Message("反馈", "反馈成功").toString());
+				result = new Result(ResultStatus.RS_OK, tmp);
 			} else {
-				result = new Result(ResultStatus.RS_FAIL, new Message("反馈",
-						"反馈成失敗"));
+				String tmp = String.format("{\"token\":\"%s\",\"message\":%s}", tk,
+						new Message("反馈", "反馈成失敗").toString());
+				result = new Result(ResultStatus.RS_FAIL, tmp);
 			}
 		} catch (Exception e) {
 			log.error("feedback() error", e);

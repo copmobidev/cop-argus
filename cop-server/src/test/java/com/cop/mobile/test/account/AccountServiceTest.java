@@ -51,6 +51,8 @@ public class AccountServiceTest extends BaseTest {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else {
+			System.err.println("result is null");
 		}
 	}
 
@@ -75,7 +77,23 @@ public class AccountServiceTest extends BaseTest {
 				e.printStackTrace();
 			}
 		} else {
-			System.err.println("no result return");
+			System.err.println("result is null");
+		}
+	}
+
+	@Test
+	public void reboundTest() {
+		String obd = "";
+		Result result = accountService.rebound(obd);
+		if (result != null) {
+			try {
+				JSONObject jo = new JSONObject(result.toString());
+				System.out.println(jo);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("result is null");
 		}
 	}
 }

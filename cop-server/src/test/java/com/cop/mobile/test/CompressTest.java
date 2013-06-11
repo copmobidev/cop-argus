@@ -1,4 +1,4 @@
-package com.cop.mobile.test.account;
+package com.cop.mobile.test;
 
 import java.io.File;
 
