@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cop.argus.demo.service.dao.DemoDao">
+	<resultMap id="userResult" type="com.cop.argus.demo.service.entity.UserPo">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="age" column="age" />
+		<result property="address" column="address" />
+	</resultMap>
+
+	<select id="getUserById" resultMap="userResult">
+		SELECT id, name, age, address
+		FROM LC_User WHERE id=#{id}
+	</select>
+
+	<update id="updateUserInfo">
+		UPDATE LC_User SET ${values} WHERE id=#{id}
+	</update>
+	
+	<insert id="addUser">
+		INSERT INTO LC_User (name, age, address) 
+		VALUES(#{name}, #{age}, #{address})
+	</insert>
+
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM LC_User WHERE
+		id=#{id}
+	</delete>
+</mapper>

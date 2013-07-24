@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cop.argus.car.service.dao.DiagnoseDao">
+	<resultMap id="errCodeResult" type="com.cop.argus.common.entity.NameValuePair">
+		<result property="name" column="errCode" />
+		<result property="value" column="description" />
+	</resultMap>
+
+	<select id="getAllErrCode" resultMap="errCodeResult">
+		SELECT errCode, description
+		FROM LC_ErrCode
+	</select>
+
+</mapper>
