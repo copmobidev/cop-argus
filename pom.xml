@@ -6,8 +6,6 @@
 	<packaging>pom</packaging>
 	<version>1.0.0</version>
 	<modules>
-		<module>cop-server</module>
-		<module>cop-lab</module>
 		<module>argus-server</module>
 		<module>mvc-demo</module>
 	</modules>

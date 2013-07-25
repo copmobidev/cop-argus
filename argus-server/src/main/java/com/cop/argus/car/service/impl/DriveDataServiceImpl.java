@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.cop.argus.account.service.dao.AccountDao;
 import com.cop.argus.account.service.entity.UserPo;
+import com.cop.argus.car.entity.DriveData;
 import com.cop.argus.car.entity.DriveDataServiceException;
+import com.cop.argus.car.entity.TimeSpan;
 import com.cop.argus.car.entity.TripData;
 import com.cop.argus.car.service.DriveDataService;
 import com.cop.argus.car.service.dao.DriveDataDao;
@@ -60,5 +62,11 @@ public class DriveDataServiceImpl extends BasicService implements
 			throw new DriveDataServiceException(
 					DriveDataServiceException.UNKNOW_ERROR);
 		}
+	}
+
+	@Override
+	public List<DriveData> getDriveData(int uid, TimeSpan span) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

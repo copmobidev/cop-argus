@@ -1,5 +1,7 @@
 package com.cop.argus.car.entity;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * 行程切片数据，一分钟的行驶数据描述
  * 
@@ -7,31 +9,47 @@ package com.cop.argus.car.entity;
  * 
  */
 public class TripPiece {
+	@Expose
 	private long timestamp; // 时间戳
 	private double lat; // 纬度
 	private double lng; // 经度
 	private char dir1, dir2; //
 	private int ele; // 海拔
+	@Expose
 	private double maxSPD; // 最高速度
+	@Expose
 	private double bstSPD; // 最佳速度
+	@Expose
 	private double bstFuel; // 最低油耗
+	@Expose
 	private int dist; // 里程
+	@Expose
 	private double avgSPD; // 平均速度
 	private double avgRPM; // 平均转速
 	private double maxRPM; // 最大转速
+	@Expose
 	private double totalFuel; // 该分钟耗油量
+	@Expose
 	private double avgFuel; // 平均油耗
 	private double avgCalLoad; // 平均负载
+	@Expose
 	private double avgCoolTemp; // 平均水箱温度
 	private double avgPadPos; // 节气门位置平均值
 	private double maxPadPos; // 节气门位置最大值
 	private double minPadPos; // 节气门位置最小值
 	private double fuelLv; // 油箱存量
+	@Expose
 	private double acc; // 急加速次数
+	@Expose
 	private double brk; // 急刹车次数
+	@Expose
 	private double overSPD; // 超速时间
+	@Expose
 	private double idleSPD; // 怠速时间
+	@Expose
 	private double sliding; // 滑行时间
+	@Expose
+	private double score; // 行程切片得分
 
 	public TripPiece() {
 
@@ -243,5 +261,13 @@ public class TripPiece {
 
 	public void setSliding(double sliding) {
 		this.sliding = sliding;
+	}
+
+	public double getScore() {
+		return score;
+	}
+
+	public void setScore(double score) {
+		this.score = score;
 	}
 }

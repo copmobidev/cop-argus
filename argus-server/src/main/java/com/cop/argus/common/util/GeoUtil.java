@@ -21,4 +21,9 @@ public class GeoUtil {
 		double tempC = 2.0 * Math.atan2(Math.sqrt(tmpA), Math.sqrt(1.0 - tmpA));
 		return (int) (Math.ceil(EARTH_RADIUS * tempC));
 	}
+
+	public static double format(double in, int n) {
+		double p = Math.pow(10, n);
+		return Math.round(in * p) / p;
+	}
 }

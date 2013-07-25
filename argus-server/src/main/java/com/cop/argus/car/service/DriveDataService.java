@@ -2,7 +2,9 @@ package com.cop.argus.car.service;
 
 import java.util.List;
 
+import com.cop.argus.car.entity.DriveData;
 import com.cop.argus.car.entity.DriveDataServiceException;
+import com.cop.argus.car.entity.TimeSpan;
 import com.cop.argus.common.entity.Message;
 
 /**
@@ -21,4 +23,12 @@ public interface DriveDataService {
 	Message uploadDriveData(int uid, List<String> datas)
 			throws DriveDataServiceException;
 
+	/**
+	 * 获取用户行车数据
+	 * 
+	 * @param uid
+	 * @param span
+	 * @return
+	 */
+	List<DriveData> getDriveData(int uid, TimeSpan span);
 }

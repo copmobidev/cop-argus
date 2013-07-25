@@ -76,6 +76,34 @@ public class DriveDataController extends BasicController {
 				HttpStatus.OK);
 	}
 
+	// TODO :
+	@RequestMapping(value = "/mycar/diagnose", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+	public ResponseEntity<String> getDriveData(
+			@RequestHeader HttpHeaders headers,
+			@RequestParam("token") String token,
+			@RequestParam("beginTime") Long beginTime,
+			@RequestParam("endTime") Long endTimeF) {
+
+		Result result = null;
+		try {
+			String uaStr = headers.get("ua").get(0);
+			UserAgent ua = UserAgentUtil.parseUserAgent(uaStr);
+			Token tk = TokenUtil.parseToken(token);
+			if (ua != null && TokenUtil.isValid(tk)) {
+
+			} else {
+				result = new Result(ResultStatus.RS_FAIL,
+						TokenUtil.generateToken(tk.getUid(), 1),
+						Message.MSG_PARAM_INVALID);
+			}
+		} catch (Exception e) {
+			result = new Result(ResultStatus.RS_ERROR, null,
+					Message.MSG_SERVER_INNER_ERROR);
+		}
+		return new ResponseEntity<String>(DataFormater.format(result),
+				HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/mycar/diagnose", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	public ResponseEntity<String> diagnose(@RequestHeader HttpHeaders headers,
 			@RequestParam("token") String token,

@@ -2,7 +2,9 @@ package com.cop.argus.common.util;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -25,20 +27,29 @@ public class DriveDataUtil {
 	 * 
 	 * @param data
 	 */
-	public static TripData parserTripData(String data, int uid, int level) {
+	public static TripData parserTripData(String data, int uid, int level)
+			throws Exception {
 		int pieceNum = data.length() / 90 - 1;
 
 		String minuteData = data.substring(0, pieceNum * 90);
+		double score = 0.0;
+		List<TripPiece> drivePieces = new ArrayList<TripPiece>();
+		for (int i = 0; i < pieceNum; ++i) {
+			String piece = data.substring(i * 90, (i + 1) * 90);
+			TripPiece drivePiece = parserTripPiece(piece, level);
+			drivePieces.add(drivePiece);
+			score += drivePiece.getScore();
+			System.out.println(DataFormater.format(drivePiece));
+		}
+
 		String summary = data.substring(pieceNum * 90, data.length());
-		try {
-			TripData td = parserTripSummary(summary, level);
-			if (td != null) {
-				td.setMinuteData(minuteData);
-				td.setUid(uid);
-				return td;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		TripData td = parserTripSummary(summary);
+		if (td != null) {
+			td.setMinuteData(minuteData);
+			td.setUid(uid);
+			td.setScore(GeoUtil.format(score, 2));
+			System.out.println(DataFormater.format(td));
+			return td;
 		}
 		return null;
 	}
@@ -50,8 +61,7 @@ public class DriveDataUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static TripData parserTripSummary(String data, int level)
-			throws Exception {
+	public static TripData parserTripSummary(String data) throws Exception {
 		TripData td = new TripData();
 		int year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0;
 		double lat = 0.0, lng = 0.0;
@@ -309,7 +319,7 @@ public class DriveDataUtil {
 				break;
 			}
 		}
-		int score = score(td, level);
+		int score = 0;
 		td.setScore(score);
 		return td;
 	}
@@ -320,7 +330,8 @@ public class DriveDataUtil {
 	 * @param data
 	 * @throws Exception
 	 */
-	public static TripPiece parserTripPiece(String data) throws Exception {
+	public static TripPiece parserTripPiece(String data, int level)
+			throws Exception {
 		TripPiece tp = new TripPiece();
 		int year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0;
 		double lat = 0.0, lng = 0.0;
@@ -472,6 +483,8 @@ public class DriveDataUtil {
 				break;
 			}
 		}
+		double score = score(tp, level);
+		tp.setScore(score);
 		return tp;
 	}
 
@@ -574,21 +587,22 @@ public class DriveDataUtil {
 	 * @param tripData
 	 * @return
 	 */
-	private static int score(TripData tripData, int level) {
-		long time = tripData.getEndTime() - tripData.getBeginTime();
-		double avgSPD = tripData.getDist() / time * 1000 * 60 * 24;
+	private static double score(TripPiece tripPiece, int level) {
+		double avgSPD = tripPiece.getAvgSPD();
 		double score = 0;
 		if (avgSPD < 120) {
-			score = time * (144 - (120 - avgSPD) * (120 - avgSPD))
-					* tripData.getSliding()
-					- (tripData.getAcc() + tripData.getBrk())
+			score = (144 - (120 - avgSPD) * (120 - avgSPD) / 100)
+					* (tripPiece.getSliding() / 100)
+					- (tripPiece.getAcc() + tripPiece.getBrk())
 					* (Math.sqrt(level) + 1);
 		} else {
-			score = -time * (avgSPD - 120) * (avgSPD - 120) / 100
-					* tripData.getSliding()
-					- (tripData.getAcc() + tripData.getBrk())
+			score = -(avgSPD - 120) * (avgSPD - 120) / 100
+					* (tripPiece.getSliding() / 100)
+					- (tripPiece.getAcc() + tripPiece.getBrk())
 					* (Math.sqrt(level) + 1);
 		}
-		return (int) score;
+		score = score > 0.0 ? score : 0.0;
+		score = GeoUtil.format(score, 2);
+		return score;
 	}
 }

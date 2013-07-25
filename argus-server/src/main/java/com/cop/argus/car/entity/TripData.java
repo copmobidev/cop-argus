@@ -71,7 +71,8 @@ public class TripData {
 	@Expose
 	private String errCodes; // 错误码
 	private String minuteData; // 每分钟行程数据
-	private int score; // 行程得分
+	@Expose
+	private double score; // 行程得分
 
 	public TripData() {
 
@@ -422,11 +423,11 @@ public class TripData {
 		this.minuteData = minuteData;
 	}
 
-	public int getScore() {
+	public double getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(double score) {
 		this.score = score;
 	}
 
