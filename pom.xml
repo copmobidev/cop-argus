@@ -105,45 +105,44 @@
 	<build>
 		<finalName>${project.name}</finalName>
 
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-
 		<plugins>
 			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1-alpha-1</version>
-				<configuration>
-					<warName>argus</warName>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>6</source>
-					<target>6</target>
+					<source>1.6</source>
+					<target>1.6</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4.3</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12.4</version>
+				<version>2.14</version>
 				<configuration>
 					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<url>http://localhost:80/manager/text</url>
+					<update>true</update>
+					<server>booksair</server>
+					<username>admin</username>
+					<password>admin</password>
+					<path>/info</path>
 				</configuration>
 			</plugin>
 		</plugins>
