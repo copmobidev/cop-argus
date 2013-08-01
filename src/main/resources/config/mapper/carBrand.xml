@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cop.argus.car.service.dao.CarBrandDao">
+	<resultMap id="carBrandResult" type="com.cop.argus.car.service.entity.CarBrandPo">
+		<result property="id" column="id" />
+		<result property="manufacturer" column="manufacturer" />
+		<result property="brand" column="brand" />
+		<result property="model" column="model" />
+		<result property="engine" column="engine" />
+		<result property="color" column="color" />
+		<result property="configParam" column="configParam" />
+	</resultMap>
+
+	<select id="getAllCarBrands" resultMap="carBrandResult">
+		SELECT id, manufacturer,
+		brand, model, engine, color, configParam FROM LC_CarBrand
+	</select>
+</mapper>

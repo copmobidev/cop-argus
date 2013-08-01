@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cop.argus.account.service.dao.AccountDao">
+	<resultMap id="userResult" type="com.cop.argus.account.service.entity.UserPo">
+		<result property="id" column="id" />
+		<result property="obd" column="obd" />
+		<result property="vin" column="vin" />
+		<result property="calid" column="calid" />
+		<result property="cid" column="cid" />
+		<result property="bid" column="bid" />
+		<result property="email" column="email" />
+		<result property="name" column="name" />
+		<result property="pwd" column="pwd" />
+		<result property="sex" column="sex" />
+		<result property="birth" column="birth" />
+		<result property="profile" column="profile" />
+		<result property="score" column="score" />
+		<result property="level" column="level" />
+		<result property="registerTime" column="registerTime" />
+	</resultMap>
+
+	<select id="getUserById" resultMap="userResult">
+		SELECT id, obd, vin, calid,
+		cid, bid, email, name, pwd, sex, birth, profile, score, level,
+		registerTime, lstUpdateTime FROM LC_User WHERE id=#{id}
+	</select>
+
+	<select id="getUserByObd" resultMap="userResult">
+		SELECT id, obd, vin, calid,
+		cid, bid, email, name, pwd, sex, birth, profile, score, level,
+		registerTime, lstUpdateTime FROM LC_User WHERE obd=#{obd}
+	</select>
+
+	<select id="getUserByEmail" resultMap="userResult">
+		SELECT id, obd, vin,
+		calid, cid, bid, email, name, pwd, sex, birth, profile, registerTime,
+		lstUpdateTime FROM LC_User WHERE email=#{email}
+	</select>
+
+	<update id="updateUserInfo">
+		UPDATE LC_User SET ${values} WHERE id=#{id}
+	</update>
+
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM LC_User WHERE
+		id=#{id}
+	</delete>
+</mapper>

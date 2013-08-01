@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cop.argus.car.service.dao.PoiDao">
+	<resultMap id="fuelBillResult" type="com.cop.argus.car.service.entity.FuelBillPo">
+		<result property="id" column="id" />
+		<result property="uid" column="uid" />
+		<result property="pid" column="pid" />
+		<result property="fuel" column="fuel" />
+		<result property="unitprice" column="unitprice" />
+		<result property="fuelType" column="fuelType" />
+		<result property="addtime" column="addtime" />
+	</resultMap>
+
+	<select id="getFuelBill" resultMap="fuelBillResult">
+		SELECT id, uid, pid, fuel,
+		unitprice, fuelType, addtime FROM LC_FuelBill
+	</select>
+
+	<update id="updateFuelBill">
+		UPDATE LC_FuelBill SET #{values} WHERE id=#{id}
+	</update>
+
+	<update id="addFuelBill">
+		INSERT INTO LC_FuelBill(uid, pid, fuel, unitprice,
+		fuelType, addtime) VALUES(#{uid}, #{pid}, #{fuel},
+		#{unitprice},#{fuelType},#{addtime})
+	</update>
+
+</mapper>
