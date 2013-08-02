@@ -30,5 +30,5 @@ public interface DriveDataDao {
 	 * @param values
 	 * @return
 	 */
-	int addDriveData(@Param(value = "values") String values);
+	int addTripData(@Param(value = "values") String values);
 }

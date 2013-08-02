@@ -13,6 +13,14 @@ import com.cop.argus.car.service.entity.FuelBillPo;
  */
 public interface FuelBillDao {
 
+	/**
+	 * 根据账单添加时间查询账单
+	 * 
+	 * @param uid
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
 	List<FuelBillPo> getFuelBill(@Param(value = "uid") int uid,
 			@Param(value = "beginTime") long beginTime,
 			@Param(value = "endTime") long endTime);
@@ -32,15 +40,18 @@ public interface FuelBillDao {
 	 * @return
 	 */
 	int addFuelBill(@Param(value = "uid") int uid,
-			@Param(value = "fuel") double fuel,
+			@Param(value = "pid") int pid, @Param(value = "fuel") double fuel,
 			@Param(value = "unitprice") double unitprice,
 			@Param(value = "fuelType") int fuelType,
-			@Param(value = "pid") int pid);
+			@Param(value = "addtime") long addtime);
 
 	/**
 	 * 更新账单
-	 * @param uid
+	 * 
+	 * @param id
+	 *            账单ID
 	 * @param values
+	 *            需要更新的数据
 	 * @return
 	 */
 	int updateFuelBill(@Param(value = "id") int id,

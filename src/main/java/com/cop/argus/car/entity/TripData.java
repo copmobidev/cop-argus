@@ -15,13 +15,11 @@ public class TripData {
 	private long beginTime; // 开始时间
 	private double beginLat; // 开始纬度
 	private double beginLng; // 开始经度
-	private char beginDir1, beginDir2;
 	private double beginEle; // 行程开始海拔
 	@Expose
 	private long endTime; // 结束时间
 	private double endLat; // 结束纬度
 	private double endLng; // 结束经度
-	private char endDir1, endDir2;
 	private double endEle; // 行程结束海拔
 	@Expose
 	private double dist; // 行程总里程
@@ -111,22 +109,6 @@ public class TripData {
 		this.beginLng = beginLng;
 	}
 
-	public char getBeginDir1() {
-		return beginDir1;
-	}
-
-	public void setBeginDir1(char beginDir1) {
-		this.beginDir1 = beginDir1;
-	}
-
-	public char getBeginDir2() {
-		return beginDir2;
-	}
-
-	public void setBeginDir2(char beginDir2) {
-		this.beginDir2 = beginDir2;
-	}
-
 	public double getBeginEle() {
 		return beginEle;
 	}
@@ -157,22 +139,6 @@ public class TripData {
 
 	public void setEndLng(double endLng) {
 		this.endLng = endLng;
-	}
-
-	public char getEndDir1() {
-		return endDir1;
-	}
-
-	public void setEndDir1(char endDir1) {
-		this.endDir1 = endDir1;
-	}
-
-	public char getEndDir2() {
-		return endDir2;
-	}
-
-	public void setEndDir2(char endDir2) {
-		this.endDir2 = endDir2;
 	}
 
 	public double getEndEle() {

@@ -1,6 +1,5 @@
 package com.cop.argus.car.entity;
 
-import com.cop.argus.account.entity.AccountServiceException;
 import com.cop.argus.common.entity.Message;
 import com.cop.argus.common.entity.Result;
 import com.cop.argus.common.entity.Result.ResultStatus;
@@ -17,6 +16,8 @@ public class FuelBillServiceException extends BasicServiceException {
 	 */
 	private static final long serialVersionUID = 481715016227467814L;
 
+	public static final int BILL_EXISTED = 1; // 账单已存在
+
 	public FuelBillServiceException(int code, String message) {
 		super(code, message);
 	}
@@ -31,20 +32,12 @@ public class FuelBillServiceException extends BasicServiceException {
 	 * @param e
 	 * @return
 	 */
-	public static Result handleException(AccountServiceException e) {
+	public static Result handleException(FuelBillServiceException e) {
 		Result result = null;
 		switch (e.getCode()) {
-		case AccountServiceException.EMAIL_EXISTED:
+		case BILL_EXISTED:
 			result = new Result(ResultStatus.RS_FAIL, null, new Message("抱歉",
-					"该邮箱已被其他人使用"));
-			break;
-		case AccountServiceException.USER_NOT_FOUND:
-			result = new Result(ResultStatus.RS_FAIL, null, new Message("抱歉",
-					"咩有找到该用户!"));
-			break;
-		case AccountServiceException.INFO_UPATE_ERROR:
-			result = new Result(ResultStatus.RS_FAIL, null, new Message("抱歉",
-					"更新用户信息失败!"));
+					"账单已存在"));
 			break;
 		default:
 			result = new Result(ResultStatus.RS_FAIL, null,

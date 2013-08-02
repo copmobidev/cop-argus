@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cop.argus.car.entity.FuelBill;
+import com.cop.argus.car.entity.FuelBillServiceException;
 import com.cop.argus.car.entity.TimeSpan;
 import com.cop.argus.car.service.FuelBillService;
 import com.cop.argus.car.service.dao.FuelBillDao;
+import com.cop.argus.car.service.entity.FuelBillPo;
+import com.cop.argus.common.entity.Message;
 import com.cop.argus.service.common.BasicService;
 
 /**
@@ -22,6 +25,8 @@ import com.cop.argus.service.common.BasicService;
 public class FuelBillServiceImpl extends BasicService implements
 		FuelBillService {
 
+	private static long ONE_DAY = 24 * 60 * 60 * 1000;
+
 	@Autowired
 	private FuelBillDao fuelBillDao;
 
@@ -31,21 +36,43 @@ public class FuelBillServiceImpl extends BasicService implements
 	}
 
 	@Override
-	public List<FuelBill> get(Integer uid, TimeSpan timeSpan) {
+	public List<FuelBill> get(Integer uid, TimeSpan timeSpan)
+			throws FuelBillServiceException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public FuelBill add(Integer uid, Double fuel, Double unitprice,
-			Integer fuelType, Integer pid, Long addtime) {
-		// TODO Auto-generated method stub
+	public FuelBill add(Integer uid, Integer pid, Double fuel,
+			Double unitprice, Integer fuelType, Long addtime)
+			throws FuelBillServiceException {
+		try {
+			List<FuelBillPo> fbPos = fuelBillDao.getFuelBill(uid, addtime
+					- ONE_DAY, addtime + ONE_DAY);
+			if (fbPos != null && fbPos.size() > 0) {
+				throw new FuelBillServiceException(
+						FuelBillServiceException.BILL_EXISTED);
+			}
+
+			int opt = fuelBillDao.addFuelBill(uid, pid, fuel, unitprice,
+					fuelType, addtime);
+
+		} catch (Exception e) {
+
+		}
 		return null;
 	}
 
 	@Override
 	public FuelBill update(Integer id, Double fuel, Double unitprice,
-			Integer fuelType, Integer pid, Long addtime) {
+			Integer fuelType, Integer pid, Long addtime)
+			throws FuelBillServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Message delete(Integer id) throws FuelBillServiceException {
 		// TODO Auto-generated method stub
 		return null;
 	}

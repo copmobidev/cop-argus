@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -164,5 +166,15 @@ public class CommonUtilTest {
 		pairs.put("name", "chris");
 		pairs.put("age", "10");
 		System.out.println(DataFormater.format(pairs));
+	}
+
+	@Test
+	public void intArrayTest() {
+		List<Integer> battery = new ArrayList<Integer>();
+		battery.add(1);
+		battery.add(2);
+		battery.add(3);
+		battery.add(5);
+		System.out.println(DataFormater.format(battery));
 	}
 }

@@ -63,6 +63,7 @@ public class DriveDataUtil {
 	 */
 	public static TripData parserTripSummary(String data) throws Exception {
 		TripData td = new TripData();
+		int tmp = 0;
 		int year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0;
 		double lat = 0.0, lng = 0.0;
 		int ele = 0, dist = 0, errDist = 0, clrDist = 0, fuel = 0, avgFuel = 0, avgRPM = 0, maxRPM = 0;
@@ -73,136 +74,296 @@ public class DriveDataUtil {
 			case 2:
 				break;
 			case 4:
-				year = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				year = tmp;
 				break;
 			case 6:
-				month = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				month = tmp;
 				break;
 			case 8:
-				day = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				day = tmp;
 				break;
 			case 10:
-				hour = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				hour = tmp;
 				break;
 			case 12:
-				minute = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				minute = tmp;
 				break;
 			case 14: {
-				second = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				second = tmp;
 				Date date = sdf.parse(String.format("%d %d %d %d-%d-%d", year,
 						month, day, hour, minute, second));
 				td.setBeginTime(date.getTime());
 				break;
 			}
 			case 16:
-				lat = 0.0;
-				lat = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat = tmp;
 				break;
 			case 18:
-				lat += Integer.parseInt(hex) / 100.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat += tmp / 100.0;
 				break;
 			case 20:
-				lat += Integer.parseInt(hex) / 10000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat += tmp / 10000.0;
 				break;
 			case 22:
-				lat += Integer.parseInt(hex) / 1000000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat += tmp / 1000000.0;
 				td.setBeginLat(format(lat, 6));
 				break;
 			case 24:
-				td.setBeginDir1(hex2char(hex));
 				break;
 			case 26:
-				lng = 0.0;
-				lng += Integer.parseInt(hex) * 100.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp * 100.0;
 				break;
 			case 28:
-				lng += Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp;
 				break;
 			case 30:
-				lng += Integer.parseInt(hex) / 100.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp / 100.0;
 				break;
 			case 32:
-				lng += Integer.parseInt(hex) / 10000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp / 10000.0;
 				break;
 			case 34:
-				lng += Integer.parseInt(hex) / 1000000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp / 1000000.0;
 				td.setBeginLng(format(lng, 6));
 				break;
 			case 36:
-				td.setBeginDir2(hex2char(hex));
 				break;
 			case 38:
-				ele = 0;
-				ele = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				ele = tmp;
 				break;
 			case 40:
-				ele = ele * 100 + Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				ele = ele * 100 + tmp;
 				td.setBeginEle(ele);
 			case 42:
-				year = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				year = tmp;
 				break;
 			case 44:
-				month = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				month = tmp;
 				break;
 			case 46:
-				day = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				day = tmp;
 				break;
 			case 48:
-				hour = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				hour = tmp;
 				break;
 			case 50:
-				minute = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				minute = tmp;
 				break;
 			case 52: {
-				second = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				second = tmp;
 				Date date = sdf.parse(String.format("%d %d %d %d-%d-%d", year,
 						month, day, hour, minute, second));
 				td.setEndTime(date.getTime());
 				break;
 			}
 			case 54:
-				lat = 0.0;
-				lat = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat = tmp;
 				break;
 			case 56:
-				lat += Integer.parseInt(hex) / 100.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat += tmp / 100.0;
 				break;
 			case 58:
-				lat += Integer.parseInt(hex) / 10000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat += tmp / 10000.0;
 				break;
 			case 60:
-				lat += Integer.parseInt(hex) / 1000000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat += tmp / 1000000.0;
 				td.setEndLat(format(lat, 6));
 				break;
 			case 62:
-				td.setEndDir1(hex2char(hex));
 				break;
 			case 64:
-				lng = 0.0;
-				lng += Integer.parseInt(hex) * 100.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp * 100.0;
 				break;
 			case 66:
-				lng += Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp;
 				break;
 			case 68:
-				lng += Integer.parseInt(hex) / 100.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp / 100.0;
 				break;
 			case 70:
-				lng += Integer.parseInt(hex) / 10000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp / 10000.0;
 				break;
 			case 72:
-				lng += Integer.parseInt(hex) / 1000000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp / 1000000.0;
 				td.setEndLng(format(lng, 6));
 				break;
 			case 74:
-				td.setEndDir2(hex2char(hex));
 				break;
 			case 76:
-				ele = 0;
-				ele = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				ele = tmp;
 				break;
 			case 78:
-				ele = ele * 100 + Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				ele = ele * 100 + tmp;
 				td.setEndEle(ele);
 				break;
 			case 82:
@@ -333,6 +494,7 @@ public class DriveDataUtil {
 	public static TripPiece parserTripPiece(String data, int level)
 			throws Exception {
 		TripPiece tp = new TripPiece();
+		int tmp = 0;
 		int year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0;
 		double lat = 0.0, lng = 0.0;
 		int ele = 0, dist = 0, avgRPM = 0, maxRPM = 0, avgFuel = 0;
@@ -343,66 +505,143 @@ public class DriveDataUtil {
 			case 2:
 				break;
 			case 4:
-				year = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				year = tmp;
 				break;
 			case 6:
-				month = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				month = tmp;
 				break;
 			case 8:
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
 				day = Integer.parseInt(hex);
 				break;
 			case 10:
-				hour = Integer.parseInt(hex);
+				hour = tmp;
 				break;
 			case 12:
-				minute = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				minute = tmp;
 				break;
 			case 14:
-				second = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				second = tmp;
 				Date date = sdf.parse(String.format("%d %d %d %d-%d-%d", year,
 						month, day, hour, minute, second));
 				tp.setTimestamp(date.getTime());
 				break;
 			case 16:
-				lat = Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat = tmp;
 				break;
 			case 18:
-				lat += Integer.parseInt(hex) / 100.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat += tmp / 100.0;
 				break;
 			case 20:
-				lat += Integer.parseInt(hex) / 10000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat += tmp / 10000.0;
 				break;
 			case 22:
-				lat += Integer.parseInt(hex) / 1000000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lat += tmp / 1000000.0;
 				tp.setLat(format(lat, 6));
 				break;
 			case 24:
-				tp.setDir1(hex2char(hex));
 				break;
 			case 26:
-				lng += Integer.parseInt(hex) * 100.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp * 100.0;
 				break;
 			case 28:
-				lng += Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp;
 				break;
 			case 30:
-				lng += Integer.parseInt(hex) / 100.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp / 100.0;
 				break;
 			case 32:
-				lng += Integer.parseInt(hex) / 10000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp / 10000.0;
 				break;
 			case 34:
-				lng += Integer.parseInt(hex) / 1000000.0;
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				lng += tmp / 1000000.0;
 				tp.setLng(format(lng, 6));
 				break;
 			case 36:
-				tp.setDir2(hex2char(hex));
 				break;
 			case 38:
-				ele = Integer.parseInt(hex);
+				try {
+					ele = Integer.parseInt(hex);
+				} catch (Exception e) {
+					ele = 0;
+				}
 				break;
 			case 40:
-				ele = ele * 100 + Integer.parseInt(hex);
+				try {
+					tmp = Integer.parseInt(hex);
+				} catch (Exception e) {
+					tmp = 0;
+				}
+				ele = ele * 100 + tmp;
 				tp.setEle(ele);
 				break;
 			case 42:
@@ -439,7 +678,7 @@ public class DriveDataUtil {
 				tp.setMaxRPM(maxRPM);
 				break;
 			case 62:
-				tp.setTotalFuel(hex2int(hex));
+				tp.setFuel(hex2int(hex));
 				break;
 			case 64:
 				avgFuel = hex2int(hex);
@@ -464,7 +703,7 @@ public class DriveDataUtil {
 				tp.setMinPadPos(hex2int(hex));
 				break;
 			case 78:
-				tp.setFuelLv(hex2int(hex));
+				tp.setFuelLV(hex2int(hex));
 				break;
 			case 80:
 				tp.setAcc(hex2int(hex));
@@ -562,11 +801,15 @@ public class DriveDataUtil {
 	}
 
 	private static int hex2int(String hex) {
-		char ch1 = hex.charAt(0);
-		int tmp1 = Character.digit(ch1, 16) * 16;
-		char ch2 = hex.charAt(1);
-		int tmp2 = Character.digit(ch2, 16);
-		return tmp1 + tmp2;
+		try {
+			char ch1 = hex.charAt(0);
+			int tmp1 = Character.digit(ch1, 16) * 16;
+			char ch2 = hex.charAt(1);
+			int tmp2 = Character.digit(ch2, 16);
+			return tmp1 + tmp2;
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 	private static char hex2char(String hex)

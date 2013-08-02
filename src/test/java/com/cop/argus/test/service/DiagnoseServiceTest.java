@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cop.argus.car.entity.Battery;
 import com.cop.argus.car.service.DiagnoseService;
 import com.cop.argus.common.entity.NameValuePair;
 import com.cop.argus.common.util.DataFormater;
@@ -31,6 +32,16 @@ public class DiagnoseServiceTest extends BasicTest {
 		try {
 			List<NameValuePair> result = diagnoseService.diagnose(1, errCodes);
 			System.out.println(DataFormater.format(result));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void batteryTest() {
+		try {
+			List<Battery> bats = diagnoseService.battery(1);
+			System.out.println(DataFormater.format(bats));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -46,7 +46,7 @@ public class DriveDataServiceImpl extends BasicService implements
 			for (String data : datas) {
 				TripData td = DriveDataUtil.parserTripData(data, uid,
 						userPo.getLevel());
-				driveDataDao.addDriveData(td.toDBString());
+				driveDataDao.addTripData(td.toDBString());
 				score += td.getScore();
 				if (score > 50) {
 					level = (score - 50) / 20 + 1;
@@ -65,8 +65,25 @@ public class DriveDataServiceImpl extends BasicService implements
 	}
 
 	@Override
-	public List<DriveData> getDriveData(int uid, TimeSpan span) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<DriveData> getDriveData(int uid, TimeSpan timeSpan) {
+		List<TripData> driveDatas = driveDataDao.getTripData(uid,
+				timeSpan.getBeginTime(), timeSpan.getEndTime());
+		if (driveDatas.size() > 0) {
+			switch (timeSpan.getSpan()) {
+			case PIECE:
+				driveDatas.get(0);
+				break;
+			case WEEK:
+				break;
+			case MONTH:
+				break;
+			case YEAR:
+				break;
+			}
+
+			return null;
+		} else {
+			return null;
+		}
 	}
 }

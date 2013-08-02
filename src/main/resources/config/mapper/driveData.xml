@@ -49,7 +49,7 @@
 		<result property="score" column="score" />
 	</resultMap>
 
-	<select id="getDriveData" resultMap="tripDataResult">
+	<select id="getTripData" resultMap="tripDataResult">
 		SELECT uid, beginLat,
 		beginLng, beginEle, beginTime, endLat, endLng, endEle, endTime, dist,
 		fuel, errDist, clrDist, maxSPD, bstSPD, avgFuel, bstFuel, fuelLV,
@@ -58,11 +58,11 @@
 		idleSPD, sliding, fast, slow, jam, errCodes, minuteData, score FROM
 		LC_CarBrand WHERE uid=#{uid} AND 
 		<![CDATA[
-		beginTime>#{beginTime} AND endTime<#{endTime}
+			beginTime>#{beginTime} AND endTime<#{endTime}
 		]]>
 	</select>
 
-	<insert id="addDriveData">
+	<insert id="addTripData">
 		INSERT INTO LC_TripData (uid, beginLat, beginLng,
 		beginEle, beginTime, endLat, endLng, endEle, endTime, dist, fuel,
 		errDist, clrDist, maxSPD, bstSPD, avgFuel, bstFuel, fuelLV, lstFuelLV,

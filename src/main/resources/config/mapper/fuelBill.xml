@@ -13,8 +13,11 @@
 	</resultMap>
 
 	<select id="getFuelBill" resultMap="fuelBillResult">
-		SELECT id, uid, pid, fuel,
-		unitprice, fuelType, addtime FROM LC_FuelBill
+		SELECT id, uid, pid, fuel, unitprice, fuelType, addtime FROM
+		LC_FuelBill WHERE uid=#{uid} AND
+		<![CDATA[
+			addtime>=#{beginTime} AND addtime<=#{endTime}
+		]]>
 	</select>
 
 	<update id="updateFuelBill">
@@ -26,5 +29,9 @@
 		fuelType, addtime) VALUES(#{uid}, #{pid}, #{fuel},
 		#{unitprice},#{fuelType},#{addtime})
 	</update>
+
+	<delete id="deleteFuelBill">
+		DELETE FROM LC_FuelBill WHERE id=#{id}
+	</delete>
 
 </mapper>

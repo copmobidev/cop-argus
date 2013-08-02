@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cop.argus.car.entity.Battery;
 import com.cop.argus.car.service.DiagnoseService;
 import com.cop.argus.car.service.dao.DiagnoseDao;
 import com.cop.argus.common.entity.NameValuePair;
@@ -59,4 +60,20 @@ public class DiagnoseServiceImpl extends BasicService implements
 		}
 		return result;
 	}
+
+	@Override
+	public List<Battery> battery(int uid) {
+		try {
+			List<Battery> bats = diagnoseDao.getBattery(uid);
+			if (bats != null && bats.size() > 0) {
+				return bats;
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

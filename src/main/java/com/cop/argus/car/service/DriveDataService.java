@@ -27,8 +27,8 @@ public interface DriveDataService {
 	 * 获取用户行车数据
 	 * 
 	 * @param uid
-	 * @param span
+	 * @param timeSpan
 	 * @return
 	 */
-	List<DriveData> getDriveData(int uid, TimeSpan span);
+	List<DriveData> getDriveData(int uid, TimeSpan timeSpan);
 }
