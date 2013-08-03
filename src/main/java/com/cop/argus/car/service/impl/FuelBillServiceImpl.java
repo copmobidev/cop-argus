@@ -47,6 +47,7 @@ public class FuelBillServiceImpl extends BasicService implements
 			Double unitprice, Integer fuelType, Long addtime)
 			throws FuelBillServiceException {
 		try {
+			// 查找前后一天内的加油记录
 			List<FuelBillPo> fbPos = fuelBillDao.getFuelBill(uid, addtime
 					- ONE_DAY, addtime + ONE_DAY);
 			if (fbPos != null && fbPos.size() > 0) {
@@ -56,7 +57,10 @@ public class FuelBillServiceImpl extends BasicService implements
 
 			int opt = fuelBillDao.addFuelBill(uid, pid, fuel, unitprice,
 					fuelType, addtime);
-
+			if (opt == 1) {
+				// 插入操作成功
+				
+			}
 		} catch (Exception e) {
 
 		}

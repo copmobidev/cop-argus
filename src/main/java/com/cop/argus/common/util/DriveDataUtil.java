@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -21,6 +22,10 @@ public class DriveDataUtil {
 
 	private static final SimpleDateFormat sdf = new SimpleDateFormat(
 			"yy MM dd hh-mm-ss");
+	
+	static {
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT+0:00"));
+	}
 
 	/**
 	 * 解析行程数据
@@ -444,7 +449,7 @@ public class DriveDataUtil {
 				avgRPM = hex2int(hex);
 				break;
 			case 130:
-				avgRPM = avgRPM * 100 + hex2int(hex);
+				avgRPM = avgRPM * 256 + hex2int(hex);
 				td.setAvgRPM(avgRPM);
 				break;
 			case 132:

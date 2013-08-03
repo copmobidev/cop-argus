@@ -13,18 +13,25 @@ public class TripData {
 	private int uid;
 	@Expose
 	private long beginTime; // 开始时间
+	@Expose
 	private double beginLat; // 开始纬度
+	@Expose
 	private double beginLng; // 开始经度
+	@Expose
 	private double beginEle; // 行程开始海拔
 	@Expose
 	private long endTime; // 结束时间
+	@Expose
 	private double endLat; // 结束纬度
+	@Expose
 	private double endLng; // 结束经度
+	@Expose
 	private double endEle; // 行程结束海拔
 	@Expose
 	private double dist; // 行程总里程
 	@Expose
 	private double fuel; // 行程总耗油量
+	@Expose
 	private int errDist; // 故障灯亮起后行驶里程数,最大65535
 	private int clrDist; // 故障码清除后行驶里程数,最大65535
 	@Expose
@@ -35,20 +42,29 @@ public class TripData {
 	private double avgFuel; // 行程平均油耗
 	@Expose
 	private double bstFuel; // 行程最佳速度
+	@Expose
 	private int fuelLV; // 油量，最高位为是否加油标志
+	@Expose
 	private double lstFuelLV; // 最后一分钟油箱存量
+	@Expose
 	private int bat; // 电池电量 BAT/10
+	@Expose
 	private int airPressure; // 环境气压
 	@Expose
 	private double temp; // 环境温度
 	@Expose
 	private double avgCoolTemp; // 平均水箱温度
+	@Expose
 	private double maxCoolTemp; // 最高水箱温度
+	@Expose
 	private double avgPadPos; // 节气门位置平均值
+	@Expose
 	private double maxPadPos; // 节气门位置最大值
+	@Expose
 	private double minPadPos; // 节气门位置最小值
 	@Expose
 	private double avgRPM; // 平均转速
+	@Expose
 	private double maxRPM; // 最高转速
 	@Expose
 	private int acc; // 行程总急加速次数
@@ -68,6 +84,7 @@ public class TripData {
 	private double jam; // 本次行程堵车的时间比率(包含怠速）
 	@Expose
 	private String errCodes; // 错误码
+	@Expose
 	private String minuteData; // 每分钟行程数据
 	@Expose
 	private double score; // 行程得分

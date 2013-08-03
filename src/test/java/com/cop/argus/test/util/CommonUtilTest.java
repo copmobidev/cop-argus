@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
@@ -110,7 +113,7 @@ public class CommonUtilTest {
 	@Test
 	public void tripDataParserTest() {
 		String encoding = "utf-8";
-		String fileName = "data/000000000000022.dat";
+		String fileName = "data/000000000000043";
 		try {
 			File file = new File(fileName);
 			InputStreamReader read = new InputStreamReader(new FileInputStream(
@@ -176,5 +179,18 @@ public class CommonUtilTest {
 		battery.add(3);
 		battery.add(5);
 		System.out.println(DataFormater.format(battery));
+	}
+
+	@Test
+	public void test() {
+		Date date = new Date(1374440758000l);
+		SimpleDateFormat sdf = new SimpleDateFormat("yy MM dd hh-mm-ss");
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT+0:00"));
+		try {
+			System.out.println(sdf.format(date));
+		} catch (Exception e) {
+
+		}
+
 	}
 }

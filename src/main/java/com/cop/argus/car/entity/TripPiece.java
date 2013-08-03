@@ -11,8 +11,11 @@ import com.google.gson.annotations.Expose;
 public class TripPiece {
 	@Expose
 	private long timestamp; // 时间戳
+	@Expose
 	private double lat; // 纬度
+	@Expose
 	private double lng; // 经度
+	@Expose
 	private int ele; // 海拔
 	@Expose
 	private int dist; // 里程
@@ -28,14 +31,21 @@ public class TripPiece {
 	private double avgFuel; // 平均油耗
 	@Expose
 	private double bstFuel; // 最低油耗
+	@Expose
 	private double avgRPM; // 平均转速
+	@Expose
 	private double maxRPM; // 最大转速
+	@Expose
 	private double avgCalLoad; // 平均负载
 	@Expose
 	private double avgCoolTemp; // 平均水箱温度
+	@Expose
 	private double avgPadPos; // 节气门位置平均值
+	@Expose
 	private double maxPadPos; // 节气门位置最大值
+	@Expose
 	private double minPadPos; // 节气门位置最小值
+	@Expose
 	private double fuelLV; // 油箱存量
 	@Expose
 	private double acc; // 急加速次数
