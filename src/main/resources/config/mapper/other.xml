@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cop.argus.other.service.dao.OtherDao">
-	<resultMap id="configResult" type="com.cop.argus.other.service.entity.ConfigPo">
-		<result property="platform" column="platform" />
-		<result property="name" column="name" />
-		<result property="value" column="value" />
-	</resultMap>
+    <resultMap id="configResult" type="com.cop.argus.other.service.entity.ConfigPo">
+        <result property="platform" column="platform"/>
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+    </resultMap>
 
-	<select id="getAllConfig" resultMap="configResult">
-		SELECT platform, name, value
-		FROM LC_Config
-	</select>
+    <select id="getAllConfig" resultMap="configResult">
+        SELECT platform, name, value
+        FROM LC_Config
+    </select>
 
-	<insert id="addFeedback">
-		INSERT INTO LC_Feedback(ua, uid, content, addtime)
-		VALUES(#{ua}, #{uid}, #{content}, #{addtime})
-	</insert>
+    <insert id="addFeedback">
+        INSERT INTO LC_Feedback(ua, uid, content, addtime)
+        VALUES(#{ua}, #{uid}, #{content}, #{addtime})
+    </insert>
 
 </mapper>

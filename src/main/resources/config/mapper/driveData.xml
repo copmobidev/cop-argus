@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cop.argus.car.service.dao.DriveDataDao">
-	<resultMap id="tripDataResult" type="com.cop.argus.car.entity.TripData">
-		<result property="uid" column="uid" />
-		<result property="beginLat" column="beginLat" />
-		<result property="beginLng" column="beginLng" />
-		<result property="beginLng" column="beginLng" />
-		<result property="beginDir1" column="beginDir1" />
-		<result property="beginDir2" column="beginDir2" />
-		<result property="beginEle" column="beginEle" />
-		<result property="endTime" column="endTime" />
-		<result property="endLat" column="endLat" />
-		<result property="endLng" column="endLng" />
-		<result property="endDir1" column="endDir1" />
-		<result property="endDir2" column="endDir2" />
-		<result property="endEle" column="endEle" />
-		<result property="dist" column="dist" />
-		<result property="fuel" column="fuel" />
-		<result property="errDist" column="errDist" />
-		<result property="clrDist" column="clrDist" />
-		<result property="maxSPD" column="maxSPD" />
-		<result property="bstSPD" column="bstSPD" />
-		<result property="avgFuel" column="avgFuel" />
-		<result property="bstFuel" column="bstFuel" />
-		<result property="fuelLV" column="fuelLV" />
-		<result property="lstFuelLV" column="lstFuelLV" />
-		<result property="bat" column="bat" />
-		<result property="airPressure" column="airPressure" />
-		<result property="temp" column="temp" />
-		<result property="avgCoolTemp" column="avgCoolTemp" />
-		<result property="maxCoolTemp" column="maxCoolTemp" />
-		<result property="avgPadPos" column="avgPadPos" />
-		<result property="maxPadPos" column="maxPadPos" />
-		<result property="minPadPos" column="minPadPos" />
-		<result property="avgRPM" column="avgRPM" />
-		<result property="maxRPM" column="maxRPM" />
-		<result property="acc" column="acc" />
-		<result property="brk" column="brk" />
-		<result property="overSPD" column="overSPD" />
-		<result property="idleSPD" column="idleSPD" />
-		<result property="sliding" column="sliding" />
-		<result property="fast" column="fast" />
-		<result property="slow" column="slow" />
-		<result property="jam" column="jam" />
-		<result property="errCodes" column="errCodes" />
-		<result property="minuteData" column="minuteData" />
-		<result property="score" column="score" />
-	</resultMap>
+    <resultMap id="tripDataResult" type="com.cop.argus.car.entity.TripData">
+        <result property="uid" column="uid"/>
+        <result property="beginLat" column="beginLat"/>
+        <result property="beginLng" column="beginLng"/>
+        <result property="beginLng" column="beginLng"/>
+        <result property="beginDir1" column="beginDir1"/>
+        <result property="beginDir2" column="beginDir2"/>
+        <result property="beginEle" column="beginEle"/>
+        <result property="endTime" column="endTime"/>
+        <result property="endLat" column="endLat"/>
+        <result property="endLng" column="endLng"/>
+        <result property="endDir1" column="endDir1"/>
+        <result property="endDir2" column="endDir2"/>
+        <result property="endEle" column="endEle"/>
+        <result property="dist" column="dist"/>
+        <result property="fuel" column="fuel"/>
+        <result property="errDist" column="errDist"/>
+        <result property="clrDist" column="clrDist"/>
+        <result property="maxSPD" column="maxSPD"/>
+        <result property="bstSPD" column="bstSPD"/>
+        <result property="avgFuel" column="avgFuel"/>
+        <result property="bstFuel" column="bstFuel"/>
+        <result property="fuelLV" column="fuelLV"/>
+        <result property="lstFuelLV" column="lstFuelLV"/>
+        <result property="bat" column="bat"/>
+        <result property="airPressure" column="airPressure"/>
+        <result property="temp" column="temp"/>
+        <result property="avgCoolTemp" column="avgCoolTemp"/>
+        <result property="maxCoolTemp" column="maxCoolTemp"/>
+        <result property="avgPadPos" column="avgPadPos"/>
+        <result property="maxPadPos" column="maxPadPos"/>
+        <result property="minPadPos" column="minPadPos"/>
+        <result property="avgRPM" column="avgRPM"/>
+        <result property="maxRPM" column="maxRPM"/>
+        <result property="acc" column="acc"/>
+        <result property="brk" column="brk"/>
+        <result property="overSPD" column="overSPD"/>
+        <result property="idleSPD" column="idleSPD"/>
+        <result property="sliding" column="sliding"/>
+        <result property="fast" column="fast"/>
+        <result property="slow" column="slow"/>
+        <result property="jam" column="jam"/>
+        <result property="errCodes" column="errCodes"/>
+        <result property="minuteData" column="minuteData"/>
+        <result property="score" column="score"/>
+    </resultMap>
 
-	<select id="getTripData" resultMap="tripDataResult">
-		SELECT uid, beginLat,
-		beginLng, beginEle, beginTime, endLat, endLng, endEle, endTime, dist,
-		fuel, errDist, clrDist, maxSPD, bstSPD, avgFuel, bstFuel, fuelLV,
-		lstFuelLV, bat, airPressure, temp, avgCoolTemp, maxCoolTemp,
-		avgPadPos, maxPadPos, minPadPos, avgRPM, maxRPM, acc, brk, overSPD,
-		idleSPD, sliding, fast, slow, jam, errCodes, minuteData, score FROM
-		LC_CarBrand WHERE uid=#{uid} AND 
-		<![CDATA[
+    <select id="getTripData" resultMap="tripDataResult">
+        SELECT uid, beginLat,
+        beginLng, beginEle, beginTime, endLat, endLng, endEle, endTime, dist,
+        fuel, errDist, clrDist, maxSPD, bstSPD, avgFuel, bstFuel, fuelLV,
+        lstFuelLV, bat, airPressure, temp, avgCoolTemp, maxCoolTemp,
+        avgPadPos, maxPadPos, minPadPos, avgRPM, maxRPM, acc, brk, overSPD,
+        idleSPD, sliding, fast, slow, jam, errCodes, minuteData, score FROM
+        LC_CarBrand WHERE uid=#{uid} AND
+        <![CDATA[
 			beginTime>#{beginTime} AND endTime<#{endTime}
 		]]>
-	</select>
+    </select>
 
-	<insert id="addTripData">
-		INSERT INTO LC_TripData (uid, beginLat, beginLng,
-		beginEle, beginTime, endLat, endLng, endEle, endTime, dist, fuel,
-		errDist, clrDist, maxSPD, bstSPD, avgFuel, bstFuel, fuelLV, lstFuelLV,
-		bat, airPressure, temp, avgCoolTemp, maxCoolTemp, avgPadPos,
-		maxPadPos, minPadPos, avgRPM, maxRPM, acc, brk, overSPD, idleSPD,
-		sliding, fast, slow, jam, errCodes, minuteData, score, addtime) VALUES
-		(${values})
-	</insert>
+    <insert id="addTripData">
+        INSERT INTO LC_TripData (uid, beginLat, beginLng,
+        beginEle, beginTime, endLat, endLng, endEle, endTime, dist, fuel,
+        errDist, clrDist, maxSPD, bstSPD, avgFuel, bstFuel, fuelLV, lstFuelLV,
+        bat, airPressure, temp, avgCoolTemp, maxCoolTemp, avgPadPos,
+        maxPadPos, minPadPos, avgRPM, maxRPM, acc, brk, overSPD, idleSPD,
+        sliding, fast, slow, jam, errCodes, minuteData, score, addtime) VALUES
+        (${values})
+    </insert>
 
 </mapper>

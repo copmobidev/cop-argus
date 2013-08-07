@@ -18,72 +18,70 @@ import com.cop.argus.common.util.DriveDataUtil;
 import com.cop.argus.service.common.BasicService;
 
 /**
- * 
  * @author chris.liu
- * 
  */
 @Service("driveDataService")
 public class DriveDataServiceImpl extends BasicService implements
-		DriveDataService {
+        DriveDataService {
 
-	@Autowired
-	private AccountDao accountDao;
+    @Autowired
+    private AccountDao accountDao;
 
-	@Autowired
-	private DriveDataDao driveDataDao;
+    @Autowired
+    private DriveDataDao driveDataDao;
 
-	@Override
-	public Message uploadDriveData(int uid, List<String> datas)
-			throws DriveDataServiceException {
-		try {
-			UserPo userPo = accountDao.getUserById(uid);
-			if (userPo == null) {
-				throw new DriveDataServiceException(
-						DriveDataServiceException.DATA_ERROR);
-			}
-			int score = userPo.getScore();
-			int level = userPo.getLevel();
-			for (String data : datas) {
-				TripData td = DriveDataUtil.parserTripData(data, uid,
-						userPo.getLevel());
-				driveDataDao.addTripData(td.toDBString());
-				score += td.getScore();
-				if (score > 50) {
-					level = (score - 50) / 20 + 1;
-				} else {
-					level = 1;
-				}
-			}
-			String vals = String.format("score=%s,level=%s", score, level);
-			accountDao.updateUserInfo(uid, vals);
+    @Override
+    public Message uploadDriveData(int uid, List<String> datas)
+            throws DriveDataServiceException {
+        try {
+            UserPo userPo = accountDao.getUserById(uid);
+            if (userPo == null) {
+                throw new DriveDataServiceException(
+                        DriveDataServiceException.DATA_ERROR);
+            }
+            int score = userPo.getScore();
+            int level = userPo.getLevel();
+            for (String data : datas) {
+                TripData td = DriveDataUtil.parserTripData(data, uid,
+                        userPo.getLevel());
+                driveDataDao.addTripData(td.toDBString());
+                score += td.getScore();
+                if (score > 50) {
+                    level = (score - 50) / 20 + 1;
+                } else {
+                    level = 1;
+                }
+            }
+            String vals = String.format("score=%s,level=%s", score, level);
+            accountDao.updateUserInfo(uid, vals);
 
-			return new Message("恭喜", "成功上次行程数据");
-		} catch (Exception e) {
-			throw new DriveDataServiceException(
-					DriveDataServiceException.UNKNOW_ERROR);
-		}
-	}
+            return new Message("恭喜", "成功上次行程数据");
+        } catch (Exception e) {
+            throw new DriveDataServiceException(
+                    DriveDataServiceException.UNKNOW_ERROR);
+        }
+    }
 
-	@Override
-	public List<DriveData> getDriveData(int uid, TimeSpan timeSpan) {
-		List<TripData> driveDatas = driveDataDao.getTripData(uid,
-				timeSpan.getBeginTime(), timeSpan.getEndTime());
-		if (driveDatas.size() > 0) {
-			switch (timeSpan.getSpan()) {
-			case PIECE:
-				driveDatas.get(0);
-				break;
-			case WEEK:
-				break;
-			case MONTH:
-				break;
-			case YEAR:
-				break;
-			}
+    @Override
+    public List<DriveData> getDriveData(int uid, TimeSpan timeSpan) {
+        List<TripData> driveDatas = driveDataDao.getTripData(uid,
+                timeSpan.getBeginTime(), timeSpan.getEndTime());
+        if (driveDatas.size() > 0) {
+            switch (timeSpan.getSpan()) {
+                case PIECE:
+                    driveDatas.get(0);
+                    break;
+                case WEEK:
+                    break;
+                case MONTH:
+                    break;
+                case YEAR:
+                    break;
+            }
 
-			return null;
-		} else {
-			return null;
-		}
-	}
+            return null;
+        } else {
+            return null;
+        }
+    }
 }

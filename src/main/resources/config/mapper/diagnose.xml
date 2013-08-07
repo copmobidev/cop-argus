@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cop.argus.car.service.dao.DiagnoseDao">
-	<resultMap id="errCodeResult" type="com.cop.argus.common.entity.NameValuePair">
-		<result property="name" column="errCode" />
-		<result property="value" column="description" />
-	</resultMap>
+    <resultMap id="errCodeResult" type="com.cop.argus.common.entity.NameValuePair">
+        <result property="name" column="errCode"/>
+        <result property="value" column="description"/>
+    </resultMap>
 
-	<resultMap id="batResult" type="com.cop.argus.car.entity.Battery">
-		<result property="bat" column="bat" />
-		<result property="timestamp" column="beginTime" />
-	</resultMap>
+    <resultMap id="batResult" type="com.cop.argus.car.entity.Battery">
+        <result property="bat" column="bat"/>
+        <result property="timestamp" column="beginTime"/>
+    </resultMap>
 
-	<select id="getAllErrCode" resultMap="errCodeResult">
-		SELECT errCode, description
-		FROM LC_ErrCode
-	</select>
+    <select id="getAllErrCode" resultMap="errCodeResult">
+        SELECT errCode, description
+        FROM LC_ErrCode
+    </select>
 
-	<select id="getBattery" resultMap="batResult">
-		SELECT bat, beginTime FROM
-		LC_TripData WHERE uid=#{uid}
-	</select>
+    <select id="getBattery" resultMap="batResult">
+        SELECT bat, beginTime FROM
+        LC_TripData WHERE uid=#{uid}
+    </select>
 
 </mapper>

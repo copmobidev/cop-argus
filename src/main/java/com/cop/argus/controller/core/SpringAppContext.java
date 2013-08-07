@@ -6,28 +6,26 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * 
  * @author chris.liu
- * 
  */
 @Component
 public class SpringAppContext implements ApplicationContextAware {
 
-	private static ApplicationContext appContext;
+    private static ApplicationContext appContext;
 
-	// Private constructor prevents instantiation from other classes
-	private SpringAppContext() {
+    // Private constructor prevents instantiation from other classes
+    private SpringAppContext() {
 
-	}
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext appContext)
-			throws BeansException {
-		SpringAppContext.appContext = appContext;
+    @Override
+    public void setApplicationContext(ApplicationContext appContext)
+            throws BeansException {
+        SpringAppContext.appContext = appContext;
 
-	}
+    }
 
-	public static Object getBean(String beanName) {
-		return appContext.getBean(beanName);
-	}
+    public static Object getBean(String beanName) {
+        return appContext.getBean(beanName);
+    }
 }
