@@ -43,10 +43,16 @@ public class OtherController extends BasicController {
             String uaStr = headers.get("ua").get(0);
             UserAgent ua = UserAgentUtil.parseUserAgent(uaStr);
             Token tk = TokenUtil.parseToken(token);
-            Map<String, Object> config = otherService
-                    .getConfig(ua, tk.getUid());
-            result = new Result(ResultStatus.RS_OK, TokenUtil.generateToken(
-                    tk.getUid(), 1), config);
+            if (TokenUtil.isValid(tk) && ua != null) {
+                Map<String, Object> config = otherService
+                        .getConfig(ua, tk.getUid());
+                result = new Result(ResultStatus.RS_OK, TokenUtil.generateToken(
+                        tk.getUid(), 1), config);
+            } else {
+                result = new Result(ResultStatus.RS_ERROR, null,
+                        Message.MSG_PARAM_INVALID);
+            }
+
         } catch (OtherServiceException e) {
             result = OtherServiceException.handleException(e);
         } catch (Exception e) {
@@ -65,9 +71,14 @@ public class OtherController extends BasicController {
         try {
             String ua = headers.get("ua").get(0);
             Token tk = TokenUtil.parseToken(token);
-            Message msg = otherService.feedback(ua, tk.getUid(), content);
-            result = new Result(ResultStatus.RS_OK, TokenUtil.generateToken(
-                    tk.getUid(), 1), msg);
+            if (TokenUtil.isValid(tk) && ua != null) {
+                Message msg = otherService.feedback(ua, tk.getUid(), content);
+                result = new Result(ResultStatus.RS_OK, TokenUtil.generateToken(
+                        tk.getUid(), 1), msg);
+            } else {
+                result = new Result(ResultStatus.RS_ERROR, null,
+                        Message.MSG_PARAM_INVALID);
+            }
         } catch (OtherServiceException e) {
             result = OtherServiceException.handleException(e);
         } catch (Exception e) {

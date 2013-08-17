@@ -1,14 +1,5 @@
 package com.cop.argus.account.service.impl;
 
-import java.io.File;
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.cop.argus.account.entity.AccountServiceException;
 import com.cop.argus.account.entity.User;
 import com.cop.argus.account.service.AccountService;
@@ -17,6 +8,14 @@ import com.cop.argus.account.service.entity.UserPo;
 import com.cop.argus.car.entity.CarBrand;
 import com.cop.argus.car.service.CarBrandService;
 import com.cop.argus.service.common.BasicService;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.Date;
 
 /**
  * 

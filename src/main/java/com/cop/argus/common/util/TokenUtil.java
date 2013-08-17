@@ -70,25 +70,27 @@ public class TokenUtil {
     /**
      * return 0 if token is not valid
      */
-    public static Token parseToken(String token) throws Exception {
-        if (StringUtils.isBlank(token)) {
-            return null;
+    public static Token parseToken(String token) {
+        try {
+            Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
+            cipher.init(Cipher.DECRYPT_MODE, SECRET_SPEC, IV_SPEC);
+            byte[] bytes = parseHexString(token);
+            if (bytes == null)
+                return null;
+            byte[] decrBuffer = cipher.doFinal(bytes);
+            String decrStr = new String(decrBuffer, "ASCII");
+            String[] str = decrStr.split("\\|");
+            if (str == null || str.length != 3) {
+                return null;
+            }
+            int uid = Integer.parseInt(str[0].trim());
+            long expiredTime = Long.parseLong(str[1].trim());
+            int count = Integer.parseInt(str[2].trim());
+            return new Token(uid, expiredTime, count);
+        } catch (Exception e) {
+
         }
-        Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-        cipher.init(Cipher.DECRYPT_MODE, SECRET_SPEC, IV_SPEC);
-        byte[] bytes = parseHexString(token);
-        if (bytes == null)
-            return null;
-        byte[] decrBuffer = cipher.doFinal(bytes);
-        String decrStr = new String(decrBuffer, "ASCII");
-        String[] str = decrStr.split("\\|");
-        if (str == null || str.length != 3) {
-            return null;
-        }
-        int uid = Integer.parseInt(str[0].trim());
-        long expiredTime = Long.parseLong(str[1].trim());
-        int count = Integer.parseInt(str[2].trim());
-        return new Token(uid, expiredTime, count);
+        return null;
     }
 
     public static String generateToken(int uid, int count) throws Exception {
